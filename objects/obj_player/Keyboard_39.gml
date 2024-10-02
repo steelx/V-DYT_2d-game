@@ -1,10 +1,12 @@
+/// @description Right
 // This checks if the player is currently in knockback, after being hit by an enemy.
-if (in_knockback)
+if (state == CHARACTER_STATE.KNOCKBACK)
 {
 	// In that case we exit/stop the event here, so the player can't move.
 	exit;
 }
 
+state = CHARACTER_STATE.MOVE;
 // Set the X velocity to move_speed.
 // This makes the character move right.
 vel_x = move_speed;

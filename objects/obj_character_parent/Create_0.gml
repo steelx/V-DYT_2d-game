@@ -1,3 +1,13 @@
+// State machine
+enum CHARACTER_STATE {
+    IDLE,
+    MOVE,
+    JUMP,
+    KNOCKBACK
+}
+
+state = CHARACTER_STATE.IDLE;
+
 // This is the horizontal movement speed of the character.
 // It's in pixels per second.
 move_speed = 4;

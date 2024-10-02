@@ -1,6 +1,8 @@
+/// @description Space
 // This checks if the 'grounded' variable is true, meaning the player is standing on the ground, and can jump.
 if (grounded)
 {
+	state = CHARACTER_STATE.JUMP;
 	// This sets the Y velocity to negative jump_speed, making the player immediately jump upwards. It
 	// will automatically be brought down by the gravity code in the parent's Begin Step event.
 	vel_y = -jump_speed;
