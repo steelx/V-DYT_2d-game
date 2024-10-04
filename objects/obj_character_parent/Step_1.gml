@@ -1,7 +1,7 @@
-// With this function call, we are checking if there is a collision 1 pixel below the character. This means the character is standing
-// on ground.
-// We're doing this in the Begin Step event, so the events that run later (Step and End Step) know whether the player is on ground
-// or not.
+// With this function call, we are checking if there is a collision 1 pixel below the character.
+// This means the character is standing on ground.
+// We're doing this in the Begin Step event,
+// so the events that run later (Step and End Step) know whether the player is on ground or not.
 // The result of the function (true or false) is stored in the  'grounded' variable, which was initialised in the Create event.
 grounded = check_collision(0, 1);
 

@@ -1,4 +1,4 @@
-// State machine
+/// @description obj_character_parent step event
 switch(state) {
     case CHARACTER_STATE.IDLE:
         // Idle state behavior
@@ -56,13 +56,6 @@ repeat (_move_count) {
         vel_y = 0;
         break;
     }
-}
-
-// Update grounded status
-grounded = check_collision(0, 1);
-if (grounded) {
-    grounded_x = x;
-    grounded_y = y;
 }
 
 // Handle invincibility frames

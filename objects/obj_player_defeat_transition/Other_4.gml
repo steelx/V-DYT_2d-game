@@ -5,7 +5,7 @@ transition_filter = fx_create("_filter_pixelate");
 
 layer_set_fx(transition_layer, transition_filter);
 
-fx_set_parameter(transition_filter, "g_CellSize", cellSize);
+fx_set_parameter(transition_filter, "g_CellSize", cell_size);
 
 // Start Alarm 1
 alarm[1] = 1;

@@ -14,7 +14,7 @@ emitter = audio_emitter_create();
 audio_emitter_position(emitter, x, y, 0);
 
 // Set the falloff settings for the audio emitter
-audio_emitter_falloff(emitter, 1000, 1400, 1);
+audio_emitter_falloff(emitter, 640, 720, 1);
 
 // Play a looping portal ambience sound on the emitter
 audio_play_sound_on(emitter, snd_portal_01, true, 1);

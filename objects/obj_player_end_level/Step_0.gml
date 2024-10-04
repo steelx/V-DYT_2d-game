@@ -20,7 +20,7 @@ if (x != obj_end_gate.x)
 
 	// This checks if the absolute difference between the player and the gate (on the X axis) is less than 5, meaning the
 	// player has (almost) reached the center of the gate.
-	if (abs(obj_end_gate.x - x) < 5)
+	if (abs(obj_end_gate.x - x) < 15)
 	{
 		// In that case we set the player's X position to the gate's X position so it jumps there.
 		x = obj_end_gate.x;
@@ -42,8 +42,7 @@ else
 	image_speed = 1;
 
 	// This checks if the alpha is at or below 0, meaning the instance is invisible now.
-	if (image_alpha <= 0)
-	{
+	if (image_alpha <= 0){
 		// In that case we move to the next room.
 		room_goto_next();
 	}

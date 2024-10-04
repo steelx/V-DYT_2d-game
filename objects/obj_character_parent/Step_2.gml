@@ -19,8 +19,8 @@ else if (vel_x > 0)
 // In that case we want to replace the character instance with its defeated object.
 if (hp <= 0)
 {
-	// This creates an instance of the character's 'defeated_object'. E.g. it will be obj_player_defeated
-	// for obj_player.
+	// This creates an instance of the character's 'defeated_object'.
+	// E.g. it will be obj_player_defeated for obj_player.
 	// It's created at the same position as the character itself.
 	// It's created in the same layer as the character, by using its 'layer' variable.
 	instance_create_layer(x, y, layer, defeated_object);

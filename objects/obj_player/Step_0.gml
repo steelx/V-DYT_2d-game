@@ -1,16 +1,12 @@
 event_inherited();
 
+obj_camera.follow = obj_player;
+
 // Handle state transitions
 switch(state) {
     case CHARACTER_STATE.JUMP:
         if (grounded) {
             state = (vel_x != 0) ? CHARACTER_STATE.MOVE : CHARACTER_STATE.IDLE;
-        }
-        break;
-    case CHARACTER_STATE.KNOCKBACK:
-        // Check if knockback should end
-        if (vel_x == 0) {
-            state = CHARACTER_STATE.IDLE;
         }
         break;
 }

@@ -1,0 +1,4 @@
+
+/// CAMERA
+#macro CAMERA_RESET_PAN 0
+#macro CAMERA_SCREEN_SHAKE 1

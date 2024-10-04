@@ -8,7 +8,7 @@ vspeed = -40;
 image_xscale = -1;
 
 // Set Alarm 0 to run after a while, which starts the transition
-alarm[0] = 30;
+alarm_set(0, 1);
 
 // Stop all playing audio
 audio_stop_all();

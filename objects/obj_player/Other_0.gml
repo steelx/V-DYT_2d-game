@@ -1,4 +1,4 @@
-// This event runs when the instance goes out of the room.
+// @description runs when the instance goes outside the room.
 // This condition checks if the top edge of the player's mask is below the room,
 // meaning it's completely outside the room now.
 if (bbox_top > room_height)
@@ -11,11 +11,11 @@ if (bbox_top > room_height)
 	{
 		// This moves the player to the position stored in the grounded_x and _y variables,
 		// which is the position when it was last on ground.
-		x = grounded_x;
+		x = grounded_x-(global.tile_size/2 *image_xscale);
 		y = grounded_y;
 
 		// This gives 2 seconds of invincibility to the player.
-		no_hurt_frames += 120;
+		no_hurt_frames += get_room_speed()*2;// 120
 
 		// This resets the X and Y velocities of the player so it stops all movement.
 		vel_x = 0;

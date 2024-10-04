@@ -20,6 +20,7 @@ if (hp > 0)
 	// disabled for that period, meaning the player doesn't immediately fall into the hurt zone
 	// again.
 	in_knockback = true;
+    state = CHARACTER_STATE.KNOCKBACK;
 
 	alarm[0] = 20;
 

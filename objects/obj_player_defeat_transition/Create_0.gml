@@ -8,10 +8,10 @@ transition_filter = fx_create("_filter_pixelate");
 layer_set_fx(transition_layer, transition_filter);
 
 // Initialize the cell size used for the pixelate filter
-cellSize = 1;
+cell_size = global.tile_size;
 
 // Assign the cell size to the filter
-fx_set_parameter(transition_filter, "g_CellSize", cellSize);
+fx_set_parameter(transition_filter, "g_CellSize", cell_size);
 
 // Start Alarm 0
 alarm[0] = 1;

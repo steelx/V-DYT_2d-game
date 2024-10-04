@@ -1,12 +1,12 @@
 // Reduce the cell size by 2
 // This event runs when the second room has started, so the pixelation is decreased
-cellSize -= 2;
+cell_size -= 2;
 
 // Apply the new cell size to the filter
-fx_set_parameter(transition_filter, "g_CellSize", cellSize);
+fx_set_parameter(transition_filter, "g_CellSize", cell_size);
 
 // If the cell size is at or below 2,
-if (cellSize <= 2)
+if (cell_size <= 2)
 {
 	// Destroy this instance
 	instance_destroy();
