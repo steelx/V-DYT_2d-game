@@ -62,6 +62,6 @@ debug_render_mask = function() {
 	draw_set_color(c_yellow);
     draw_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom, true);
     draw_set_alpha(1);
-	//draw_text(x, y, _states[state]);
-	draw_text(x, y, no_hurt_frames);
+	draw_text(x, y, _states[state]);
+	//draw_text(x, y, no_hurt_frames);
 };

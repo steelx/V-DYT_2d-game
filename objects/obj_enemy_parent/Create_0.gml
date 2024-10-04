@@ -4,7 +4,7 @@ event_inherited();
 damage = 1;
 
 // This sets the movement speed for the enemies.
-move_speed = 2;
+move_speed = 1.5;
 
 // This applies either move_speed or negative move_speed to the enemy's X velocity. This way the enemy will
 // either move left or right (at random).
