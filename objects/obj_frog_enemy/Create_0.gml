@@ -11,3 +11,7 @@ vel_x = 0;
 state = CHARACTER_STATE.IDLE;
 reset_jump_timer = 60;
 alarm_set(FROG_RESET_JUMP, reset_jump_timer/2);
+
+breathing_counter_init = 60;
+breathing_counter = breathing_counter_init;
+image_speed = 0;

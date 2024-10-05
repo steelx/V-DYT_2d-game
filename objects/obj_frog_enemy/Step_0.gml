@@ -6,6 +6,19 @@ switch(state) {
     case CHARACTER_STATE.IDLE:
         // Idle state behavior
         vel_x = 0;
+
+        if breathing_counter < 0 {
+            image_speed = 1;
+        } else {
+           breathing_counter--; 
+        }
+        // stop breathing at end of animation
+        if is_animation_end() {
+            image_index = 0;
+            image_speed = 0;
+            breathing_counter = breathing_counter_init;
+        }
+    
         break;
     case CHARACTER_STATE.MOVE:
         if (check_collision(0, 1)) {
