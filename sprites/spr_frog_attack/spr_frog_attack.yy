@@ -1,6 +1,6 @@
 {
   "$GMSprite":"",
-  "%Name":"s_frog_attack",
+  "%Name":"spr_frog_attack",
   "bboxMode":0,
   "bbox_bottom":63,
   "bbox_left":16,
@@ -31,7 +31,7 @@
   "layers":[
     {"$GMImageLayer":"","%Name":"d128c5bb-8832-4e56-bfc3-1912c8934723","blendMode":0,"displayName":"default","isLocked":false,"name":"d128c5bb-8832-4e56-bfc3-1912c8934723","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
-  "name":"s_frog_attack",
+  "name":"spr_frog_attack",
   "nineSlice":null,
   "origin":9,
   "parent":{
@@ -43,7 +43,7 @@
   "resourceVersion":"2.0",
   "sequence":{
     "$GMSequence":"",
-    "%Name":"",
+    "%Name":"spr_frog_attack",
     "autoRecord":true,
     "backdropHeight":1080,
     "backdropImageOpacity":0.5,
@@ -67,7 +67,7 @@
       "resourceType":"KeyframeStore<MomentsEventKeyframe>",
       "resourceVersion":"2.0",
     },
-    "name":"",
+    "name":"spr_frog_attack",
     "playback":1,
     "playbackSpeed":15.0,
     "playbackSpeedType":0,
@@ -79,37 +79,37 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"a88aaaae-11c6-4f63-871e-9ca87c6c100e","path":"sprites/s_frog_attack/s_frog_attack.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"a88aaaae-11c6-4f63-871e-9ca87c6c100e","path":"sprites/spr_frog_attack/spr_frog_attack.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"1cb45920-4690-4e9a-8607-a4f61d610b8e","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"a663c042-39f5-4115-8907-6cc6d394fe69","path":"sprites/s_frog_attack/s_frog_attack.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"a663c042-39f5-4115-8907-6cc6d394fe69","path":"sprites/spr_frog_attack/spr_frog_attack.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"082b2a62-9c7e-471b-84c0-c195b5a526f9","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"35b3b900-23a6-49a0-8b26-ebf1b36a8937","path":"sprites/s_frog_attack/s_frog_attack.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"35b3b900-23a6-49a0-8b26-ebf1b36a8937","path":"sprites/spr_frog_attack/spr_frog_attack.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"acfa46c2-cc20-451d-9620-b1b1d87f7c3e","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"d3f69a7f-9199-46b1-b395-b7c6ebfbb785","path":"sprites/s_frog_attack/s_frog_attack.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"d3f69a7f-9199-46b1-b395-b7c6ebfbb785","path":"sprites/spr_frog_attack/spr_frog_attack.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"ccc931ff-c741-4fba-b302-0b6d6dfc5785","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"9b3fff2a-fca9-42ad-a1b5-a13410d80e50","path":"sprites/s_frog_attack/s_frog_attack.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"9b3fff2a-fca9-42ad-a1b5-a13410d80e50","path":"sprites/spr_frog_attack/spr_frog_attack.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"a236254d-5ef5-4945-b45a-16922903e412","IsCreationKey":false,"Key":4.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"0998670d-4df5-4336-9830-2219846be6be","path":"sprites/s_frog_attack/s_frog_attack.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"0998670d-4df5-4336-9830-2219846be6be","path":"sprites/spr_frog_attack/spr_frog_attack.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"75304fd9-46c4-4af5-b082-495bb2de0489","IsCreationKey":false,"Key":5.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"f8702451-0f62-40b1-851a-2c9a4c472b7d","path":"sprites/s_frog_attack/s_frog_attack.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"f8702451-0f62-40b1-851a-2c9a4c472b7d","path":"sprites/spr_frog_attack/spr_frog_attack.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"1d81d17e-0d49-4398-b807-7b144dc09dfd","IsCreationKey":false,"Key":6.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"be4458b6-7ff1-4139-8faf-b544bc564b3d","path":"sprites/s_frog_attack/s_frog_attack.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"be4458b6-7ff1-4139-8faf-b544bc564b3d","path":"sprites/spr_frog_attack/spr_frog_attack.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"925aced2-66dd-4fdf-a7ae-4784f42e1208","IsCreationKey":false,"Key":7.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"a30a55e5-a6b0-4159-8bf3-07a134ee6efd","path":"sprites/s_frog_attack/s_frog_attack.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"a30a55e5-a6b0-4159-8bf3-07a134ee6efd","path":"sprites/spr_frog_attack/spr_frog_attack.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"3551d958-a72d-4ca0-a3ac-f4f7f101c688","IsCreationKey":false,"Key":8.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"87a05bea-aa2c-4e94-92d6-f9fbf8640798","path":"sprites/s_frog_attack/s_frog_attack.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"87a05bea-aa2c-4e94-92d6-f9fbf8640798","path":"sprites/spr_frog_attack/spr_frog_attack.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"744964e1-1d25-4769-b397-ce35a95a33f5","IsCreationKey":false,"Key":9.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"6c0b2ff2-7de0-45da-9c7c-492f43c82315","path":"sprites/s_frog_attack/s_frog_attack.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"6c0b2ff2-7de0-45da-9c7c-492f43c82315","path":"sprites/spr_frog_attack/spr_frog_attack.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"f6fe18af-df5f-4224-87f6-c8a7ff541c2b","IsCreationKey":false,"Key":10.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],

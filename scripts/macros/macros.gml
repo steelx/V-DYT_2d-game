@@ -2,3 +2,8 @@
 /// CAMERA
 #macro CAMERA_RESET_PAN 0
 #macro CAMERA_SCREEN_SHAKE 1
+
+
+/// FROG
+#macro FROG_RESET_JUMP 1
+

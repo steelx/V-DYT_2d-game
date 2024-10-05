@@ -1,11 +1,11 @@
 {
   "$GMObject":"",
-  "%Name":"obj_enemy_frog_defeated",
+  "%Name":"obj_frog_enemy_defeated",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":7,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_enemy_frog_defeated",
+  "name":"obj_frog_enemy_defeated",
   "overriddenProperties":[],
   "parent":{
     "name":"Enemies",
@@ -30,8 +30,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"s_frog_jump",
-    "path":"sprites/s_frog_jump/s_frog_jump.yy",
+    "name":"spr_frog_jump",
+    "path":"sprites/spr_frog_jump/spr_frog_jump.yy",
   },
   "spriteMaskId":null,
   "visible":true,
