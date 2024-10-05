@@ -1,4 +1,4 @@
-/// @description Insert description here
+/// @description obj_player can bounce off launch-pad
 
 with instance_place(x, bbox_top - 1, obj_player) {
     if (vel_y > 0) { // Only bounce if the player is moving downward
@@ -10,6 +10,12 @@ with instance_place(x, bbox_top - 1, obj_player) {
         
         instance_create_layer(x, bbox_bottom, "Instances", obj_effect_jump);
         
+        // shader
+        trail_intensity = 1.0;
+        use_trail_shader = true;
+        ds_list_clear(trail_positions);
+        
+        // audio
         audio_play_sound(snd_enemy_hit, 0, 0);
         var _sound = audio_play_sound(snd_jump, 0, 0);
         audio_sound_pitch(_sound, random_range(0.8, 1));

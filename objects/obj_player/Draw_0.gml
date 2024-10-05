@@ -1,0 +1,21 @@
+/// @description draw with shader
+if (use_trail_shader && trail_intensity > 0) {
+    shader_set(sh_bounce_trail);
+    shader_set_uniform_f(shader_get_uniform(sh_bounce_trail, "trail_intensity"), trail_intensity);
+    shader_set_uniform_f_array(shader_get_uniform(sh_bounce_trail, "trail_color"), [
+        color_get_red(trail_color)/255, color_get_green(trail_color)/255, color_get_blue(trail_color)/255, 1.0
+    ]);
+    shader_set_uniform_i(shader_get_uniform(sh_bounce_trail, "trail_count"), trail_count);
+
+    // Draw trail
+    for (var _i = 0; _i < ds_list_size(trail_positions); _i++) {
+        var _pos = trail_positions[|_i];
+        var _alpha = 1 - (_i / trail_count);
+        draw_sprite_ext(sprite_index, image_index, _pos[0], _pos[1], image_xscale, image_yscale, image_angle, trail_color, _alpha * trail_intensity);
+    }
+
+    shader_reset();
+}
+
+// Draw the player
+draw_self();

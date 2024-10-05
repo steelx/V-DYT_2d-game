@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"sh_bounce_trail",
+  "name":"sh_bounce_trail",
+  "parent":{
+    "name":"Shaders",
+    "path":"folders/Shaders.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}
