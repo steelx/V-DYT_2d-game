@@ -8,24 +8,39 @@ switch(state) {
         vel_x = 0;
         break;
     case CHARACTER_STATE.MOVE:
-        var _jump_dir = sign(obj_player.x - x);
-        vel_x = _jump_dir * 4;
-        vel_x = lerp(vel_x, 0, friction_power);
-        if (grounded) {
+        if (check_collision(0, 1)) {
+            grounded = true;
             // we change change state to idle from animation end
             sprite_index = spr_frog_jump_land;
-            vel_x = 0;
+            image_speed = 1;
             break;
         }
-        
+    
+        var _jump_dir = 1;
+        if instance_exists(obj_player) _jump_dir = sign(obj_player.x - x);
+        vel_x = _jump_dir * move_speed;
+        vel_x = lerp(vel_x, 0, friction_power);
+        vel_y = lerp(vel_y, 0, friction_power);
+    
+        // anim check if frog is going upwards at last frame
+        if (image_index >= 2) {
+            image_speed = 0;//stop the animation
+            image_index = vel_y < 0 ? 2 : 3;
+        }
+
         // Apply horizontal movement
         apply_horizontal_movement();
         
         break;
-    case CHARACTER_STATE.KNOCKBACK:
-        // Knockback state behavior
-        // The character is unable to control movement in this state
-        // Knockback velocity is applied in the collision event and stopped in Alarm 0
+    case CHARACTER_STATE.JUMP:
+        // Jump starts velocity is applied Alarm 0
+        if (is_animation_end()) {
+            state = CHARACTER_STATE.MOVE;
+            vel_y = jump_speed;
+            sprite_index = spr_frog_jump;
+            image_index = 0;
+            image_speed = 1;
+        }
         break;
 }
 
