@@ -1,9 +1,9 @@
-/// @description Collision event with obj_enemy_parent
+/// @description obj_player Collision with obj_enemy_parent
 // This event runs when the player collides with an enemy.
 // It checks if the player has fallen on top of the enemy, in which case the enemy is defeated. Otherwise, the player
 // gets hurt.
 // This condition checks if the player's vertical velocity is greater than 0, meaning it's falling down.
-if (vel_y > 0)
+if (vel_y > 0) 
 {
     // This checks if the bottom point of the player's collision mask was above the enemy mask's top
     // point, in the previous frame.

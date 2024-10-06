@@ -1,3 +1,4 @@
+/// @description obj_frog_enemy create
 event_inherited();
 
 
