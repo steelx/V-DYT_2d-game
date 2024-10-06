@@ -36,3 +36,28 @@ function check_collision(_move_x, _move_y)
 	// In that case we return false, to indicate that no collisions were found, and the instance is free to move to the new position.
 	return false;
 }
+
+
+/**
+* Checks if calling entity is on ground
+* @returns {bool} True if is on ground
+*/
+function is_on_ground() {
+    return check_collision(0, 1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

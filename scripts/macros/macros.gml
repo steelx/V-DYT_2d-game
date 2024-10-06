@@ -7,3 +7,5 @@
 /// FROG
 #macro FROG_RESET_JUMP 1
 
+/// Slime
+#macro SLIME_RAOM 1

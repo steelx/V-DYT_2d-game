@@ -3,7 +3,8 @@ enum CHARACTER_STATE {
     IDLE,
     MOVE,
     JUMP,
-    KNOCKBACK
+    KNOCKBACK,
+    ATTACK
 }
 
 state = CHARACTER_STATE.IDLE;
@@ -54,7 +55,8 @@ _states = [
 	"IDLE",
     "MOVE",
     "JUMP",
-    "KNOCKBACK"
+    "KNOCKBACK",
+    "ATTACK"
 ]
 
 debug_render_mask = function() {

@@ -1,6 +1,6 @@
 /// @description persistent object, added in rm_init
 global.collision_tilemap = layer_tilemap_get_id("Collision_tiles");
-global.tile_size = 32;
+global.tile_size = 16;
 global.grav = 0.375
 
 
