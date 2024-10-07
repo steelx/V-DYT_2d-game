@@ -5,9 +5,7 @@
 4. If a valid landing spot is found, it sets vel_x based on the jump distance and _move_speed.
 5. Changes the state to MOVE.
 */
-function slime_jump_move() {
-    var _move_speed = 2;
-    var _tiles_to_check = 3;
+function slime_jump_move(_move_speed = 2, _tiles_to_check = 3) {
     var _tile_size = global.tile_size;
     
     // Choose a random direction
