@@ -1,0 +1,25 @@
+{
+  "$GMSound":"",
+  "%Name":"snd_slime_jump",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "bitRate":128,
+  "compression":0,
+  "conversionMode":0,
+  "duration":0.6,
+  "name":"snd_slime_jump",
+  "parent":{
+    "name":"Enemy",
+    "path":"folders/Sounds/SFX/Enemy.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"snd_slime_jump.mp3",
+  "type":0,
+  "volume":1.0,
+}

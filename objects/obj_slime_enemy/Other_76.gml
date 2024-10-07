@@ -1,5 +1,5 @@
-/// @description listen for events
-
+/// @description obj_slime_enemy broadcast message
+/*
 var _message = event_data[? "message"];
 
 if (_message == "slime_attack") {
@@ -8,5 +8,5 @@ if (_message == "slime_attack") {
         show_debug_message($"player {no_hurt_frames}");
     }
 }
-
+*/
 
