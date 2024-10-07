@@ -1,9 +1,9 @@
 {
   "$GMSprite":"",
   "%Name":"spr_slime_attack",
-  "bboxMode":0,
+  "bboxMode":2,
   "bbox_bottom":47,
-  "bbox_left":2,
+  "bbox_left":0,
   "bbox_right":63,
   "bbox_top":25,
   "collisionKind":1,

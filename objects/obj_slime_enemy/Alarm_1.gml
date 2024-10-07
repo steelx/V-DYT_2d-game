@@ -1,4 +1,4 @@
-/// @description SLIME_RAOM
+/// @description SLIME_ROAM
 // upon alarm slime will change state to MOVE
 // alarm starts again from animation end
 

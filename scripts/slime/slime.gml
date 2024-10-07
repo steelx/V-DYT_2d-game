@@ -44,13 +44,12 @@ function slime_jump_move() {
     if (_jump_distance == 0) {
         vel_x = 0;
         state = CHARACTER_STATE.IDLE;
-        show_debug_message($"don't move: {vel_x}");
         return;
     }
     
     // Calculate vel_x based on jump distance and move_speed
     vel_x = _move_dir * _move_speed * (_jump_distance / _tiles_to_check);
-    show_debug_message($"move: {vel_x}");
+
     // Change state to MOVE
     state = CHARACTER_STATE.MOVE;
 }

@@ -8,4 +8,4 @@
 #macro FROG_RESET_JUMP 1
 
 /// Slime
-#macro SLIME_RAOM 1
+#macro SLIME_ROAM 1

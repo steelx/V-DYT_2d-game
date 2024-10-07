@@ -5,6 +5,7 @@ event_inherited();
 // This is the amount of damage the enemy does to the player.
 damage = 1;
 visible_range = 64;// how far enemy can see
+attack_range = 42;
 
 // This sets the movement speed for the enemies.
 move_speed = 1.5;

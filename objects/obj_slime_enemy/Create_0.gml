@@ -9,4 +9,6 @@ state = CHARACTER_STATE.IDLE;
 jump_speed = 12;
 jump_chance = 0.5;
 roam_timer = get_room_speed();
-alarm_set(SLIME_RAOM, roam_timer);
+alarm_set(SLIME_ROAM, roam_timer);
+
+attack_range = 64;
