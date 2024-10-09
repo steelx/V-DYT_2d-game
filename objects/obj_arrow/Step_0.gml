@@ -10,6 +10,9 @@ vel_y *= drag;
 x += vel_x;
 y += vel_y;
 
+if vel_y > 0 {
+    image_index = 2;
+}
 
 // Rotate the arrow to match its trajectory
 image_angle = point_direction(xprevious, yprevious, x, y);

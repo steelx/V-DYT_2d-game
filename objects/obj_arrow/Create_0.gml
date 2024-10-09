@@ -11,5 +11,5 @@ drag = 0.9; // Adjust air resistance (1 = no drag, lower = more drag)
 
 
 // Set the sprite
-image_index = 2;
+image_index = 0;
 image_speed = 0; // Adjust animation speed as needed

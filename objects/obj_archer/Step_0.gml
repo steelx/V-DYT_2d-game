@@ -20,6 +20,7 @@ switch(state) {
     
     case CHARACTER_STATE.MOVE:
         vel_x = lerp(vel_x, 0, friction_power);
+        apply_horizontal_movement();
     
         if (roam_counter > 0) {
             roam_counter--;
@@ -36,8 +37,6 @@ switch(state) {
             sprite_index = spr_archer_idle;
             alarm_set(1, roam_timer*choose(1, 2));
         }
-    
-        apply_horizontal_movement();
         break;
 }
 
