@@ -2,7 +2,7 @@
 // upon alarm slime will change state to MOVE
 // alarm starts again from animation end
 
-slime_jump_move(1.5, 3);
+enemy_random_move(1.5, 3);
 sprite_index = spr_archer_run;
 image_speed = 1;
 

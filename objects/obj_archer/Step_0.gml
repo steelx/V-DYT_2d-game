@@ -10,33 +10,31 @@ switch(state) {
     case CHARACTER_STATE.ATTACK:
         vel_x = 0;
         if (is_animation_end()) {
-            if (is_player_in_attack_range(attack_range)) {
-                // Reset attack animation
-                image_index = 0;
-                image_xscale = sign(obj_player.x-x);
-            } else {
-                state = CHARACTER_STATE.IDLE;
-                sprite_index = spr_archer_idle;
-                mask_index = spr_archer_idle;
-                alarm_set(SLIME_ROAM, roam_timer * 2);
-            }
+            roam_counter = roam_counter_init;
+            vel_x = 0;
+            state = CHARACTER_STATE.IDLE;
+            sprite_index = spr_archer_idle;
+            alarm_set(1, roam_timer*choose(1, 2));
         }
         break;
     
     case CHARACTER_STATE.MOVE:
         vel_x = lerp(vel_x, 0, friction_power);
     
-        if (is_animation_end()) {
+        if (roam_counter > 0) {
+            roam_counter--;
             if (is_player_in_attack_range(attack_range)) {
                 state = CHARACTER_STATE.ATTACK;
                 sprite_index = spr_archer_attack;
+                image_index = 0;
                 break;
-            } else {
-                vel_x = 0;
-                state = CHARACTER_STATE.IDLE;
-                sprite_index = spr_archer_idle;
-                alarm_set(SLIME_ROAM, roam_timer*choose(1, 2));
             }
+        } else {
+            roam_counter = roam_counter_init;
+            vel_x = 0;
+            state = CHARACTER_STATE.IDLE;
+            sprite_index = spr_archer_idle;
+            alarm_set(1, roam_timer*choose(1, 2));
         }
     
         apply_horizontal_movement();

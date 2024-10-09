@@ -1,22 +1,21 @@
 {
   "$GMObject":"",
-  "%Name":"obj_frog_enemy",
+  "%Name":"obj_arrow",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":1,"eventType":2,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":7,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_frog_enemy",
+  "name":"obj_arrow",
   "overriddenProperties":[],
   "parent":{
-    "name":"Enemies",
-    "path":"folders/Objects/Characters/Enemies.yy",
+    "name":"Projectiles",
+    "path":"folders/Objects/Projectiles.yy",
   },
   "parentObjectId":{
-    "name":"obj_enemy_parent",
-    "path":"objects/obj_enemy_parent/obj_enemy_parent.yy",
+    "name":"obj_projectile_parent",
+    "path":"objects/obj_projectile_parent/obj_projectile_parent.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,
@@ -36,12 +35,9 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_frog_idle",
-    "path":"sprites/spr_frog_idle/spr_frog_idle.yy",
+    "name":"spr_arrow",
+    "path":"sprites/spr_arrow/spr_arrow.yy",
   },
-  "spriteMaskId":{
-    "name":"spr_frog_idle",
-    "path":"sprites/spr_frog_idle/spr_frog_idle.yy",
-  },
+  "spriteMaskId":null,
   "visible":true,
 }

@@ -1,11 +1,11 @@
 {
   "$GMSprite":"",
-  "%Name":"projectile",
+  "%Name":"spr_arrow",
   "bboxMode":2,
-  "bbox_bottom":59,
-  "bbox_left":30,
-  "bbox_right":47,
-  "bbox_top":52,
+  "bbox_bottom":11,
+  "bbox_left":3,
+  "bbox_right":20,
+  "bbox_top":4,
   "collisionKind":1,
   "collisionTolerance":0,
   "DynamicTexturePage":false,
@@ -18,12 +18,12 @@
   ],
   "gridX":0,
   "gridY":0,
-  "height":80,
+  "height":16,
   "HTile":false,
   "layers":[
     {"$GMImageLayer":"","%Name":"79ec1760-3960-4809-b189-0f064cc7e57f","blendMode":0,"displayName":"default","isLocked":false,"name":"79ec1760-3960-4809-b189-0f064cc7e57f","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
-  "name":"projectile",
+  "name":"spr_arrow",
   "nineSlice":null,
   "origin":9,
   "parent":{
@@ -35,7 +35,7 @@
   "resourceVersion":"2.0",
   "sequence":{
     "$GMSequence":"",
-    "%Name":"projectile",
+    "%Name":"spr_arrow",
     "autoRecord":true,
     "backdropHeight":768,
     "backdropImageOpacity":0.5,
@@ -59,7 +59,7 @@
       "resourceType":"KeyframeStore<MomentsEventKeyframe>",
       "resourceVersion":"2.0",
     },
-    "name":"projectile",
+    "name":"spr_arrow",
     "playback":1,
     "playbackSpeed":12.0,
     "playbackSpeedType":0,
@@ -71,20 +71,20 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"b1da5138-cb4e-4282-b023-38d0eebb49db","path":"sprites/projectile/projectile.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"b1da5138-cb4e-4282-b023-38d0eebb49db","path":"sprites/spr_arrow/spr_arrow.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"f061ea4a-88fa-4c99-b224-928c8b11e346","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"f62cedc4-9041-4c79-bdea-c71b6c4e923f","path":"sprites/projectile/projectile.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"f62cedc4-9041-4c79-bdea-c71b6c4e923f","path":"sprites/spr_arrow/spr_arrow.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"fae62979-00c7-4c8f-b35c-2e3141025de5","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"27b558af-7794-4b4a-a050-b5c4704db3f9","path":"sprites/projectile/projectile.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"27b558af-7794-4b4a-a050-b5c4704db3f9","path":"sprites/spr_arrow/spr_arrow.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"63654c2c-59e9-49fc-b93c-f1d6f1653586","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,
     "volume":1.0,
-    "xorigin":48,
-    "yorigin":55,
+    "xorigin":12,
+    "yorigin":8,
   },
   "swatchColours":null,
   "swfPrecision":0.5,
@@ -94,5 +94,5 @@
   },
   "type":0,
   "VTile":false,
-  "width":186,
+  "width":24,
 }

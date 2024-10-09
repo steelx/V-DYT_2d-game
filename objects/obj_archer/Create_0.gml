@@ -8,7 +8,9 @@ move_speed = 2;
 state = CHARACTER_STATE.IDLE;
 
 move_chance = 0.5;
+roam_counter_init = 120;
+roam_counter = roam_counter_init;
 roam_timer = get_room_speed();
-alarm_set(SLIME_ROAM, roam_timer);
+alarm_set(1, roam_timer);
 
-attack_range = 186;
+attack_range = 164;
