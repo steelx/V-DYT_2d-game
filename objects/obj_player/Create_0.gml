@@ -7,7 +7,8 @@ obj_camera.follow = obj_player;
 coins = 0;
 in_knockback = false;
 defeated_object = obj_player_defeated;
-jump_speed = 15;
+jump_speed = 10;
+move_speed = 1.7;
 
 // Bounce Shader variables
 trail_intensity = 0;
@@ -15,4 +16,4 @@ trail_color = make_color_rgb(255, 200, 0); // A golden color for the trail
 use_trail_shader = false;
 trail_positions = ds_list_create();
 trail_count = 10; // Number of trail instances
-
+in_launch_arc = false;// used in arc movement inside launchpad

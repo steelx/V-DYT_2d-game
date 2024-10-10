@@ -28,6 +28,12 @@ switch(state) {
         // Knockback state behavior
         // The character is unable to control movement in this state
         // Knockback velocity is applied in the collision event and stopped in Alarm 0
+        vel_x = 0;
+        vel_y = 0;
+        if is_animation_end() {
+            state = CHARACTER_STATE.IDLE;
+            break;
+        }
         break;
 }
 

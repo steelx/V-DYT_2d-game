@@ -4,6 +4,7 @@ switch(event_data[? "message"]) {
     case "archer_fire":
         var _x = x + (32* image_xscale);// point close to archer
         var _y = bbox_top-16; // Adjust vertical offset as needed
+        if !instance_exists(obj_player) break;
         with (instance_create_layer(_x, _y, "Player", obj_arrow)) {
             target_x = obj_player.x;
             target_y = obj_player.y - 32; // Aim higher on the player
