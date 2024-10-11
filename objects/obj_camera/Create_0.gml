@@ -3,7 +3,10 @@ var _viewport_camera_index = 0;
 var _w = camera_get_view_width(view_camera[_viewport_camera_index]);
 var _h = camera_get_view_height(view_camera[_viewport_camera_index]);
 
-camera = camera_create_view(0, 0, _w, _h, 0, -1, -1, -1, 854, 480);
+var _x_speed = 5;
+var _y_speed = 5;
+var _border = 128;
+camera = camera_create_view(0, 0, _w, _h, 0, -1, _x_speed, _y_speed, _border, _border);
 view_set_camera(_viewport_camera_index, camera);
 
 
@@ -13,7 +16,7 @@ move_to_x = x;
 move_to_y = y;
 
 camera_pan_speed_initial = 0.15;
-camera_pan_speed = 1;
+camera_pan_speed = 1.6;
 
 screen_shake = false;
 screen_shake_amount_initial = 2;
