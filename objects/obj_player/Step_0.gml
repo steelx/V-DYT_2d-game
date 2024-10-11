@@ -8,9 +8,6 @@ switch(state) {
         break;
     case CHARACTER_STATE.MOVE:
         apply_horizontal_movement();
-    
-        // Transition back to MOVE or IDLE state once in the air
-        //state = (vel_x != 0) ? CHARACTER_STATE.MOVE : CHARACTER_STATE.IDLE;
         if (grounded) {
             state = (vel_x != 0) ? CHARACTER_STATE.MOVE : CHARACTER_STATE.IDLE;
         }

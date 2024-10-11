@@ -10,6 +10,7 @@ state = CHARACTER_STATE.MOVE;
 // Set the X velocity to move_speed.
 // This makes the character move right.
 vel_x = move_speed;
+image_xscale = 1;
 
 // This checks if the current sprite is the fall sprite, meaning the player hasn't landed yet.
 if (sprite_index == spr_player_fall)
