@@ -2,7 +2,7 @@
 
 event_inherited();
 
-
+player_input();
 switch(state) {
     case CHARACTER_STATE.IDLE:
         // Idle state behavior

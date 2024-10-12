@@ -105,6 +105,7 @@
     {"id":{"name":"macros","path":"scripts/macros/macros.yy",},},
     {"id":{"name":"movement","path":"scripts/movement/movement.yy",},},
     {"id":{"name":"on_screen","path":"scripts/on_screen/on_screen.yy",},},
+    {"id":{"name":"player_input","path":"scripts/player_input/player_input.yy",},},
     {"id":{"name":"utils","path":"scripts/utils/utils.yy",},},
     {"id":{"name":"sh_bounce_trail","path":"shaders/sh_bounce_trail/sh_bounce_trail.yy",},},
     {"id":{"name":"snd_amb_cave_01","path":"sounds/snd_amb_cave_01/snd_amb_cave_01.yy",},},
