@@ -1,6 +1,6 @@
 /// @description Right
-// This checks if the player is currently in knockback, after being hit by an enemy.
-if (state == CHARACTER_STATE.KNOCKBACK)
+// Prevent movement in following states
+if (state == CHARACTER_STATE.KNOCKBACK || state == CHARACTER_STATE.ATTACK || state == CHARACTER_STATE.SUPER_ATTACK)
 {
 	// In that case we exit/stop the event here, so the player can't move.
 	exit;

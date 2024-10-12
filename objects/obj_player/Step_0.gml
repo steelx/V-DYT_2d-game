@@ -26,14 +26,14 @@ switch(state) {
         // Allow horizontal movement during jetpack jump
         apply_horizontal_movement();
     
-        if (!is_space_key_held() || jetpack_fuel <= 0) {
+        if (!is_jump_key_held() || jetpack_fuel <= 0) {
             sprite_index = spr_player_fall;
         } else {
             jetpack_fuel -= jetpack_fuel_consumption_rate;
 
             // Hover behavior
-            var _target_y = jetpack_max_height + sin(current_time * jetpack_hover_speed) * jetpack_hover_amplitude;
-            y = lerp(y, _target_y, 0.2); // Smoothly interpolate towards the target height
+            var _target_y = jetpack_max_height + (sin(current_time * jetpack_hover_speed) * jetpack_hover_amplitude);
+            y = lerp(y, _target_y, 0.1); // Smoothly interpolate towards the target height
         }
         break;
     
@@ -48,6 +48,24 @@ switch(state) {
             break;
         }
         break;
+    
+    case CHARACTER_STATE.ATTACK:
+        vel_x = 0;
+        vel_y = 0;
+        if (is_animation_end()) {
+            state = CHARACTER_STATE.IDLE;
+            sprite_index = spr_player_idle;
+        }
+        break;
+    
+    case CHARACTER_STATE.SUPER_ATTACK:
+        vel_x = 0;
+        vel_y = 0;
+        if (is_animation_end()) {
+            state = CHARACTER_STATE.IDLE;
+            sprite_index = spr_player_idle;
+        }
+        break;
 }
 
 // Apply vertical movement
@@ -58,6 +76,12 @@ apply_verticle_movement();
 if (grounded && jetpack_fuel < jetpack_max_fuel) {
     jetpack_fuel += jetpack_fuel_consumption_rate * 2; // Regenerate twice as fast as consumption
     jetpack_fuel = min(jetpack_fuel, jetpack_max_fuel);
+}
+
+// Regenerate attack fuel when not attacking
+if (state != CHARACTER_STATE.ATTACK && state != CHARACTER_STATE.SUPER_ATTACK && attack_fuel < attack_fuel_max) {
+    attack_fuel += attack_fuel_regeneration_rate;
+    attack_fuel = min(attack_fuel, attack_fuel_max);
 }
 
 

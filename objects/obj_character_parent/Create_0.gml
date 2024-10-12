@@ -5,7 +5,8 @@ enum CHARACTER_STATE {
     JUMP,
     JETPACK_JUMP,
     KNOCKBACK,
-    ATTACK
+    ATTACK,
+    SUPER_ATTACK
 }
 
 state = CHARACTER_STATE.IDLE;
@@ -58,7 +59,8 @@ _states = [
     "JUMP",
     "JETPACK_JUMP",
     "KNOCKBACK",
-    "ATTACK"
+    "ATTACK",
+    "SUPER_ATTACK"
 ]
 
 debug_render_mask = function() {
@@ -68,4 +70,8 @@ debug_render_mask = function() {
     draw_set_alpha(1);
 	draw_text(x, y, _states[state]);
 	if state == CHARACTER_STATE.JETPACK_JUMP draw_text(x, y+10, jetpack_fuel);
+	if state == CHARACTER_STATE.SUPER_ATTACK {
+        draw_set_color(c_white);
+        draw_text(10, 40, "Attack Fuel: " + string(attack_fuel));
+    }
 };

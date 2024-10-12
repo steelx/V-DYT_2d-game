@@ -1,15 +1,14 @@
 /// @description Space key press
-
-// Initialize a timer if it doesn't exist
-if (!variable_instance_exists(id, "space_hold_timer")) {
-    space_hold_timer = 0;
+// Attack action
+if (state != CHARACTER_STATE.ATTACK && state != CHARACTER_STATE.SUPER_ATTACK) {
+    if (is_super_attack_key_held() && attack_fuel >= attack_fuel_consumption_rate) {
+        state = CHARACTER_STATE.SUPER_ATTACK;
+        sprite_index = spr_hero_super_attack;
+        image_index = 0;
+        attack_fuel -= attack_fuel_consumption_rate;
+    } else {
+        state = CHARACTER_STATE.ATTACK;
+        sprite_index = spr_hero_attack;
+        image_index = 0;
+    }
 }
-
-// Reset the timer when the key is first pressed
-space_hold_timer = 0;
-
-// Set up an alarm to check the hold duration
-alarm_set(JET_PACK_JUMP, 1);
-
-// Don't perform any action yet, wait for the alarm to determine if it's a tap or hold
-// check ALARM 1 for jump code
