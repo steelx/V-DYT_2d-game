@@ -1,25 +1,15 @@
-/// @description Space
-// This checks if the 'grounded' variable is true, meaning the player is standing on the ground, and can jump.
-if (grounded)
-{
-	state = CHARACTER_STATE.JUMP;
-	// This sets the Y velocity to negative jump_speed, making the player immediately jump upwards. It
-	// will automatically be brought down by the gravity code in the parent's Begin Step event.
-	vel_y = -jump_speed;
+/// @description Space key press
 
-	// This changes the player's sprite to the jump sprite, and resets the frame to 0.
-	sprite_index = spr_player_jump;
-	image_index = 0;
-
-	// This sets 'grounded' to false, so that any events after this know that the player is not supposed
-	// to be on the ground anymore.
-	grounded = false;
-
-	// This creates an instance of obj_effect_jump at the bottom of the player's mask. This is the
-	// jump VFX animation.
-	instance_create_layer(x, bbox_bottom, "Instances", obj_effect_jump);
-	
-	// Play the jump sound with a random pitch
-	var _sound = audio_play_sound(snd_jump, 0, 0);
-	audio_sound_pitch(_sound, random_range(0.8, 1));
+// Initialize a timer if it doesn't exist
+if (!variable_instance_exists(id, "space_hold_timer")) {
+    space_hold_timer = 0;
 }
+
+// Reset the timer when the key is first pressed
+space_hold_timer = 0;
+
+// Set up an alarm to check the hold duration
+alarm_set(JET_PACK_JUMP, 1);
+
+// Don't perform any action yet, wait for the alarm to determine if it's a tap or hold
+// check ALARM 1 for jump code

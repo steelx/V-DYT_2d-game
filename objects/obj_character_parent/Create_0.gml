@@ -3,6 +3,7 @@ enum CHARACTER_STATE {
     IDLE,
     MOVE,
     JUMP,
+    JETPACK_JUMP,
     KNOCKBACK,
     ATTACK
 }
@@ -21,7 +22,7 @@ friction_power = 0.9;
 jump_speed = 12;
 
 // This is the gravity applied every frame.
-grav_speed = 1;
+grav_speed = 0.8;
 
 // vel_x and vel_y are the X and Y velocities of the character.
 // They store how much the character is moving in any given frame.
@@ -55,6 +56,7 @@ _states = [
 	"IDLE",
     "MOVE",
     "JUMP",
+    "JETPACK_JUMP",
     "KNOCKBACK",
     "ATTACK"
 ]

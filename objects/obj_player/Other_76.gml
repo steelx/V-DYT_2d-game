@@ -10,7 +10,7 @@ if (_message == "footstep")
 	// This creates an instance of obj_effect_walk at the bottom of the player's mask. This is the
 	// walking dust animation.
 	// The ID of the created instance is stored in a local variable.
-	var _effect = instance_create_layer(x, bbox_bottom, "Instances", obj_effect_walk);
+	var _effect = instance_create_layer(x, bbox_bottom+1, "Instances", obj_effect_walk);
 
 	// This sets the horizontal scale of the effect to the player's horizontal scale. This way
 	// it flips based on which direction the player is moving in.

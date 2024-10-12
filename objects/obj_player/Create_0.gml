@@ -17,3 +17,16 @@ use_trail_shader = false;
 trail_positions = ds_list_create();
 trail_count = 10; // Number of trail instances
 in_launch_arc = false;// used in arc movement inside launchpad
+
+// Jet pack variables
+jetpack_fuel = 10;
+jetpack_max_fuel = 10;
+jetpack_fuel_consumption_rate = 1/60; // Consume 1 point per second
+jetpack_max_height = room_height * 0.3;
+jetpack_hover_amplitude = 2;
+jetpack_hover_speed = 0.1;
+space_hold_timer = get_room_speed();
+
+function is_space_key_held() {
+    return keyboard_check(vk_space)
+}

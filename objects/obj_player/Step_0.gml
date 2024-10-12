@@ -1,3 +1,5 @@
+/// @description obj_player step 0 event
+
 event_inherited();
 
 
@@ -12,8 +14,8 @@ switch(state) {
             state = (vel_x != 0) ? CHARACTER_STATE.MOVE : CHARACTER_STATE.IDLE;
         }
         break;
+    
     case CHARACTER_STATE.JUMP:
-        // Jump state behavior
         if (grounded) {
             vel_y = -jump_speed;
             grounded = false;
@@ -21,6 +23,22 @@ switch(state) {
         }
         
         break;
+    
+    case CHARACTER_STATE.JETPACK_JUMP:
+        if (!is_space_key_held() || jetpack_fuel <= 0) {
+            state = CHARACTER_STATE.JUMP;
+            sprite_index = spr_player_jet_landing;
+            image_index = 0;
+        } else {
+            jetpack_fuel -= jetpack_fuel_consumption_rate;
+            if (y > jetpack_max_height) {
+                vel_y = max(-jump_speed * 0.5, -abs(y - jetpack_max_height) * 0.1);
+            } else {
+                vel_y = sin(current_time * jetpack_hover_speed) * jetpack_hover_amplitude;
+            }
+        }
+        break;
+    
     case CHARACTER_STATE.KNOCKBACK:
         // Knockback state behavior
         // The character is unable to control movement in this state
@@ -36,7 +54,15 @@ switch(state) {
 
 apply_verticle_movement();
 
-#region Shader step
+/// Regenerate jetpack fuel when grounded
+/// (in future add fuel collectible items and remove this code)
+if (grounded && jetpack_fuel < jetpack_max_fuel) {
+    jetpack_fuel += jetpack_fuel_consumption_rate * 2; // Regenerate twice as fast as consumption
+    jetpack_fuel = min(jetpack_fuel, jetpack_max_fuel);
+}
+
+
+#region sh_bounce_trail step
     // Update trail positions
     ds_list_insert(trail_positions, 0, [x, y]);
     if (ds_list_size(trail_positions) > trail_count) {

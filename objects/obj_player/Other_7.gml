@@ -6,13 +6,12 @@ switch (sprite_index)
 {
 	// Code under this case runs if the assigned sprite is 'spr_player_jump', meaning
 	// the player was in the middle of a jump.
-	case spr_player_jump:
-		// Since the animation has ended (which is why this event is running), we stop the animation
-		// by setting its speed to 0
-		image_speed = 0;
-	
+	case spr_player_jet_jump:
 		// We also set the current frame to the last frame of the animation, which will remain visible
 		image_index = image_number - 1;
+        if jetpack_fuel <= 0 {
+            sprite_index = spr_player_fall;
+        }
 		break;
 
 	// Code under this case runs if the assigned sprite is 'spr_player_fall', meaning
@@ -25,4 +24,10 @@ switch (sprite_index)
 		// We also set the current frame to the last frame of the animation, which will remain visible
 		image_index = image_number - 1;
 		break;
+    
+    case spr_player_jet_landing:
+        state = CHARACTER_STATE.IDLE;
+        sprite_index = spr_player_idle;
+        break;
+    
 }
