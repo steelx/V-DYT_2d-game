@@ -28,7 +28,7 @@ switch (_message) {
     
     case "hero_super_attack":
         // this event emitted at 7th frame when animation frame reaches extended sword
-        with (instance_create_layer(x+(image_xscale*16), y, "Player", obj_player_superattack_hitbox)) {
+        with (instance_create_layer(x+(image_xscale*8), y, "Player", obj_player_superattack_hitbox)) {
             facing = other.image_xscale;
         }
         break;

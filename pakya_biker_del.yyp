@@ -149,6 +149,7 @@
     {"id":{"name":"spr_Baby_Samurai","path":"sprites/spr_Baby_Samurai/spr_Baby_Samurai.yy",},},
     {"id":{"name":"spr_blue_man_walk","path":"sprites/spr_blue_man_walk/spr_blue_man_walk.yy",},},
     {"id":{"name":"spr_coin","path":"sprites/spr_coin/spr_coin.yy",},},
+    {"id":{"name":"spr_collission","path":"sprites/spr_collission/spr_collission.yy",},},
     {"id":{"name":"spr_dust_effect","path":"sprites/spr_dust_effect/spr_dust_effect.yy",},},
     {"id":{"name":"spr_end_gate_glow","path":"sprites/spr_end_gate_glow/spr_end_gate_glow.yy",},},
     {"id":{"name":"spr_end_gate_particles_1","path":"sprites/spr_end_gate_particles_1/spr_end_gate_particles_1.yy",},},

@@ -31,7 +31,7 @@ switch (sprite_index)
 	// meaning the player was in the middle of a jump.
 	case spr_player_jet_jump:
 		// This checks if the Y velocity is equal to, or greater than 0, meaning the player has now started falling downward.
-		if (vel_y >= 0) {
+		if (is_on_ground()) {
 			// In that case we change its sprite to the fall sprite, and reset the frame to 0.
 			sprite_index = spr_player_jet_landing;
 			image_index = 1;

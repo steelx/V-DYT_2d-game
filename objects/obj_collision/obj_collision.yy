@@ -27,7 +27,10 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":null,
+  "spriteId":{
+    "name":"spr_collission",
+    "path":"sprites/spr_collission/spr_collission.yy",
+  },
   "spriteMaskId":null,
-  "visible":true,
+  "visible":false,
 }
