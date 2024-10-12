@@ -3,8 +3,8 @@
   "%Name":"spr_hero_super_attack",
   "bboxMode":2,
   "bbox_bottom":46,
-  "bbox_left":47,
-  "bbox_right":53,
+  "bbox_left":45,
+  "bbox_right":51,
   "bbox_top":36,
   "collisionKind":1,
   "collisionTolerance":0,
@@ -56,7 +56,13 @@
     "backdropYOffset":0.0,
     "events":{
       "$KeyframeStore<MessageEventKeyframe>":"",
-      "Keyframes":[],
+      "Keyframes":[
+        {"$Keyframe<MessageEventKeyframe>":"","Channels":{
+            "0":{"$MessageEventKeyframe":"","Events":[
+                "hero_super_attack",
+              ],"resourceType":"MessageEventKeyframe","resourceVersion":"2.0",},
+          },"Disabled":false,"id":"8e3ba270-fc32-402d-8947-c8a43f4623d2","IsCreationKey":false,"Key":7.0,"Length":1.0,"resourceType":"Keyframe<MessageEventKeyframe>","resourceVersion":"2.0","Stretch":false,},
+      ],
       "resourceType":"KeyframeStore<MessageEventKeyframe>",
       "resourceVersion":"2.0",
     },

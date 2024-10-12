@@ -52,7 +52,7 @@ switch(state) {
     case CHARACTER_STATE.ATTACK:
         vel_x = 0;
         vel_y = 0;
-        if (is_animation_end()) {
+        if (image_index >= 9) {
             state = CHARACTER_STATE.IDLE;
             sprite_index = spr_player_idle;
         }

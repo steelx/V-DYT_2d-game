@@ -3,7 +3,7 @@
   "%Name":"spr_player_fall",
   "bboxMode":2,
   "bbox_bottom":46,
-  "bbox_left":49,
+  "bbox_left":50,
   "bbox_right":57,
   "bbox_top":35,
   "collisionKind":1,

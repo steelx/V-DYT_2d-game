@@ -2,7 +2,7 @@ event_inherited();
 
 // This is the object that replaces the enemy once it is defeated.
 defeated_object = obj_enemy1_defeated;
-
+hp = 1;
 
 // This applies either move_speed or negative move_speed to the enemy's X velocity. This way the enemy will
 // either move left or right (at random).

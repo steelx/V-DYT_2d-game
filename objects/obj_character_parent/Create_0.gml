@@ -72,6 +72,6 @@ debug_render_mask = function() {
 	if state == CHARACTER_STATE.JETPACK_JUMP draw_text(x, y+10, jetpack_fuel);
 	if state == CHARACTER_STATE.SUPER_ATTACK {
         draw_set_color(c_white);
-        draw_text(10, 40, "Attack Fuel: " + string(attack_fuel));
+        draw_text(x+10, y+40, "Attack Fuel: " + string(attack_fuel));
     }
 };

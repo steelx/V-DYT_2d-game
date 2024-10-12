@@ -105,14 +105,14 @@ if (gamepad != undefined)
 	// This checks if the game manager instance exists, meaning we're in a game level.
 	// We're using this for pausing with a gamepad instead of the obj_player block above, as the player gets deactivated when
 	// the game is paused.
-	if (instance_exists(obj_game_manager))
+	if (instance_exists(obj_game))
 	{
 		// This checks if the Start button was pressed on our gamepad.
 		if (gamepad_button_check_pressed(gamepad, gp_start))
 		{
 			// This block applies to obj_game_manager.
 			// It runs the Key Press - Escape event in it, which pauses/resumes the game.
-			with (obj_game_manager)
+			with (obj_game)
 			{
 				event_perform(ev_keypress, vk_escape);
 			}
