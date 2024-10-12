@@ -6,7 +6,13 @@ if (state == CHARACTER_STATE.KNOCKBACK)
 	exit;
 }
 
-state = CHARACTER_STATE.MOVE;
+if state == CHARACTER_STATE.JETPACK_JUMP {
+    // let player stay in jetpack movement
+    
+} else {
+    state = CHARACTER_STATE.MOVE;
+}
+
 // Set the X velocity to move_speed.
 // This makes the character move right.
 vel_x = move_speed;

@@ -2,15 +2,16 @@
 function apply_verticle_movement() {
     var _move_count_y = abs(vel_y);
     var _move_dir_y = sign(vel_y);
+    var _remaining_move = vel_y;
     
-    repeat (_move_count_y) {
-        var _collision_found = check_collision(0, _move_dir_y);
-        if (!_collision_found)
-        {
-            y += _move_dir_y;
-        }
-        else
-        {
+    while (abs(_remaining_move) >= 0.1) {
+        var _step = min(1, abs(_remaining_move)) * _move_dir_y;
+        var _collision_found = check_collision(0, _step);
+        
+        if (!_collision_found) {
+            y += _step;
+            _remaining_move -= _step;
+        } else {
             vel_y = 0;
             break;
         }

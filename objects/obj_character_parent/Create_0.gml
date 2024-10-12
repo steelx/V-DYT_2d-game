@@ -67,4 +67,5 @@ debug_render_mask = function() {
     draw_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom, true);
     draw_set_alpha(1);
 	draw_text(x, y, _states[state]);
+	if state == CHARACTER_STATE.JETPACK_JUMP draw_text(x, y+10, jetpack_fuel);
 };

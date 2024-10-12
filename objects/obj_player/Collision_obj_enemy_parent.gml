@@ -3,7 +3,7 @@
 // It checks if the player has fallen on top of the enemy, in which case the enemy is defeated. Otherwise, the player
 // gets hurt.
 // This condition checks if the player's vertical velocity is greater than 0, meaning it's falling down.
-if (vel_y > 0) 
+if (state == CHARACTER_STATE.JUMP || state == CHARACTER_STATE.JETPACK_JUMP || vel_y < 0) 
 {
     // This checks if the bottom point of the player's collision mask was above the enemy mask's top
     // point, in the previous frame.

@@ -43,6 +43,7 @@ switch (sprite_index)
 
 	// Code under this case runs if the assigned sprite is 'spr_player_fall', meaning the player was falling downward.
 	case spr_player_fall:
+	case spr_player_jet_landing:
         image_speed = (vel_y >= 0) ? 1 : 0;
 		// This checks if the player is now on the ground
 		if (grounded)

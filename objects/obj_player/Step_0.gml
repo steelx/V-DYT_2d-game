@@ -17,25 +17,23 @@ switch(state) {
     
     case CHARACTER_STATE.JUMP:
         if (grounded) {
-            vel_y = -jump_speed;
-            grounded = false;
             state = (vel_x != 0) ? CHARACTER_STATE.MOVE : CHARACTER_STATE.IDLE;
         }
         
         break;
     
     case CHARACTER_STATE.JETPACK_JUMP:
+        // Allow horizontal movement during jetpack jump
+        apply_horizontal_movement();
+    
         if (!is_space_key_held() || jetpack_fuel <= 0) {
-            state = CHARACTER_STATE.JUMP;
-            sprite_index = spr_player_jet_landing;
-            image_index = 0;
+            sprite_index = spr_player_fall;
         } else {
             jetpack_fuel -= jetpack_fuel_consumption_rate;
-            if (y > jetpack_max_height) {
-                vel_y = max(-jump_speed * 0.5, -abs(y - jetpack_max_height) * 0.1);
-            } else {
-                vel_y = sin(current_time * jetpack_hover_speed) * jetpack_hover_amplitude;
-            }
+
+            // Hover behavior
+            var _target_y = jetpack_max_height + sin(current_time * jetpack_hover_speed) * jetpack_hover_amplitude;
+            y = lerp(y, _target_y, 0.2); // Smoothly interpolate towards the target height
         }
         break;
     
@@ -52,6 +50,7 @@ switch(state) {
         break;
 }
 
+// Apply vertical movement
 apply_verticle_movement();
 
 /// Regenerate jetpack fuel when grounded
