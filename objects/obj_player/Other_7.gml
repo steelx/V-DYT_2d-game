@@ -6,13 +6,11 @@ switch (sprite_index)
 {
 	// Code under this case runs if the assigned sprite is 'spr_player_fall', meaning
 	// the player was falling downward.
-	case spr_player_fall:
-		// Since the animation has ended (which is why this event is running), we stop the animation
-		// by setting its speed to 0
-		image_speed = 0;
-	
-		// We also set the current frame to the last frame of the animation, which will remain visible
-		image_index = image_number - 1;
+	case spr_player_jet_landing:
+		// when jump key was released we must be falling down
+        // and we switched to spr_player_jet_landing from spr_player_fall, now we need to change state
+        state = CHARACTER_STATE.IDLE;
+        sprite_index = spr_player_idle;
 		break;
     
 }

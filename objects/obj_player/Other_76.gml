@@ -24,6 +24,8 @@ switch (_message) {
     case "hero_attack":
         // this event emitted at 3rd frame when animation frame reaches extended sword
         instance_create_layer(x+(image_xscale*8), y, "Player", obj_player_attack_hitbox);
+        var _s1 = audio_play_sound(snd_attack, 1, 0);
+        audio_sound_pitch(_s1, random_range(0.8, 1));
         break;
     
     case "hero_super_attack":
@@ -31,5 +33,7 @@ switch (_message) {
         with (instance_create_layer(x+(image_xscale*8), y, "Player", obj_player_superattack_hitbox)) {
             facing = other.image_xscale;
         }
+        var _s2 = audio_play_sound(snd_super_attack, 1, 0);
+        audio_sound_pitch(_s2, random_range(0.8, 1));
         break;
 }

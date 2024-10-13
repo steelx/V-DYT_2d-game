@@ -34,7 +34,7 @@ switch (sprite_index)
 		if (is_on_ground()) {
 			// In that case we change its sprite to the fall sprite, and reset the frame to 0.
 			sprite_index = spr_player_jet_landing;
-			image_index = 1;
+			image_index = 0;
 		
 			// We also reset the animation speed to 1, as it was set to 0 at the end of the jump animation.
 			image_speed = 1;
@@ -43,13 +43,12 @@ switch (sprite_index)
 
 	// Code under this case runs if the assigned sprite is 'spr_player_fall', meaning the player was falling downward.
 	case spr_player_fall:
-	case spr_player_jet_landing:
         image_speed = (vel_y >= 0) ? 1 : 0;
 		// This checks if the player is now on the ground
 		if (grounded)
 		{
 			// In that case we change its sprite to the idle sprite.
-			sprite_index = spr_player_idle;
+			sprite_index = spr_player_jet_landing;
 		
 			// We also reset the animation speed to 1, as it was set to 0 at the end of the fall animation.
 			image_speed = 1;

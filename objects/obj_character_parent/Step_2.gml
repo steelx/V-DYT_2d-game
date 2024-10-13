@@ -9,6 +9,7 @@ if (hp <= 0)
 	// It's created at the same position as the character itself.
 	// It's created in the same layer as the character, by using its 'layer' variable.
 	instance_create_layer(x, y, layer, defeated_object);
+    
 
 	// This destroys the character instance itself.
 	instance_destroy();

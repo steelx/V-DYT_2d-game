@@ -14,7 +14,7 @@ if (is_jump_key_held()) {
             grounded = false;
             instance_create_layer(x, bbox_bottom, "Instances", obj_effect_jump);
     
-            var _sound = audio_play_sound(snd_jump, 0, 0);
+            var _sound = audio_play_sound(snd_hero_jump, 0, 0);
             audio_sound_pitch(_sound, random_range(0.8, 1));
         } else if (jetpack_fuel > 0) {
             // Start jet pack hover immediately
@@ -43,7 +43,7 @@ if (is_jump_key_held()) {
     // Jump key was released
     if (state == CHARACTER_STATE.JETPACK_JUMP && !grounded) {
         state = CHARACTER_STATE.JUMP;
-        sprite_index = spr_player_jet_landing;
+        sprite_index = spr_player_fall;
         image_index = 0;
         image_speed = 1;
     }
