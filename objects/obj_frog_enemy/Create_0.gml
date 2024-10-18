@@ -1,6 +1,8 @@
 /// @description obj_frog_enemy create
 event_inherited();
 
+max_hp = 3;
+hp = max_hp;
 
 // This is the object that replaces the enemy once it is defeated.
 defeated_object = obj_frog_enemy_defeated;

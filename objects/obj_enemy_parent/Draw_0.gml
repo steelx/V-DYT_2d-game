@@ -16,3 +16,22 @@ if (no_hurt_frames > 0) {
     // Normal draw without effect
     draw_self();
 }
+
+// Draw health bar
+if instance_exists(obj_player) and distance_to_object(obj_player) < 156 {
+    var _bar_width = 16;
+    var _bar_height = 1;
+    var _bar_x = x - _bar_width / 2;
+    var _bar_y = bbox_bottom + 2; // Position it just below the enemy
+    draw_health_bar(
+        _bar_x, _bar_y, _bar_width, _bar_height,
+        hp, max_hp,
+        "#FFFFFF", "#242434", "#e01f3f"
+    );
+    /*
+    draw_healthbar(
+        _bar_x, _bar_y, _bar_x + _bar_width, _bar_y + _bar_height,
+        (hp / max_hp) * 100, c_black, c_red, c_lime, 0, true, true
+    );
+    */
+}

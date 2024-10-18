@@ -1,5 +1,10 @@
 // This runs the Create event of the parent, ensuring the player gets all variables from the character parent.
 event_inherited();
+image_xscale *= 1.2;
+image_yscale *= 1.2;
+
+max_hp = 5;
+hp = max_hp;
 
 obj_camera.follow = obj_player;
 
@@ -22,6 +27,7 @@ in_launch_arc = false;// used in arc movement inside launchpad
 jetpack_max_fuel = 10;
 jetpack_fuel = jetpack_max_fuel;
 jetpack_fuel_consumption_rate = 1/60; // Consume 1 point per second
+jetpack_fuel_regeneration_rate = 0.2/60; // regeneration 0.2 point per frame
 jetpack_max_height = 250;//height from top px
 jetpack_hover_amplitude = 2;
 jetpack_hover_speed = 0.1;
@@ -33,10 +39,10 @@ function is_jump_key_held() {
 
 // Attack / Super Attack
 attack_key_held_timer = 0;
-attack_fuel_max = 100;
+attack_fuel_max = 20;
 attack_fuel = attack_fuel_max;
 attack_fuel_consumption_rate = 20; // Consume 20 points per super attack
-attack_fuel_regeneration_rate = 1; // Regenerate 1 point per frame when not attacking
+attack_fuel_regeneration_rate = 0.1; // Regenerate 1 point per frame when not attacking
 
 function is_attack_key_held() {
     return keyboard_check(vk_space);

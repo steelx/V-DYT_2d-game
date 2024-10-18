@@ -17,6 +17,7 @@ if (use_trail_shader && trail_intensity > 0) {
     shader_reset();
 }
 
+
 // Draw the player
 draw_self();
 //debug_render_mask();

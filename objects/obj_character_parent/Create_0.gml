@@ -69,9 +69,10 @@ debug_render_mask = function() {
     draw_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom, true);
     draw_set_alpha(1);
 	draw_text(x, y, _states[state]);
-	if state == CHARACTER_STATE.JETPACK_JUMP draw_text(x, y+10, jetpack_fuel);
-	if state == CHARACTER_STATE.SUPER_ATTACK {
+
+	if object_index == obj_player {
+        draw_text(x, y+10, "Jet Fuel: " + string(jetpack_fuel));
         draw_set_color(c_white);
-        draw_text(x+10, y+40, "Attack Fuel: " + string(attack_fuel));
+        draw_text(x+10, y+20, "Attack Fuel: " + string(attack_fuel));
     }
 };

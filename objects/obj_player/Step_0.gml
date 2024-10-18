@@ -74,7 +74,7 @@ apply_verticle_movement();
 /// Regenerate jetpack fuel when grounded
 /// (in future add fuel collectible items and remove this code)
 if (grounded && jetpack_fuel < jetpack_max_fuel) {
-    jetpack_fuel += jetpack_fuel_consumption_rate * 2; // Regenerate twice as fast as consumption
+    jetpack_fuel += jetpack_fuel_regeneration_rate;
     jetpack_fuel = min(jetpack_fuel, jetpack_max_fuel);
 }
 

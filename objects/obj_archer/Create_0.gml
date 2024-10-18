@@ -3,6 +3,9 @@
 // Inherit the parent event
 event_inherited();
 
+max_hp = 2;
+hp = max_hp;
+
 defeated_object = obj_archer_defeated;
 move_speed = 2;
 state = CHARACTER_STATE.IDLE;
