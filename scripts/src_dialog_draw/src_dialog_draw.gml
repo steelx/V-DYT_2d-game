@@ -36,7 +36,7 @@ function draw_set_align(_h_align, _v_align) {
 * @param {sprite} _picture - The sprite to display as the character picture.
 * @param {string} _text - The text to display in the dialog box.
 */
-function draw_dialog_box(_x, _y, _width, _height, _picture, _text) {
+function draw_dialog_box(_x, _y, _width, _height, _picture, _text, _options, _current_option) {
     // Save current draw settings
     var _old_color = draw_get_color();
     var _old_font = draw_get_font();
@@ -68,6 +68,16 @@ function draw_dialog_box(_x, _y, _width, _height, _picture, _text) {
     var _text_y = _y - _height + 20;
     var _text_width = _width - (_text_x - _x) - 20;
     draw_text_ext(_text_x, _text_y, _text, 20, _text_width);
+    
+    // Draw options if they exist
+    if (array_length(_options) > 0) {
+        var _option_y = _y - 40;
+        for (var i = 0; i < array_length(_options); i++) {
+            var _option_x = _x + _width / 2 - 100 + (i * 200);
+            draw_set_color(i == _current_option ? c_yellow : c_white);
+            draw_text(_option_x, _option_y, _options[i]);
+        }
+    }
     
     // Restore previous draw settings
     draw_set_color(_old_color);

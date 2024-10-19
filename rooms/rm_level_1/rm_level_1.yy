@@ -19,7 +19,7 @@
     {"name":"inst_337209FA","path":"rooms/rm_level_1/rm_level_1.yy",},
     {"name":"inst_C8F0403","path":"rooms/rm_level_1/rm_level_1.yy",},
     {"name":"inst_2B0D39DF","path":"rooms/rm_level_1/rm_level_1.yy",},
-    {"name":"inst_1313FAEE","path":"rooms/rm_level_1/rm_level_1.yy",},
+    {"name":"inst_5000FCCD","path":"rooms/rm_level_1/rm_level_1.yy",},
   ],
   "isDnd":false,
   "layers":[
@@ -41,7 +41,7 @@
       ],"layers":[],"name":"Enemies","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRInstanceLayer":"","%Name":"Player","depth":300,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[
         {"$GMRInstance":"v1","%Name":"inst_3C369427","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_3C369427","objectId":{"name":"obj_player","path":"objects/obj_player/obj_player.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":477.0,"y":311.0,},
-        {"$GMRInstance":"v1","%Name":"inst_1313FAEE","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_1313FAEE","objectId":{"name":"obj_dialog_1","path":"objects/obj_dialog_1/obj_dialog_1.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":533.0,"y":303.0,},
+        {"$GMRInstance":"v1","%Name":"inst_5000FCCD","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_5000FCCD","objectId":{"name":"obj_dialog_1","path":"objects/obj_dialog_1/obj_dialog_1.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":566.0,"y":284.0,},
       ],"layers":[],"name":"Player","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRTileLayer":"","%Name":"Background_1","depth":400,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Background_1","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":27,"SerialiseWidth":188,"TileCompressedData":[
           -2506,-2147483648,3,230,231,232,-560,-2147483648,1,230,-3,231,1,232,-369,-2147483648,4,251,252,253,254,

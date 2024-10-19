@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"pause_unpause",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"pause_unpause",
+  "parent":{
+    "name":"Dialog_system",
+    "path":"folders/Dialog_system.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
