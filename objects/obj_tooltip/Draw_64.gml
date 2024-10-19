@@ -1,4 +1,5 @@
-/// @description Insert description here
+/// @description Draw GUI event for obj_tooltip
+
 if (alpha > 0) {
     draw_set_alpha(alpha);
     
@@ -14,30 +15,28 @@ if (alpha > 0) {
     var gui_height = display_get_gui_height();
     
     var box_x = (gui_width - total_width) / 2;
-    var box_y = gui_height - total_height - padding - 100;
+    var box_y = gui_height/2 - total_height - 20;
+
     
-    // Draw background
+    box_x = clamp(box_x, 0, gui_width - total_width);
+    box_y = clamp(box_y, 0, gui_height - total_height);
+    
     draw_set_color(c_black);
     draw_set_alpha(alpha * 0.7);
     draw_rectangle(box_x, box_y, box_x + total_width, box_y + total_height, false);
     
-    // Draw border
-    draw_set_color(c_lime);
+    draw_set_color(c_white);
     draw_set_alpha(alpha);
     draw_rectangle(box_x, box_y, box_x + total_width, box_y + total_height, true);
     
-    // Draw icon
     if (sprite_exists(icon)) {
         draw_sprite(icon, 0, box_x + padding, box_y + (total_height - icon_height) / 2);
     }
     
-    // Draw text
-    draw_set_color(c_white);
-    draw_set_alpha(alpha);
     draw_text(box_x + icon_width + padding * 2, box_y + padding, text);
     
-    // Reset drawing properties
     draw_set_alpha(1);
     draw_set_color(c_white);
 }
+
 

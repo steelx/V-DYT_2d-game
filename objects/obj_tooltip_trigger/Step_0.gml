@@ -8,9 +8,6 @@ if (place_meeting(x, y, _player)) {
         tooltip_instance.icon = tooltip_icon;
         tooltip_instance.target_alpha = 1;
     }
-    // Update the tooltip's position
-    tooltip_instance.trigger_x = x;
-    tooltip_instance.trigger_y = y;
 } else {
     if (instance_exists(tooltip_instance)) {
         tooltip_instance.target_alpha = 0;
