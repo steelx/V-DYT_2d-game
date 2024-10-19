@@ -1,4 +1,5 @@
 /// @description obj_frog_enemy step :: state machine
+GAME_PAUSED_THEN_EXIT
 
 event_inherited();
 

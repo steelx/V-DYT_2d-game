@@ -11,7 +11,7 @@ enum CHARACTER_STATE {
 }
 
 state = CHARACTER_STATE.IDLE;
-paused_state = CHARACTER_STATE.IDLE;// gets set from pause script to stop character movement
+
 
 // This is the horizontal movement speed of the character.
 // It's in pixels per second.

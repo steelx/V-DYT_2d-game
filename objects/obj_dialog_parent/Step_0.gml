@@ -2,7 +2,7 @@
 // takes care of checking if
 
 if (dialog_active) {
-    set_game_paused();
+    pause();
     
     if (keyboard_check_pressed(vk_space)) {
         if (dialog_system.count() > 0) {
@@ -20,7 +20,7 @@ if (dialog_active) {
             dialog_system.execute_callback(current_dialog, _selected_index);
         }
     }
-} else if (instances_deactivated) {
-    set_game_paused(false);
+} else if (global.game_paused) {
+    unpause();
 }
 

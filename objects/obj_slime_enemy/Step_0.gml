@@ -1,4 +1,5 @@
 /// @description obj_slime_enemy Step event
+GAME_PAUSED_THEN_EXIT
 
 event_inherited();
 

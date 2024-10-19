@@ -36,4 +36,4 @@ if instance_exists(obj_player) and distance_to_object(obj_player) < 156 {
     */
 }
 
-debug_render_mask();
+//debug_render_mask();

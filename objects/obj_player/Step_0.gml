@@ -1,5 +1,5 @@
 /// @description obj_player step 0 event
-
+GAME_PAUSED_THEN_EXIT
 event_inherited();
 
 player_input();

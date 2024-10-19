@@ -8,7 +8,7 @@ hp = max_hp;
 
 defeated_object = obj_slime_defeated;
 move_speed = 2;
-state = CHARACTER_STATE.IDLE;
+state = CHARACTER_STATE.MOVE;
 jump_speed = 12;
 jump_chance = 0.5;
 roam_timer = get_room_speed();

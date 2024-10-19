@@ -1,5 +1,5 @@
 /// @description obj_enemy1 step + (inherting parent)
-
+GAME_PAUSED_THEN_EXIT
 // Inherit the parent event
 event_inherited();
 

@@ -5,8 +5,8 @@ event_inherited();
 
 dialog_system.add(
     spr_cat_picture, 
-    "Hello there!", 
-    ["Nice to meet you", "Go away"],
+    "Hello, please use L, R Arrow keys to move and Up Arrow key to jump", 
+    ["Okay", "Go away"],
     [
         function() {
             show_debug_message("Player chose to be friendly");
@@ -21,12 +21,26 @@ dialog_system.add(
 
 dialog_system.add(
     spr_cat_picture, 
+    "You can use SPACE key to Attack, Shift + Space for Super Attack.", 
+    ["Okay", "Go away"],
+    [
+        function() {
+            trigger_dialog(dialog_system);
+        },
+        function() {
+            end_dialog();
+        }
+    ]
+);
+
+dialog_system.add(
+    spr_cat_picture, 
     "Welcome to the game!",
     ["Start game", "Quit game"],
     [
         function() {
             show_debug_message("Starting the game");
-            room_goto(rm_level_2);  // Assuming rm_game is your game room
+            end_dialog();
         },
         function() {
             show_debug_message("Exiting the game");

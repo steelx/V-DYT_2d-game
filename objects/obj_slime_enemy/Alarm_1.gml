@@ -1,7 +1,7 @@
 /// @description SLIME_ROAM
 // upon alarm slime will change state to MOVE
 // alarm starts again from animation end
-
+GAME_PAUSED_THEN_EXIT
 enemy_random_move();
 vel_y = -jump_speed;
 sprite_index = spr_slime_hop;

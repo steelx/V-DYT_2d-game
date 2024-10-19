@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"dialog_macro",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"dialog_macro",
+  "parent":{
+    "name":"Dialog_system",
+    "path":"folders/Dialog_system.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

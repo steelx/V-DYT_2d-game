@@ -1,5 +1,4 @@
-/// @description Insert description here
-// You can write your code in this editor
+/// @description obj_enemy_parent Step
 
 // Inherit the parent event
 event_inherited();
