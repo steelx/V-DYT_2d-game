@@ -1,3 +1,7 @@
+/// GUI
+#macro GUI_WIDTH 960 
+#macro GUI_HEIGHT 540 
+
 
 /// CAMERA
 #macro CAMERA_RESET_PAN 0
