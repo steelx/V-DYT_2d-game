@@ -32,7 +32,10 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":null,
+  "spriteId":{
+    "name":"spr_dialog_icon",
+    "path":"sprites/spr_dialog_icon/spr_dialog_icon.yy",
+  },
   "spriteMaskId":null,
   "visible":true,
 }

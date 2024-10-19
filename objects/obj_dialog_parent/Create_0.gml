@@ -14,6 +14,7 @@ end_dialog = function() {
 trigger_dialog = function(_dialog_system) {
     dialog_active = true;
     current_dialog = _dialog_system.pop();
+    show_debug_message($"trigger_dialog {current_dialog}");
     pause();
 };
 

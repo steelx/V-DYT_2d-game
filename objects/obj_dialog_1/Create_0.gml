@@ -2,7 +2,7 @@
 
 // Inherit the parent event
 event_inherited();
-
+display_set_gui_size(GUI_WIDTH, GUI_HEIGHT);
 dialog_system.add(
     spr_cat_picture, 
     "Hello, please use L, R Arrow keys to move and Up Arrow key to jump", 
@@ -25,9 +25,11 @@ dialog_system.add(
     ["Okay", "Go away"],
     [
         function() {
+            show_debug_message("Okay");
             trigger_dialog(dialog_system);
         },
         function() {
+            show_debug_message("end_dialog");
             end_dialog();
         }
     ]

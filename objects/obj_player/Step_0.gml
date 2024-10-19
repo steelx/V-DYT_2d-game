@@ -12,6 +12,11 @@ switch(state) {
         apply_horizontal_movement();
         if (grounded) {
             state = (vel_x != 0) ? CHARACTER_STATE.MOVE : CHARACTER_STATE.IDLE;
+            
+            if (!dialog_1_shown) {
+                dialog_1_shown = true;
+                instance_create_layer(x, y, "Instances", obj_dialog_1);
+            }
         }
         break;
     
