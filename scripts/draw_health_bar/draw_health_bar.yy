@@ -6,7 +6,7 @@
   "name":"draw_health_bar",
   "parent":{
     "name":"gui",
-    "path":"folders/Scripts/gui.yy",
+    "path":"folders/Dialog_system/gui.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

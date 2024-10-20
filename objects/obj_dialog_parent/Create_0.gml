@@ -4,6 +4,13 @@ current_dialog = noone;
 dialog_system = new DialogSystem();
 
 
+// Surface for dialog
+dialog_surface = -1;
+surface_width = 1920;  // Match viewport width
+surface_height = 1080; // Match viewport height
+
+_needs_redraw = true;
+
 end_dialog = function() {
     dialog_active = false;
     current_dialog = noone;

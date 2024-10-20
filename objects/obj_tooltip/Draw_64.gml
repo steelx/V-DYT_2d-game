@@ -13,7 +13,7 @@ if (alpha > 0) {
         draw_clear_alpha(c_black, 0);
         
         // Draw tooltip content on the surface
-        var _max_width = 100 * _viewport_scale_x; // Scale max width
+        var _max_width = 74 * _viewport_scale_x; // Scale max width
         
         draw_set_alpha(alpha);
         draw_textbox(x, y, _max_width, text, icon, COL_BROWN_GREENISH, COL_LIGHT_CREAM);
