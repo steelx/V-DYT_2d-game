@@ -1,0 +1,11 @@
+// Color palette
+#macro COL_FLOOR "#c4c4bc"
+#macro COL_LIGHT_CREAM "#a4a4a4"
+#macro COL_LIGHTER_CREAM "#848484"
+#macro COL_PURPLE "#645464"
+#macro COL_SKY_BLUE "#ccdcfc"
+#macro COL_DARK_PURPLE_GRAY "#242434"
+#macro COL_BLACK "#040404"
+#macro COL_BROWN_GREENISH "#44442c"
+#macro COL_DARK_GREEN "#202c18"
+#macro COL_GREEN "#8c9438"

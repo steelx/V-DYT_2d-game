@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"triggers",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"triggers",
+  "parent":{
+    "name":"tooltip",
+    "path":"folders/Dialog_system/tooltip.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
