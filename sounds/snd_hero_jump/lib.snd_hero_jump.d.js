@@ -1,0 +1,1 @@
+declare const snd_hero_jump: GMSound

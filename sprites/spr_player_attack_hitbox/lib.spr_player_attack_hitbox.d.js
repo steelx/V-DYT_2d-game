@@ -1,0 +1,1 @@
+declare const spr_player_attack_hitbox: GMSprite

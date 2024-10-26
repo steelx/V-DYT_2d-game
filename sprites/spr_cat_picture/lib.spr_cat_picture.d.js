@@ -1,0 +1,1 @@
+declare const spr_cat_picture: GMSprite

@@ -119,8 +119,8 @@
   "maintainGms1Font":false,
   "name":"font_dialog",
   "parent":{
-    "name":"Fonts",
-    "path":"folders/Fonts.yy",
+    "name":"gui",
+    "path":"folders/Dialog_system/gui.yy",
   },
   "pointRounding":0,
   "ranges":[

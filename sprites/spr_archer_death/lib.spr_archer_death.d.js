@@ -1,0 +1,1 @@
+declare const spr_archer_death: GMSprite

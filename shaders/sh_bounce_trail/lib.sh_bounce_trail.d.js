@@ -1,0 +1,1 @@
+declare const sh_bounce_trail: GMShader

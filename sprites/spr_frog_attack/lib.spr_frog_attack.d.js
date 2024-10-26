@@ -1,0 +1,1 @@
+declare const spr_frog_attack: GMSprite

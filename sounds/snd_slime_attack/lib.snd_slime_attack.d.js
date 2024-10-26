@@ -1,0 +1,1 @@
+declare const snd_slime_attack: GMSound

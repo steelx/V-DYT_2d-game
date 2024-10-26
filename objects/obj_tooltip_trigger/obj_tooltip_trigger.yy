@@ -29,7 +29,7 @@
   "properties":[
     {"$GMObjectProperty":"v1","%Name":"_tooltip_icon","filters":[
         "GMSprite",
-      ],"listItems":[],"multiselect":false,"name":"_tooltip_icon","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"","varType":5,},
+      ],"listItems":[],"multiselect":false,"name":"_tooltip_icon","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"spr_press_e","path":"sprites/spr_press_e/spr_press_e.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"spr_press_e","varType":5,},
     {"$GMObjectProperty":"v1","%Name":"_tooltip_text","filters":[],"listItems":[],"multiselect":false,"name":"_tooltip_text","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"Press Space to Interact","varType":2,},
     {"$GMObjectProperty":"v1","%Name":"_interaction_function","filters":[],"listItems":[],"multiselect":false,"name":"_interaction_function","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"","varType":4,},
   ],

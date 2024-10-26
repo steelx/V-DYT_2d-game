@@ -10,8 +10,8 @@ if (dialog_active && current_dialog != noone) {
         surface_set_target(dialog_surface);
         draw_clear_alpha(c_black, 0);
 
-        var _dialog_width = 300 * (surface_width / display_get_gui_width());
-        var _dialog_height = 75 * (surface_height / display_get_gui_height());
+        var _dialog_width = dialog_width * (surface_width / display_get_gui_width());
+        var _dialog_height = dialog_height * (surface_height / display_get_gui_height());
         var _dialog_x = (surface_width - _dialog_width) / 2;
         var _dialog_y = surface_height - (_dialog_height + 20 * (surface_height / display_get_gui_height()));
 

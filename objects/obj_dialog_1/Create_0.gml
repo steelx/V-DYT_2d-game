@@ -2,11 +2,13 @@
 
 // Inherit the parent event
 event_inherited();
-display_set_gui_size(GUI_WIDTH, GUI_HEIGHT);
+
+//display_set_gui_size(GUI_WIDTH, GUI_HEIGHT);
+
 dialog_system.add(
     spr_cat_picture, 
-    "Hello, please use L, R Arrow keys to move and Up Arrow key to jump", 
-    ["Okay", "Go away"],
+    "Hello, this is dialog message demo, select option and hit space key.", 
+    ["Okay", "Exit"],
     [
         function() {
             show_debug_message("Player chose to be friendly");
@@ -36,19 +38,8 @@ dialog_system.add(
 );
 
 dialog_system.add(
-    spr_cat_picture, 
-    "Welcome to the game!",
-    ["Start game", "Quit game"],
-    [
-        function() {
-            show_debug_message("Starting the game");
-            end_dialog();
-        },
-        function() {
-            show_debug_message("Exiting the game");
-            game_end();
-        }
-    ]
+    undefined, 
+    "Welcome to the game!"
 );
 
 trigger_dialog(dialog_system);

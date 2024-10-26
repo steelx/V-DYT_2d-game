@@ -3,11 +3,13 @@ dialog_active = false;
 current_dialog = noone;
 dialog_system = new DialogSystem();
 
+dialog_width = 300;
+dialog_height = 75;
 
 // Surface for dialog
 dialog_surface = -1;
-surface_width = 1920;  // Match viewport width
-surface_height = 1080; // Match viewport height
+surface_width = window_get_width();  // Match viewport width
+surface_height = window_get_height(); // Match viewport height
 
 _needs_redraw = true;
 
@@ -21,7 +23,6 @@ end_dialog = function() {
 trigger_dialog = function(_dialog_system) {
     dialog_active = true;
     current_dialog = _dialog_system.pop();
-    show_debug_message($"trigger_dialog {current_dialog}");
     pause();
 };
 

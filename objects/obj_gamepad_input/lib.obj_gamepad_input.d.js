@@ -1,0 +1,1 @@
+declare const obj_gamepad_input: GMObject

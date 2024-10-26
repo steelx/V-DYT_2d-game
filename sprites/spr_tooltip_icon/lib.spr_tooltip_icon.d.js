@@ -1,0 +1,1 @@
+declare const spr_tooltip_icon: GMSprite

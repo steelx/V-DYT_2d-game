@@ -37,7 +37,8 @@ function draw_textbox(_x, _y, _max_width, _text, _sprite, _bg_color, _border_col
     }
     
     // Draw text
-    draw_set_color(hex_to_color(COL_LIGHT_CREAM));
+    draw_set_color(hex_to_color(COL_CREAM_BLACK));
+    //draw_set_color(c_black);
     draw_set_valign(fa_middle);
     draw_set_halign(fa_left);
     draw_text_ext(

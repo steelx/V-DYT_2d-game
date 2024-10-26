@@ -13,8 +13,8 @@ _init_y = 0;
 
 // Surface for tooltip
 tooltip_surface = -1;
-surface_width = 1920;  // Match viewport width
-surface_height = 1080; // Match viewport height
+surface_width = window_get_width();  // Match viewport width
+surface_height = window_get_height(); // Match viewport height
 _viewport_scale_x = 1;
 _viewport_scale_y = 1;
 

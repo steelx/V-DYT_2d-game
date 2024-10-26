@@ -1,0 +1,3 @@
+C:/Users/Ajinkya/GameMakerProjects/pakya_biker_del/Build/build/CMakeFiles/pakya_biker_del.dir
+C:/Users/Ajinkya/GameMakerProjects/pakya_biker_del/Build/build/CMakeFiles/edit_cache.dir
+C:/Users/Ajinkya/GameMakerProjects/pakya_biker_del/Build/build/CMakeFiles/rebuild_cache.dir

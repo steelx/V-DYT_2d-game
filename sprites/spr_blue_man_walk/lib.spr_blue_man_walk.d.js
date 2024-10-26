@@ -1,0 +1,1 @@
+declare const spr_blue_man_walk: GMSprite

@@ -1,0 +1,1 @@
+declare const spr_slime_hop: GMSprite

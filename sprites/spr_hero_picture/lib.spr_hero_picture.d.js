@@ -1,0 +1,1 @@
+declare const spr_hero_picture: GMSprite

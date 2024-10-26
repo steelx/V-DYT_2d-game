@@ -51,6 +51,3 @@ function is_attack_key_held() {
 function is_super_attack_key_held() {
     return keyboard_check(vk_shift);
 }
-
-dialog_1_shown = false;
-show_dialog = false;

@@ -1,15 +1,5 @@
 // State machine
-enum CHARACTER_STATE {
-    PAUSED,
-    IDLE,
-    MOVE,
-    JUMP,
-    JETPACK_JUMP,
-    KNOCKBACK,
-    ATTACK,
-    SUPER_ATTACK
-}
-
+// states enum come from obj_game
 state = CHARACTER_STATE.IDLE;
 
 

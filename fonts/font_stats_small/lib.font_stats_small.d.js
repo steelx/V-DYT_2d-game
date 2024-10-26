@@ -1,0 +1,1 @@
+declare const font_stats_small: GMFont

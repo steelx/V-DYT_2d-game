@@ -1,0 +1,1 @@
+declare const Wasteland_Files: GMSprite

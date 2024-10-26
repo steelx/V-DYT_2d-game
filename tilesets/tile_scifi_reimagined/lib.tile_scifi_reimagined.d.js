@@ -1,0 +1,1 @@
+declare const tile_scifi_reimagined: GMTileSet

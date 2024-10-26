@@ -26,7 +26,7 @@
   "origin":0,
   "parent":{
     "name":"PorfilePics",
-    "path":"folders/Sprites/PorfilePics.yy",
+    "path":"folders/Dialog_system/PorfilePics.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

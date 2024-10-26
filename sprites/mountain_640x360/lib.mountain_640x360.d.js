@@ -1,0 +1,1 @@
+declare const mountain_640x360: GMSprite

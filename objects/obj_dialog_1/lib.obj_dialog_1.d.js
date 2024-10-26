@@ -1,0 +1,1 @@
+declare const obj_dialog_1: GMObject

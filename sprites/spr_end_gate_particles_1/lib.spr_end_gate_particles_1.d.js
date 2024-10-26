@@ -1,0 +1,1 @@
+declare const spr_end_gate_particles_1: GMSprite

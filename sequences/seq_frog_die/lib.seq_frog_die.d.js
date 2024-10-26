@@ -1,0 +1,1 @@
+declare const seq_frog_die: GMSequence

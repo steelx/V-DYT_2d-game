@@ -53,20 +53,32 @@ function draw_dialog_box(_x, _y, _width, _height, _picture, _text, _options, _cu
     draw_set_alpha(1);
     draw_rectangle(_x, _y - _height, _x + _width, _y, true);
     
-    // Draw the character picture
-    var _picture_scale = 2; // Adjust this value to change the size of the picture
-    var _picture_x = _x + 20;
-    var _picture_y = _y - _height + 20;
-    draw_sprite_ext(_picture, 0, _picture_x, _picture_y, _picture_scale, _picture_scale, 0, c_white, 1);
+    // Initialize variables for text positioning
+    var _text_x, _text_width;
+
+    // Check if picture is defined
+    if (_picture != undefined and sprite_exists(_picture)) {
+        // Draw the character picture
+        var _picture_scale = 2; // Adjust this value to change the size of the picture
+        var _picture_x = _x + 20;
+        var _picture_y = _y - _height + 20;
+        draw_sprite_ext(_picture, 0, _picture_x, _picture_y, _picture_scale, _picture_scale, 0, c_white, 1);
+
+        // Set text position and width when picture is present
+        _text_x = _picture_x + sprite_get_width(_picture) * _picture_scale + 20;
+        _text_width = _width - (_text_x - _x) - 20;
+    } else {
+        // Set text position and width when no picture is present
+        _text_x = _x + 20;
+        _text_width = _width - 40;
+    }
     
     // Draw the text
     draw_set_font(font_dialog); // Make sure you have a dialog font created
     draw_set_color(c_white);
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
-    var _text_x = _picture_x + sprite_get_width(_picture) * _picture_scale + 20;
     var _text_y = _y - _height + 20;
-    var _text_width = _width - (_text_x - _x) - 20;
     draw_text_ext(_text_x, _text_y, _text, 20, _text_width);
     
     // Draw options if they exist

@@ -1,0 +1,1 @@
+declare const tile_wasteland: GMTileSet

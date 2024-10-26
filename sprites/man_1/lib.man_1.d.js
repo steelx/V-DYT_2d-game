@@ -1,0 +1,1 @@
+declare const man_1: GMSprite

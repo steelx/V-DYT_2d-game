@@ -1,0 +1,1 @@
+declare const spr_trigger_box: GMSprite

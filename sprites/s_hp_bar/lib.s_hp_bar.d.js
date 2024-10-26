@@ -1,0 +1,1 @@
+declare const s_hp_bar: GMSprite

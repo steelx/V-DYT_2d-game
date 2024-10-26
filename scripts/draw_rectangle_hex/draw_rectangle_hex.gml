@@ -1,13 +1,3 @@
-/// #c4c4bc Floor
-/// #a4a4a4 Light Cream
-/// #848484 Lighter cream
-/// #645464 Purple
-/// #ccdcfc Sky Blue
-/// #242434 Dark Purple Gray
-/// #040404 Black
-/// #44442c Brown greenish
-/// #202c18 Dark Green
-/// #8c9438 Green
 /// @function draw_rectangle_hex(x1, y1, x2, y2, color, outline)
 /// @param {real} x1 The x coordinate of the left side of the rectangle.
 /// @param {real} y1 The y coordinate of the top side of the rectangle.

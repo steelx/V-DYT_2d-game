@@ -9,3 +9,7 @@
 #macro COL_BROWN_GREENISH "#44442c"
 #macro COL_DARK_GREEN "#202c18"
 #macro COL_GREEN "#8c9438"
+#macro COL_CREAM_WHITE "#fff8ed"
+#macro COL_CREAM_RED "#e01f3f"
+#macro COL_CREAM_BLACK "#271d2c"
+

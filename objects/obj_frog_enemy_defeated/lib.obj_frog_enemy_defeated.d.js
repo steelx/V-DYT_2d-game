@@ -1,0 +1,1 @@
+declare const obj_frog_enemy_defeated: GMObject

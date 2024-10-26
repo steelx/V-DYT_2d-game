@@ -1,0 +1,1 @@
+declare const obj_player_attack_hitbox: GMObject

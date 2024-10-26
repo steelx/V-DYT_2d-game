@@ -1,0 +1,1 @@
+declare const spr_press_e: GMSprite
