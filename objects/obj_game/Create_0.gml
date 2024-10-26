@@ -38,3 +38,7 @@ menu_item_height = 40;
 menu_width = 200;
 menu_x = (surface_width - menu_width) / 2;
 menu_y = (surface_height - (menu_item_height * array_length(menu_options))) / 2;
+
+// Player states GUI
+_gui_needs_redraw = true;
+gui_surface = -1;
