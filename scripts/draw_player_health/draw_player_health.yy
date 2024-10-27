@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_player_health",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_player_health",
+  "parent":{
+    "name":"gui",
+    "path":"folders/Dialog_system/gui.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

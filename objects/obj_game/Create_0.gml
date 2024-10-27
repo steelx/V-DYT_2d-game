@@ -21,7 +21,7 @@ enum GAME_STATES {
 
 global.game_state = GAME_STATES.PLAYING;
 global.show_game_menu = false;
-menu_options = ["RESUME", "RESTART", "QUIT"];
+menu_options = ["Resume", "Restart", "Quit"];
 option_num = array_length(menu_options);
 menu_min = 0; // we show Resume only if game is not over, esle min = 1
 menu_index = 0;

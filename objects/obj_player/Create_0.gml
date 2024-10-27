@@ -5,6 +5,7 @@ image_yscale *= 1.2;
 
 max_hp = 5;
 hp = max_hp;
+previous_hp = hp; // To track health changes
 
 obj_camera.follow = obj_player;
 

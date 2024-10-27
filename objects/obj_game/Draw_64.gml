@@ -56,10 +56,7 @@ else {
         var _spacing = 72 * _scale;
     
         // Health
-        draw_sprite_ext(spr_ui_health, 0, _x, _y, _scale, _scale, 0, c_white, 1);
-        var _health_ratio = obj_player.hp / obj_player.max_hp;
-        draw_set_color(c_green);
-        draw_rectangle(_x+_icon_w, _y+_bar_center, _x+_icon_w+_bar_width * _health_ratio, _y+_bar_center+_bar_height, false);
+        draw_player_health(_gui_w, _gui_h, _x, _y, _scale);
     
         // Jetpack Fuel
         var _screen_bottom = _gui_h - _spacing*2;

@@ -31,13 +31,13 @@ if (global.game_state == GAME_STATES.PAUSED and global.show_game_menu) {
     if (keyboard_check_pressed(vk_enter) or keyboard_check_pressed(vk_space)) {
         audio_play_sound(blip_stab_bleep, 10, false);  // Play menu selection sound
         switch(menu_options[menu_index]) {
-            case "RESUME":
+            case "Resume":
                 resume_game();
                 break;
-            case "RESTART":
+            case "Restart":
                 game_restart();
                 break;
-            case "QUIT":
+            case "Quit":
                 game_end();
                 break;
         }

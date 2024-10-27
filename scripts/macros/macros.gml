@@ -8,7 +8,9 @@
 #macro CAMERA_SCREEN_SHAKE 1
 
 /// Player
-#macro JET_PACK_JUMP 1 
+#macro KNOCKED_BACK 0
+#macro JET_PACK_JUMP 1
+#macro PREVIOUS_HP 2
 
 /// FROG
 #macro FROG_RESET_JUMP 1

@@ -1,5 +1,5 @@
-function get_room_speed(_seconds = 1){
-    return game_get_speed(gamespeed_fps) * _seconds;
+function get_room_speed(){
+    return game_get_speed(gamespeed_fps);
 }
 
 /**

@@ -83,6 +83,11 @@ if global.game_state == GAME_STATES.PLAYING {
         attack_fuel += attack_fuel_regeneration_rate;
         attack_fuel = min(attack_fuel, attack_fuel_max);
     }
+    
+    if (hp != previous_hp) {
+        // Health has changed, trigger animation
+        alarm[PREVIOUS_HP] = no_hurt_frames; // Set alarm to reset previous_hp after no hurt frames left
+    }
 }
 
 #region sh_bounce_trail step

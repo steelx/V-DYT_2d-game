@@ -73,15 +73,15 @@ var _x_sign = sign(x - other.x);
 vel_x = _x_sign * 15;
 
 // This sets no_hurt_frames to 120, so the player is invincible for the next 2 seconds (as one second contains 60 frames).
-no_hurt_frames = get_room_speed() * 2;// 120
-if (hp > 0) add_screenshake(0.25);
+no_hurt_frames = get_room_speed() * 3;// 60 * 3
+if (hp > 0) add_screenshake(0.5);
 
 // This changes the sprite to the hurt sprite.
 sprite_index = spr_player_hurt;
 image_index = 0;
 
 // Set Alarm 0 to run after 15 frames; that event stops the player's horizontal velocity, ending the knockback
-alarm[0] = 15;
+alarm[KNOCKED_BACK] = 15;
 
 // Play the 'life lost' sound effect
 audio_play_sound(snd_life_lost_01, 0, 0);
