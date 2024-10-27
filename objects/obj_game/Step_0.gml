@@ -2,11 +2,9 @@
 if (keyboard_check_pressed(vk_escape)) {
     _needs_redraw = true;
     if (global.game_state == GAME_STATES.PLAYING) {
-        global.game_state = GAME_STATES.PAUSED;
-        global.show_game_menu = true; // in case of Dialog box we dont set this
+        pause_game();
     } else {
-        global.game_state = GAME_STATES.PLAYING;
-        global.show_game_menu = false;
+        resume_game();
     }
 }
 
@@ -16,6 +14,7 @@ if (global.game_state == GAME_STATES.PAUSED and global.show_game_menu) {
     var _move = keyboard_check_pressed(vk_down) - keyboard_check_pressed(vk_up);
     
     if (_move != 0) {
+        audio_play_sound(electro_low_bleep, 10, false);
         menu_index += _move;
         
         // Wrap around menu
@@ -26,15 +25,14 @@ if (global.game_state == GAME_STATES.PAUSED and global.show_game_menu) {
         }
         
         _needs_redraw = true;
-        show_debug_message($"menu_index {menu_index} {menu_options[menu_index]}");
     }
     
     // Pressed enter or Space trigger the menu option function
     if (keyboard_check_pressed(vk_enter) or keyboard_check_pressed(vk_space)) {
+        audio_play_sound(blip_stab_bleep, 10, false);  // Play menu selection sound
         switch(menu_options[menu_index]) {
             case "RESUME":
-                global.game_state = GAME_STATES.PLAYING;
-                global.show_game_menu = false;
+                resume_game();
                 break;
             case "RESTART":
                 game_restart();

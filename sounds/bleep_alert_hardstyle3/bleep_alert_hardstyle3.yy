@@ -1,0 +1,25 @@
+{
+  "$GMSound":"",
+  "%Name":"bleep_alert_hardstyle3",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "bitRate":192,
+  "compression":0,
+  "conversionMode":0,
+  "duration":0.0,
+  "name":"bleep_alert_hardstyle3",
+  "parent":{
+    "name":"Beeps, Assorted, Menu, Game-Sounds",
+    "path":"folders/Sounds/Beeps, Assorted, Menu, Game-Sounds.yy",
+  },
+  "preload":true,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"bleep_alert_hardstyle3",
+  "type":1,
+  "volume":1.0,
+}

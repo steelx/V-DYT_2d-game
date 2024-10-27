@@ -1,0 +1,25 @@
+{
+  "$GMSound":"",
+  "%Name":"alert_zornath",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "bitRate":192,
+  "compression":0,
+  "conversionMode":0,
+  "duration":1.245465,
+  "name":"alert_zornath",
+  "parent":{
+    "name":"Alerts, Chimes, Jingles",
+    "path":"folders/Sounds/Alerts, Chimes, Jingles.yy",
+  },
+  "preload":true,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"alert_zornath",
+  "type":1,
+  "volume":1.0,
+}

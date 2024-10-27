@@ -1,0 +1,25 @@
+{
+  "$GMSound":"",
+  "%Name":"snd_sci_fi_1_loop",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "bitRate":128,
+  "compression":3,
+  "conversionMode":1,
+  "duration":180.03592,
+  "name":"snd_sci_fi_1_loop",
+  "parent":{
+    "name":"BGM",
+    "path":"folders/Sounds/BGM.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"snd_sci_fi_1_loop.mp3",
+  "type":1,
+  "volume":1.0,
+}

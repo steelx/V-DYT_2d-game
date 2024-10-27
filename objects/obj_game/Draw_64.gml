@@ -23,7 +23,7 @@ if (global.game_state == GAME_STATES.PAUSED && global.show_game_menu) {
         draw_set_valign(fa_middle);
         var _center_x = _surf_w / 2;
         var _center_y = _surf_h / 2;
-        draw_text_color(_center_x, _center_y - 50, "Paused", c_white, c_white, c_white, c_white, 1);
+        draw_text_color(_center_x, _center_y - 200, "Paused", c_white, c_white, c_white, c_white, 1);
         
         // Draw menu options
         var _total_height = menu_item_height * array_length(menu_options);
@@ -44,7 +44,7 @@ else {
     // GUI surface for player stats
     var _gui_w = display_get_gui_width();
     var _gui_h = display_get_gui_height();
-    var _scale = 0.75; // Adjust this value to change the overall UI scale
+    var _scale = 1.0; // Adjust this value to change the overall UI scale
     
     if (instance_exists(obj_player)) {
         var _x = 16 * _scale;
@@ -62,7 +62,7 @@ else {
         draw_rectangle(_x+_icon_w, _y+_bar_center, _x+_icon_w+_bar_width * _health_ratio, _y+_bar_center+_bar_height, false);
     
         // Jetpack Fuel
-        var _screen_bottom = _gui_h - _spacing;
+        var _screen_bottom = _gui_h - _spacing*2;
         _y += _screen_bottom;
         draw_sprite_ext(spr_ui_jetpack, 0, _x, _y, _scale, _scale, 0, c_white, 1);
         var _jetpack_ratio = obj_player.jetpack_fuel / obj_player.jetpack_max_fuel;
@@ -75,11 +75,15 @@ else {
         draw_sprite_ext(spr_ui_super_attack, 0, _x, _y, _scale, _scale, 0, c_white, 1);
         var _attack_ratio = obj_player.attack_fuel / obj_player.attack_fuel_max;
     
+        // Calculate charge time for Super Attack
+        var _remaining_fuel = obj_player.attack_fuel_max - obj_player.attack_fuel;
+        var _frames_to_full = _remaining_fuel / obj_player.attack_fuel_regeneration_rate;
+        var _seconds_to_full = ceil(_frames_to_full / game_get_speed(gamespeed_fps));
+        
         // Draw charge time for Super Attack
-        var _charge_time = ceil(_attack_ratio * 100);
         draw_set_font(font_stats_small);
         draw_set_halign(fa_left);
         draw_set_valign(fa_top);
-        draw_text_color(_x+_icon_w+_scale, _y+_bar_center-2, string(_charge_time) + " s", c_white, c_white, c_white, c_white, 1);
+        draw_text_color(_x+_icon_w+_scale+5, _y+_bar_center-5, string(_seconds_to_full) + " s", c_white, c_white, c_white, c_white, 1);
     }
 }

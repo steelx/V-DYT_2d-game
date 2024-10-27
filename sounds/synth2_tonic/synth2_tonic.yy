@@ -1,0 +1,25 @@
+{
+  "$GMSound":"",
+  "%Name":"synth2_tonic",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "bitRate":192,
+  "compression":0,
+  "conversionMode":0,
+  "duration":0.0,
+  "name":"synth2_tonic",
+  "parent":{
+    "name":"Synth2 Beeps",
+    "path":"folders/Sounds/Themed Sets/Synth2 Beeps.yy",
+  },
+  "preload":true,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"synth2_tonic",
+  "type":1,
+  "volume":1.0,
+}
