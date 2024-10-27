@@ -10,21 +10,24 @@ function draw_player_health(_gui_w, _gui_h, _x, _y, _scale) {
         draw_sprite_ext(spr_red_hearts_4, 3, _x + _i * _heart_spacing, _y, _scale, _scale, 0, c_white, 1);
     }
     
+    // Calculate the index of the most recently damaged heart
+    var _damaged_heart_index = floor(obj_player.previous_hp) - 1;
+    
     // Draw filled hearts and animations
-    for (var i = 0; i < obj_player.max_hp; i++) {
-        var _current_hp = obj_player.hp - i;
+    for (var _i = 0; _i < obj_player.max_hp; _i++) {
+        var _current_hp = obj_player.hp - _i;
         
         if (_current_hp >= 1) {
             // Full heart
-            draw_sprite_ext(spr_red_hearts_4, 0, _x + i * _heart_spacing, _y, _scale, _scale, 0, c_white, 1);
+            draw_sprite_ext(spr_red_hearts_4, 0, _x + _i * _heart_spacing, _y, _scale, _scale, 0, c_white, 1);
         } else if (_current_hp > 0) {
             // Half heart
-            draw_sprite_ext(spr_red_hearts_4, 1, _x + i * _heart_spacing, _y, _scale, _scale, 0, c_white, 1);
+            draw_sprite_ext(spr_red_hearts_4, 1, _x + _i * _heart_spacing, _y, _scale, _scale, 0, c_white, 1);
         }
         
-        // Damage animation
-        if (obj_player.hp < obj_player.previous_hp && i >= obj_player.hp && i < obj_player.previous_hp) {
-            var _damage_frame;
+        // Damage animation only for the most recently damaged heart
+        if (obj_player.hp < obj_player.previous_hp && _i == _damaged_heart_index) {
+            var _damage_frame= -1;
             if (obj_player.no_hurt_frames > 0) {
                 // Animate while invincible
                 _damage_frame = (current_time / 100) % sprite_get_number(spr_hp_damage);
@@ -32,12 +35,12 @@ function draw_player_health(_gui_w, _gui_h, _x, _y, _scale) {
                 // Stay on last frame when no longer invincible
                 _damage_frame = sprite_get_number(spr_hp_damage) - 1;
             }
-            draw_sprite_ext(spr_hp_damage, _damage_frame, _x + i * _heart_spacing, _y, _scale, _scale, 0, c_white, 1);
+            draw_sprite_ext(spr_hp_damage, _damage_frame, _x + _i * _heart_spacing, _y, _scale, _scale, 0, c_white, 1);
         }
         
         // Gain animation
-        if (obj_player.hp > obj_player.previous_hp && i >= obj_player.previous_hp && i < obj_player.hp) {
-            draw_sprite_ext(spr_hp_gain, (current_time / 100) % sprite_get_number(spr_hp_gain), _x + i * _heart_spacing, _y, _scale, _scale, 0, c_white, 1);
+        if (obj_player.hp > obj_player.previous_hp && _i >= floor(obj_player.previous_hp) && _i < floor(obj_player.hp)) {
+            draw_sprite_ext(spr_hp_gain, (current_time / 100) % sprite_get_number(spr_hp_gain), _x + _i * _heart_spacing, _y, _scale, _scale, 0, c_white, 1);
         }
     }
 }

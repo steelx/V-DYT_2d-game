@@ -64,16 +64,15 @@ if (no_hurt_frames > 0)
 
 // This section hurts the player, because it only runs if the player was not found to be jumping on the enemy's head.
 state = CHARACTER_STATE.KNOCKBACK;
+previous_hp = hp; // used at GUI
 hp -= other.damage;
+no_hurt_frames = get_room_speed() * 3;// 60 * 3
 
 // This action gets the sign (1, 0 or -1) from the enemy's position to the player's position.
 var _x_sign = sign(x - other.x);
-
 // That sign is multiplied by 15, and applied to vel_x as the knockback.
 vel_x = _x_sign * 15;
 
-// This sets no_hurt_frames to 120, so the player is invincible for the next 2 seconds (as one second contains 60 frames).
-no_hurt_frames = get_room_speed() * 3;// 60 * 3
 if (hp > 0) add_screenshake(0.5);
 
 // This changes the sprite to the hurt sprite.
