@@ -33,7 +33,7 @@ surface_height = window_get_height()/2;
 _needs_redraw = true;
 
 // Menu style
-menu_font = font_menu;  // Replace with your actual menu font
+menu_font = font_menu;
 menu_item_height = 40;
 menu_width = 200;
 menu_x = (surface_width - menu_width) / 2;

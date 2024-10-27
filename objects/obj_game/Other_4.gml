@@ -5,4 +5,4 @@ global.grav = 0.375;
 
 
 // GUI
-display_set_gui_size(GUI_WIDTH,GUI_HEIGHT);
+display_set_gui_size(window_get_width(),window_get_height());
