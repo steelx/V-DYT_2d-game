@@ -3,7 +3,7 @@
 
 if (place_meeting(x, y, obj_player) && !tooltip_used) {
     if !instance_exists(tooltip_instance) {
-        tooltip_instance = draw_tooltip(tooltip_text, tooltip_icon, x, y, function() {
+        tooltip_instance = draw_tooltip(tooltip_text, x, y, function() {
             if (interaction_function != undefined) {
                 interaction_function();
                 tooltip_used = true;  // Mark the tooltip as used after interaction

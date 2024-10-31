@@ -1,6 +1,6 @@
 /// @description obj_tooltip Create
 
-text_el = undefined;
+message = "";
 
 icon = -1;
 alpha = 0;
