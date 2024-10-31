@@ -6,6 +6,7 @@ image_yscale *= 1.2;
 max_hp = 5;
 hp = max_hp;
 previous_hp = hp; // To track health changes
+hp_gain_animation_active = false;// to run HP gain animation
 
 obj_camera.follow = obj_player;
 

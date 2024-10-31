@@ -1,6 +1,6 @@
 {
   "$GMSound":"",
-  "%Name":"bleep_pluck",
+  "%Name":"snd_bleep_pluck",
   "audioGroupId":{
     "name":"audiogroup_default",
     "path":"audiogroups/audiogroup_default",
@@ -10,7 +10,7 @@
   "compression":0,
   "conversionMode":0,
   "duration":0.923084,
-  "name":"bleep_pluck",
+  "name":"snd_bleep_pluck",
   "parent":{
     "name":"Beeps, Assorted, Menu, Game-Sounds",
     "path":"folders/Sounds/Beeps, Assorted, Menu, Game-Sounds.yy",
@@ -19,7 +19,7 @@
   "resourceType":"GMSound",
   "resourceVersion":"2.0",
   "sampleRate":44100,
-  "soundFile":"bleep_pluck",
+  "soundFile":"snd_bleep_pluck",
   "type":1,
   "volume":1.0,
 }

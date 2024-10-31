@@ -9,7 +9,7 @@
   "bitRate":192,
   "compression":0,
   "conversionMode":0,
-  "duration":0.0,
+  "duration":1.846168,
   "name":"alert_crumble",
   "parent":{
     "name":"Alerts, Chimes, Jingles",

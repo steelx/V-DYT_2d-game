@@ -1,7 +1,7 @@
 {
   "$GMSprite":"",
   "%Name":"spr_hp_pickup",
-  "bboxMode":0,
+  "bboxMode":2,
   "bbox_bottom":39,
   "bbox_left":21,
   "bbox_right":41,

@@ -9,7 +9,7 @@
   "bitRate":192,
   "compression":0,
   "conversionMode":0,
-  "duration":0.0,
+  "duration":2.370454,
   "name":"happy_bells_success",
   "parent":{
     "name":"Alerts, Chimes, Jingles",

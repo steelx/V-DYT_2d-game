@@ -19,7 +19,7 @@ var _x_sign = sign(x - other.x);
 vel_x = _x_sign * 10; // Adjust knockback strength as needed
 
 // Set invincibility frames
-no_hurt_frames = get_room_speed() * 1; // 1 second of invincibility
+no_hurt_frames = get_room_speed() * 2; // 2 second of invincibility
 
 
 
