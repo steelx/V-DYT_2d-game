@@ -17,7 +17,9 @@ enum DIALOG_CALLBACK {
 
 function DialogSystem() constructor {
     _dialogues = [];
-    
+	_typist = scribble_typist();
+    _typist.in(0.5, 0); // Set typewriter speed (0.5 seconds per character)
+
     /**
     * Adds a new dialog message to the queue.
     * @param {Asset.GMSprite} _picture - The sprite or image to display with the message.
@@ -95,6 +97,11 @@ function DialogSystem() constructor {
         if (_dialog != noone) {
             draw_dialog_box(_x, _y, _width, _height, _dialog.picture, _dialog.message, _dialog.options, _dialog.current_option);
         }
+    }
+	
+	// reset the typist for new messages
+    reset_typist = function() {
+        _typist.reset();
     }
 }
 

@@ -16,7 +16,7 @@ if (alpha > 0) {
         var _max_width = 74 * _viewport_scale_x; // Scale max width
         
         draw_set_alpha(alpha);
-        draw_textbox(x, y, _max_width, text, icon, COL_CREAM_WHITE, COL_CREAM_RED);
+        draw_textbox(x, y, _max_width, text_el, icon, COL_CREAM_WHITE, COL_CREAM_RED);
         
         // Reset surface target
         surface_reset_target();
@@ -33,3 +33,4 @@ if (alpha > 0) {
 // Reset draw properties
 draw_set_alpha(1);
 draw_set_color(c_white);
+

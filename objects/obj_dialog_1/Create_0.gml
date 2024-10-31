@@ -7,7 +7,7 @@ event_inherited();
 
 dialog_system.add(
     spr_cat_picture, 
-    "Hello, this is dialog message demo, select option and hit space key.", 
+    "[c_red]Hello, [c_green]this is dialog message demo, select option and hit space key.", 
     ["Okay", "Exit"],
     [
         function() {

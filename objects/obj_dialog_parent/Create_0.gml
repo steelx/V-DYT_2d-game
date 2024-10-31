@@ -3,8 +3,8 @@ dialog_active = false;
 current_dialog = noone;
 dialog_system = new DialogSystem();
 
-dialog_width = 300;
-dialog_height = 75;
+dialog_width = window_get_width() / 2;
+dialog_height = window_get_height() * 0.25;
 
 // Surface for dialog
 dialog_surface = -1;

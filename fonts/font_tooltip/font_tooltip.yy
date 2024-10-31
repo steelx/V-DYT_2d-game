@@ -119,8 +119,8 @@
   "maintainGms1Font":false,
   "name":"font_tooltip",
   "parent":{
-    "name":"gui",
-    "path":"folders/Dialog_system/gui.yy",
+    "name":"Fonts",
+    "path":"folders/Fonts.yy",
   },
   "pointRounding":0,
   "ranges":[

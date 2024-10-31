@@ -1,9 +1,12 @@
 /// @description obj_dialog_parent Step Event
 if (dialog_active) {
     pause();
+	
+	
     if (keyboard_check_pressed(vk_space)) {
         if (dialog_system.count() > 0) {
             current_dialog = dialog_system.pop();
+			dialog_system.reset_typist();
             _needs_redraw = true;
         } else {
             end_dialog();

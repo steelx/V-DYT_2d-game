@@ -8,7 +8,9 @@
 function draw_tooltip(_text, _icon, _x, _y, _interaction_func = undefined) {
     var _inst = instance_create_layer(_x, _y, "Instances", obj_tooltip);
     with(_inst) {
-        text = _text;
+        text_el = scribble(_text, id)
+            .starting_format("font_tooltip", c_white)
+            .gradient(c_purple, c_green, c_red);// Add gradient color
         icon = _icon;
         _init_x = _x;
         _init_y = _y;

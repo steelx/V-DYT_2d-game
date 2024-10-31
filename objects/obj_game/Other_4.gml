@@ -6,3 +6,5 @@ resume_game();
 
 // GUI
 display_set_gui_size(window_get_width(),window_get_height());
+scribble_font_set_default("fnt_dialog");
+scribble_font_set_default("font_tooltip");
