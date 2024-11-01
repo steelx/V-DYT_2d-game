@@ -25,6 +25,10 @@ trail_positions = ds_list_create();
 trail_count = 10; // Number of trail instances
 in_launch_arc = false;// used in arc movement inside launchpad
 
+// red border shader
+red_border_intensity = 0;
+red_border_active = false;
+
 // Jet pack variables
 jetpack_max_fuel = 10;
 jetpack_fuel = jetpack_max_fuel;

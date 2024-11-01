@@ -73,7 +73,11 @@ var _x_sign = sign(x - other.x);
 // That sign is multiplied by 15, and applied to vel_x as the knockback.
 vel_x = _x_sign * 15;
 
-if (hp > 0) add_screenshake(0.5);
+if (hp > 0) {
+	// Add red border effect
+    add_player_hurt_red(1, 0.8);
+	add_screenshake(0.5);
+}
 
 // This changes the sprite to the hurt sprite.
 sprite_index = spr_player_hurt;

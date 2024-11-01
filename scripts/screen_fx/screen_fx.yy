@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"add_screenshake",
+  "%Name":"screen_fx",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"add_screenshake",
+  "name":"screen_fx",
   "parent":{
     "name":"Scripts",
     "path":"folders/Scripts.yy",
