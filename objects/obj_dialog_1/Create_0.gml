@@ -7,8 +7,8 @@ event_inherited();
 
 dialog_system.add(
     spr_cat_picture, 
-    "[c_red]Hello, [c_green]this is dialog message demo, select option and hit space key.", 
-    ["Okay", "Exit"],
+    "[c_red]Hello,[] this is dialog message demo, select option and hit [c_green]Enter[] key.", 
+    ["Okay [spr_key_enter]", "Exit"],
     [
         function() {
             show_debug_message("Player chose to be friendly");

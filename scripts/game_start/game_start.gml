@@ -16,6 +16,7 @@ function resume_game() {
 function pause_game() {
     global.game_state = GAME_STATES.PAUSED;
     global.show_game_menu = true; // in case of Dialog box we dont set this
+	show_debug_message($"show_game_menu {global.show_game_menu}");
     audio_pause_sound(global.game_music);
     audio_play_sound(start_bleep, 2, false);
     

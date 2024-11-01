@@ -1,4 +1,4 @@
-/// @description obj_game Step
+/// @description obj_game Step, added in rm_init
 if (keyboard_check_pressed(vk_escape)) {
     _needs_redraw = true;
     if (global.game_state == GAME_STATES.PLAYING) {
@@ -27,8 +27,8 @@ if (global.game_state == GAME_STATES.PAUSED and global.show_game_menu) {
         _needs_redraw = true;
     }
     
-    // Pressed enter or Space trigger the menu option function
-    if (keyboard_check_pressed(vk_enter) or keyboard_check_pressed(vk_space)) {
+    // Select Menu on Enter key press
+    if (keyboard_check_pressed(vk_enter) or gamepad_button_check_pressed(0, gp_face2)) {
         audio_play_sound(blip_stab_bleep, 10, false);  // Play menu selection sound
         switch(menu_options[menu_index]) {
             case "Resume":

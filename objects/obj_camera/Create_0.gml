@@ -24,10 +24,9 @@ screen_shake = false;
 screen_shake_amount_initial = 2;
 screen_shake_amount = screen_shake_amount_initial;
 
-// reset camera to default pan speed
+// reset camera to default pan speed CAMERA_RESET_PAN 0
 alarm_set(CAMERA_RESET_PAN, 3);
 
-//room_goto_next();
 
 function background_parallax_scrolling(_camera) {
     var _layer_id = layer_get_id("Background");
