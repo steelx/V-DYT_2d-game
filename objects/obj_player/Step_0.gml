@@ -7,6 +7,7 @@ if global.game_state == GAME_STATES.PLAYING {
         case CHARACTER_STATE.IDLE:
             // Idle state behavior
             vel_x = 0;
+			obj_camera.zoom_level = 1;
             break;
         case CHARACTER_STATE.MOVE:
             apply_horizontal_movement();
@@ -30,6 +31,7 @@ if global.game_state == GAME_STATES.PLAYING {
                 sprite_index = spr_player_fall;
             } else {
                 jetpack_fuel -= jetpack_fuel_consumption_rate;
+				obj_camera.zoom_level = 0.8;
     
                 // Hover behavior
                 var _target_y = jetpack_max_height + (sin(current_time * jetpack_hover_speed) * jetpack_hover_amplitude);

@@ -511,6 +511,7 @@
     {"id":{"name":"spr_hp_used","path":"sprites/spr_hp_used/spr_hp_used.yy",},},
     {"id":{"name":"spr_hud_background","path":"sprites/spr_hud_background/spr_hud_background.yy",},},
     {"id":{"name":"spr_hurt_zone","path":"sprites/spr_hurt_zone/spr_hurt_zone.yy",},},
+    {"id":{"name":"spr_key_e","path":"sprites/spr_key_e/spr_key_e.yy",},},
     {"id":{"name":"spr_launchpad","path":"sprites/spr_launchpad/spr_launchpad.yy",},},
     {"id":{"name":"spr_part_character_jump","path":"sprites/spr_part_character_jump/spr_part_character_jump.yy",},},
     {"id":{"name":"spr_part_character_walk","path":"sprites/spr_part_character_walk/spr_part_character_walk.yy",},},
