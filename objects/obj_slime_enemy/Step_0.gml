@@ -1,5 +1,5 @@
 /// @description obj_slime_enemy Step event
-if global.game_state == GAME_STATES.PLAYING {
+if should_pause_object() {
 
     event_inherited();
     

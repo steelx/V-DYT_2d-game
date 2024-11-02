@@ -1,5 +1,5 @@
 /// @description obj_enemy1 step + (inherting parent)
-if global.game_state == GAME_STATES.PLAYING {
+if should_pause_object() {
     // Inherit the parent event
     event_inherited();
     

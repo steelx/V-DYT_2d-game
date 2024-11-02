@@ -28,3 +28,7 @@ function pause_game() {
         global.menu_music = audio_play_sound(snd_music_menu, 1, true);
     }
 }
+
+function should_pause_object() {
+	return global.game_state == GAME_STATES.PLAYING or global.game_state == GAME_STATES.CUTSCENE;
+}

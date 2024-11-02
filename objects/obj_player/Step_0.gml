@@ -1,5 +1,5 @@
 /// @description obj_player step 0 event
-if global.game_state == GAME_STATES.PLAYING {
+if should_pause_object() {
     event_inherited();
     
     player_input();

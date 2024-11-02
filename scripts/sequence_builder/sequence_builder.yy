@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"transitions",
+  "%Name":"sequence_builder",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"transitions",
+  "name":"sequence_builder",
   "parent":{
     "name":"cutscene",
     "path":"folders/Scripts/cutscene.yy",

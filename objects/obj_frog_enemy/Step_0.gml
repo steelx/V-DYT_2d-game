@@ -1,5 +1,5 @@
 /// @description obj_frog_enemy step :: state machine
-if global.game_state == GAME_STATES.PLAYING {
+if should_pause_object() {
 
     event_inherited();
     

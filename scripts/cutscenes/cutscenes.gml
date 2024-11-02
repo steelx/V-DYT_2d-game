@@ -21,22 +21,31 @@ function load_next_sequence(_sequence_array) {
     // Get the current item in the sequence array
     var _current_item = _sequence_array[global.current_sequence_index];
     
-    // Check if the current item is a sequence or a function
+    // Check if the current item is a sequence, a function, or a sequence-creating function
     if (is_method(_current_item)) {
         // If it's a method/function, execute it
-        _current_item();
+        var _result = _current_item();
         
-        // Move to the next item in the array
-        global.current_sequence_index++;
-        
-        // Recursively call to handle the next item
-        load_next_sequence(_sequence_array);
+        // If the function returns a sequence, create it
+        if (sequence_exists(_result)) {
+            global.sequence_layer = layer_create(depth);
+            global.current_sequence = layer_sequence_create(global.sequence_layer, x, y, _result);
+        } else {
+            // If it doesn't return a sequence, move to the next item
+            global.current_sequence_index++;
+            load_next_sequence(_sequence_array);
+        }
+    } else if (sequence_exists(_current_item)) {
+        // If it's a pre-existing sequence
+        global.sequence_layer = layer_create(depth);
+        global.current_sequence = layer_sequence_create(global.sequence_layer, x, y, _current_item);
     } else {
-		global.sequence_layer = layer_create(depth);
-        // Create the sequence and store its ID
-		global.current_sequence = layer_sequence_create(global.sequence_layer, x, y, _current_item);
+        // If it's neither a function nor a sequence, skip it
+        global.current_sequence_index++;
+        load_next_sequence(_sequence_array);
     }
 }
+
 
 // Create Event of a controller object
 function create_sequence_controller() {
@@ -48,7 +57,7 @@ function create_sequence_controller() {
 
 // Step Event of the controller object - check for sequence completion
 function check_sequence_completion() {
-    if (global.current_sequence != noone) {
+    if (global.current_sequence != noone and is_array(global.sequence_array)) {
         // Check if sequence has finished
 		if (layer_sequence_is_finished(global.current_sequence)) {
 			layer_sequence_destroy(global.current_sequence);
@@ -64,15 +73,28 @@ function check_sequence_completion() {
     }
 }
 
-// Example usage
+function stop_wind_sound() {
+	audio_stop_sound(snd_amb_wind);
+}
+
+// useage in obj_load_room_1 create
 function start_sequence_chain_1() {
     global.sequence_array = [
-		function(){ global.game_state = GAME_STATES.CUTSCENE; },
-        seq_1,           // First sequence
-        seq_2,           // Second sequence
-        function() {     // Function to transition to room
-			global.game_state = GAME_STATES.PLAYING;
-            room_goto_next();
+		function() { global.game_state = GAME_STATES.CUTSCENE; },
+        seq_1,
+        function () {
+			return create_seq("seq_2a", 6)
+				.add_sound(snd_amb_wind, 0)
+			    .add_object(obj_seq_2_titles, 1, 100, 200)
+			    .add_sprite(spr_end_gate_particles, 1.5, 100, 200)
+			    .add_moment(stop_wind_sound, 6)
+			    .build();
+		},
+		seq_fade_in,
+		seq_fade_out,
+        function() {
+			room_goto_next();
+			//global.game_state = GAME_STATES.PLAYING;
         }
     ];
     
