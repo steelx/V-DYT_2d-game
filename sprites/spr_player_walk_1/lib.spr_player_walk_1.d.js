@@ -1,1 +1,0 @@
-declare const spr_player_walk_1: GMSprite
