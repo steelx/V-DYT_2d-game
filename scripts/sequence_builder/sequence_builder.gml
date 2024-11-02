@@ -23,97 +23,99 @@ sequence_track_set_type(track, seqtracktype_graphic);   // For sprites
 */
 
 /// @description Sequence Builder utility with chainable methods
+/// @link https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Asset_Management/Sequences/Sequences.htm
 function SequenceBuilder(_name, _duration_seconds) constructor {
     name = _name;
-    duration = _duration_seconds * get_room_speed();
     sequence = sequence_create();
-	sequence.length = duration;
+	sequence.length = _duration_seconds * get_room_speed();
+	sequence.playbackSpeedType = spritespeed_framespersecond;
+	sequence.loopmode = seqplay_oneshot;
     tracks = [];
 	momentKeyframes = [];
     
     /// @method add_object(object, time_range, x, y)
-    add_object = function(object, time_range, x = 0, y = 0) {
-        var track = sequence_track_new(seqtracktype_instance);
-        track.name = "InstanceTrack_" + string(array_length(tracks));
+    add_object = function(_object, _time_range, x = 0, y = 0) {
+        var _track = sequence_track_new(seqtracktype_instance);
+        _track.name = "InstanceTrack_" + string(array_length(tracks));
         
-        var keyframe = sequence_keyframe_new(seqtracktype_instance);
-        keyframe.frame = time_range[0] * get_room_speed();
-        keyframe.length = (time_range[1] - time_range[0]) * get_room_speed();
-        keyframe.stretch = true;
-        keyframe.disabled = false;
+        var _keyframe = sequence_keyframe_new(seqtracktype_instance);
+        _keyframe.frame = _time_range[0] * get_room_speed();
+        _keyframe.length = (_time_range[1] - _time_range[0]) * get_room_speed();
+        _keyframe.stretch = true;
+        _keyframe.disabled = false;
         
-        var keyframedata = sequence_keyframedata_new(seqtracktype_instance);
-        keyframedata.objectIndex = object;
-        keyframedata.channel = 0;
-        keyframedata.x = x;
-        keyframedata.y = y;
+        var _keyframedata = sequence_keyframedata_new(seqtracktype_instance);
+        _keyframedata.objectIndex = _object;
+        _keyframedata.channel = 0;
+        _keyframedata.x = x;
+        _keyframedata.y = y;
         
-        keyframe.channels = [keyframedata];
-        track.keyframes = [keyframe];
-        array_push(tracks, track);
+        _keyframe.channels = [_keyframedata];
+        _track.keyframes = [_keyframe];
+        array_push(tracks, _track);
         return self;
     }
 
-    /// @method add_sprite(sprite, time_range, x, y)
-    add_sprite = function(sprite, time_range, x = 0, y = 0) {
-        var track = sequence_track_new(seqtracktype_graphic);
-        track.name = "GraphicTrack_" + string(array_length(tracks));
+    /// @method add_sprite(sprite, _time_range, x, y)
+    add_sprite = function(_sprite, _time_range, x = 0, y = 0) {
+        var _track = sequence_track_new(seqtracktype_graphic);
+        _track.name = "GraphicTrack_" + string(array_length(tracks));
         
-        var keyframe = sequence_keyframe_new(seqtracktype_graphic);
-        keyframe.frame = time_range[0] * get_room_speed();
-        keyframe.length = (time_range[1] - time_range[0]) * get_room_speed();
-        keyframe.stretch = true;
-        keyframe.disabled = false;
+        var _keyframe = sequence_keyframe_new(seqtracktype_graphic);
+        _keyframe.frame = _time_range[0] * get_room_speed();
+        _keyframe.length = (_time_range[1] - _time_range[0]) * get_room_speed();
+        _keyframe.stretch = true;
+        _keyframe.disabled = false;
         
-        var keyframedata = sequence_keyframedata_new(seqtracktype_graphic);
-        keyframedata.spriteIndex = sprite;
-        keyframedata.channel = 0;
-        keyframedata.x = x;
-        keyframedata.y = y;
+        var _keyframedata = sequence_keyframedata_new(seqtracktype_graphic);
+        _keyframedata.spriteIndex = _sprite;
+        _keyframedata.channel = 0;
+        _keyframedata.x = x;
+        _keyframedata.y = y;
         
-        keyframe.channels = [keyframedata];
-        track.keyframes = [keyframe];
-        array_push(tracks, track);
+        _keyframe.channels = [_keyframedata];
+        _track.keyframes = [_keyframe];
+        array_push(tracks, _track);
         return self;
     }
     
-    /// @method add_sound(sound, time_seconds)
-    add_sound = function(sound, time_seconds) {
-        var track = sequence_track_new(seqtracktype_audio);
-        track.name = "AudioTrack_" + string(array_length(tracks));
+    /// @method add_sound(_sound, time_seconds)
+    add_sound = function(_sound, _time_seconds) {
+        var _track = sequence_track_new(seqtracktype_audio);
+        _track.name = "AudioTrack_" + string(array_length(tracks));
         
-        var keyframe = sequence_keyframe_new(seqtracktype_audio);
-        keyframe.frame = time_seconds * get_room_speed();
-        keyframe.length = 1;
-        keyframe.stretch = false;
-        keyframe.disabled = false;
+        var _keyframe = sequence_keyframe_new(seqtracktype_audio);
+        _keyframe.frame = _time_seconds * get_room_speed();
+        _keyframe.length = 1;
+        _keyframe.stretch = false;
+        _keyframe.disabled = false;
         
-        var keyframedata = sequence_keyframedata_new(seqtracktype_audio);
-        keyframedata.soundIndex = sound;
-        keyframedata.channel = 0;
+        var _keyframedata = sequence_keyframedata_new(seqtracktype_audio);
+        _keyframedata.soundIndex = _sound;
+        _keyframedata.channel = 0;
         
-        keyframe.channels = [keyframedata];
-        track.keyframes = [keyframe];
+        _keyframe.channels = [_keyframedata];
+        _track.keyframes = [_keyframe];
         
-        array_push(tracks, track);
+        array_push(tracks, _track);
         
         return self;
     }
     
-    /// @method add_moment(callback, time_seconds)
+    /// @method add_moment(_callback, _time_seconds)
     add_moment = function(_callback, _time_seconds) {
-        var keyframe = sequence_keyframe_new(seqtracktype_moment);
-        keyframe.frame = _time_seconds * get_room_speed();
-        keyframe.length = 1;
-        keyframe.stretch = false;
-        keyframe.disabled = false;
+        var _keyframe = sequence_keyframe_new(seqtracktype_moment);
+        _keyframe.frame = _time_seconds * get_room_speed();
+        _keyframe.length = 1;
+        _keyframe.stretch = false;
+        _keyframe.disabled = false;
 
-        var keyframedata = sequence_keyframedata_new(seqtracktype_moment);
-        keyframedata.event = method({callback: _callback}, _callback);
-        keyframedata.channel = 0;
+        var _keyframedata = sequence_keyframedata_new(seqtracktype_moment);
+        _keyframedata.event = method({callback: _callback}, _callback);
+        _keyframedata.channel = 0;
 
-        keyframe.channels = [keyframedata];
-        array_push(momentKeyframes, keyframe);
+        _keyframe.channels = [_keyframedata];
+        array_push(momentKeyframes, _keyframe);
         return self;
     }
     
@@ -126,8 +128,8 @@ function SequenceBuilder(_name, _duration_seconds) constructor {
 }
 
 
-/// @function create_seq(name, duration_seconds)
-function create_seq(name, duration_seconds) {
-    return new SequenceBuilder(name, duration_seconds);
+/// @function create_seq(_name, _duration_seconds)
+function create_seq(_name, _duration_seconds) {
+    return new SequenceBuilder(_name, _duration_seconds);
 }
 
