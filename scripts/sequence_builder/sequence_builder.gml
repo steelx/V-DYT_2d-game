@@ -25,54 +25,43 @@ sequence_track_set_type(track, seqtracktype_graphic);   // For sprites
 /// @description Sequence Builder utility with chainable methods
 function SequenceBuilder(_name, _duration_seconds) constructor {
     name = _name;
-    duration = _duration_seconds * room_speed;
+    duration = _duration_seconds * get_room_speed();
     sequence = sequence_create();
 	sequence.length = duration;
     tracks = [];
 	momentKeyframes = [];
     
-    /// @method add_object(object, time_seconds, [x], [y])
-    add_object = function(object, time_seconds, x = 0, y = 0) {
-        // Create instance track
+    /// @method add_object(object, time_range, x, y)
+    add_object = function(object, time_range, x = 0, y = 0) {
         var track = sequence_track_new(seqtracktype_instance);
         track.name = "InstanceTrack_" + string(array_length(tracks));
         
-        // Create keyframe
         var keyframe = sequence_keyframe_new(seqtracktype_instance);
-        keyframe.frame = time_seconds * room_speed;
-        keyframe.length = 1;
-        keyframe.stretch = false;
+        keyframe.frame = time_range[0] * get_room_speed();
+        keyframe.length = (time_range[1] - time_range[0]) * get_room_speed();
+        keyframe.stretch = true;
         keyframe.disabled = false;
         
-        // Create keyframe data
         var keyframedata = sequence_keyframedata_new(seqtracktype_instance);
         keyframedata.objectIndex = object;
         keyframedata.channel = 0;
-        
-        // Position data
         keyframedata.x = x;
         keyframedata.y = y;
         
-        // Link data to keyframe
         keyframe.channels = [keyframedata];
-        
-        // Add keyframe to track
         track.keyframes = [keyframe];
-        
-        // Store track
         array_push(tracks, track);
-        
         return self;
     }
-    
-    /// @method add_sprite(sprite, time_seconds, [x], [y])
-    add_sprite = function(sprite, time_seconds, x = 0, y = 0) {
+
+    /// @method add_sprite(sprite, time_range, x, y)
+    add_sprite = function(sprite, time_range, x = 0, y = 0) {
         var track = sequence_track_new(seqtracktype_graphic);
         track.name = "GraphicTrack_" + string(array_length(tracks));
         
         var keyframe = sequence_keyframe_new(seqtracktype_graphic);
-        keyframe.frame = time_seconds * room_speed;
-        keyframe.length = 1;
+        keyframe.frame = time_range[0] * get_room_speed();
+        keyframe.length = (time_range[1] - time_range[0]) * get_room_speed();
         keyframe.stretch = true;
         keyframe.disabled = false;
         
@@ -84,9 +73,7 @@ function SequenceBuilder(_name, _duration_seconds) constructor {
         
         keyframe.channels = [keyframedata];
         track.keyframes = [keyframe];
-        
         array_push(tracks, track);
-        
         return self;
     }
     
@@ -96,7 +83,7 @@ function SequenceBuilder(_name, _duration_seconds) constructor {
         track.name = "AudioTrack_" + string(array_length(tracks));
         
         var keyframe = sequence_keyframe_new(seqtracktype_audio);
-        keyframe.frame = time_seconds * room_speed;
+        keyframe.frame = time_seconds * get_room_speed();
         keyframe.length = 1;
         keyframe.stretch = false;
         keyframe.disabled = false;
@@ -114,17 +101,15 @@ function SequenceBuilder(_name, _duration_seconds) constructor {
     }
     
     /// @method add_moment(callback, time_seconds)
-    add_moment = function(callback, time_seconds) {
+    add_moment = function(_callback, _time_seconds) {
         var keyframe = sequence_keyframe_new(seqtracktype_moment);
-        keyframe.frame = time_seconds * room_speed;
+        keyframe.frame = _time_seconds * get_room_speed();
         keyframe.length = 1;
         keyframe.stretch = false;
         keyframe.disabled = false;
 
         var keyframedata = sequence_keyframedata_new(seqtracktype_moment);
-        keyframedata.event = method({callback: callback}, function() {
-            callback();
-        });
+        keyframedata.event = method({callback: _callback}, _callback);
         keyframedata.channel = 0;
 
         keyframe.channels = [keyframedata];

@@ -85,16 +85,18 @@ function start_sequence_chain_1() {
         function () {
 			return create_seq("seq_2a", 6)
 				.add_sound(snd_amb_wind, 0)
-			    .add_object(obj_seq_2_titles, 1, 100, 200)
-			    .add_sprite(spr_end_gate_particles, 1.5, 100, 200)
-			    .add_moment(stop_wind_sound, 6)
+			    .add_object(obj_seq_2_titles, [1, 4], 100, 200)
+			    .add_sprite(spr_end_gate_particles, [1.5, 3], 100, 200)
+			    .add_moment(function() {
+					audio_stop_sound(snd_amb_wind);
+				}, 6)
 			    .build();
 		},
 		seq_fade_in,
 		seq_fade_out,
         function() {
 			room_goto_next();
-			//global.game_state = GAME_STATES.PLAYING;
+			global.game_state = GAME_STATES.PLAYING;
         }
     ];
     
