@@ -9,20 +9,22 @@ function transition_place_sequence(_sequence){
 }
 
 
-/*
-* @function transition_init(rm_level_1, seq_fade_out, seq_fade_in);
-* starts a sequence transition
-*/
+/// @function transition_init(rm_level_1, seq_fade_in, seq_fade_out);
+/// @param {asset.GMRoom} _room_target The target room to transition to
+/// @param {asset.GMSequence} _seq_start The starting transition sequence
+/// @param {asset.GMSequence} _seq_end The ending transition sequence
 function transition_init(_room_target, _seq_start, _seq_end) {
-	if (global.mid_transition == true) return false;
-	
-	global.mid_transition = true;
-	global.room_target = _room_target;
-	transition_place_sequence(_seq_start);
-	layer_set_target_room(_room_target);
+    if (global.mid_transition == true) return false;
+    
+    global.mid_transition = true;
+    global.room_target = _room_target;
+    transition_place_sequence(_seq_start);
+    
+    layer_set_target_room(_room_target);
 	transition_place_sequence(_seq_end);
 	layer_reset_target_room();
-	return true;
+    
+    return true;
 }
 
 /// End of frame moment for seq_fade_out
@@ -47,4 +49,5 @@ function transition_finished() {
     }
     
     global.mid_transition = false;
+	global.game_state = GAME_STATES.PLAYING;
 }
