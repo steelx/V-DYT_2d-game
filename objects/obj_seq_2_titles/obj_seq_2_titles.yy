@@ -1,19 +1,20 @@
 {
   "$GMObject":"",
-  "%Name":"obj_title_parent",
+  "%Name":"obj_seq_2_titles",
   "eventList":[
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":64,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_title_parent",
+  "name":"obj_seq_2_titles",
   "overriddenProperties":[],
   "parent":{
-    "name":"seq_parent_objects",
-    "path":"folders/Sequences/seq_parent_objects.yy",
+    "name":"seq_objects",
+    "path":"folders/Sequences/seq_objects.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"obj_title_parent",
+    "path":"objects/obj_title_parent/obj_title_parent.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,

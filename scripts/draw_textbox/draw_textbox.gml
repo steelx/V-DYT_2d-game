@@ -45,15 +45,14 @@ function draw_textbox(_x, _y, _max_width, _text, _bg_color = undefined, _border_
 /// Draws a title centered on the screen with no background or border
 /// @param {String} _text The title text to display
 /// @param {Real} _y_offset Vertical offset from the center of the screen
-/// @param {Contacnt.Color} _text_color color constant such as c_black
 /// @param {String} _font Font asset name e.g. font_title
-function draw_title(_text, _y_offset = 0, _text_color = c_black, _font = "font_title", _typist = undefined) {
+function draw_title(_text, _y_offset = 0, _font = "font_title", _typist = undefined) {
     var _window_center_x = window_get_width() / 2;
     var _window_center_y = window_get_height() / 2;
     
     // Create Scribble text element
     var _title_el = scribble(_text)
-        .starting_format("font_title", _text_color)
+        .starting_format("font_title")
         .align(fa_center, fa_middle);
     
     // Draw the title

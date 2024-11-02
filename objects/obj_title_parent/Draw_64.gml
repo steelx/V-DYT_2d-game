@@ -16,8 +16,9 @@ if alpha > 0 {
 	    // Draw content on the surface
 		draw_set_alpha(alpha);
 	    draw_title(
-			title_message, 0, c_red, "font_title", typist
-		);
+            messages[current_message_index][0],
+            0, "font_title"
+        );
         
 	    // Reset surface target
 	    surface_reset_target();
