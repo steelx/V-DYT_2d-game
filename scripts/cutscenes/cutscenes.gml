@@ -81,17 +81,21 @@ function stop_wind_sound() {
 function start_sequence_chain_1() {
     global.sequence_array = [
 		function() { global.game_state = GAME_STATES.CUTSCENE; },
+		seq_1,
         function () {
-			return create_seq("seq_2a", 3)// TODO: fix this to seconds
-				.add_sound(snd_amb_wind, 0)
-			    .add_object(obj_seq_2_titles, [0, 6], 0, 0)
-			    .add_sprite(spr_end_gate_particles, [1, 3], 100, 200)
+			return create_seq("seq_2a", 6)// TODO: fix this to seconds
+				.add_sound(snd_amb_wind, 2)
+				.add_moment(function() {
+                    show_debug_message("Sound should be playing now. Is it audible?");
+                    show_debug_message("Sound playing: " + string(audio_is_playing(snd_amb_wind)));
+                }, 3.1)
+			    .add_object(obj_seq_2_titles, [0, 6])
+			    .add_sprite(spr_end_gate_particles, [5, 6])
 			    .add_moment(function() {
 					audio_stop_sound(snd_amb_wind);
 				 }, 6)
 			    .build();
 		},
-		seq_1,
 		seq_fade_in,
 		seq_fade_out,
         function() {

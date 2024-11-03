@@ -32,74 +32,137 @@ function SequenceBuilder(_name, _duration_seconds) constructor {
 	sequence.loopmode = seqplay_oneshot;
     tracks = [];
 	momentKeyframes = [];
-    
-    /// @method add_object(object, time_range, x, y)
-    add_object = function(_object, _time_range, x = 0, y = 0) {
-        var _track = sequence_track_new(seqtracktype_instance);
-        _track.name = "InstanceTrack_" + string(array_length(tracks));
-        
-        var _keyframe = sequence_keyframe_new(seqtracktype_instance);
-        _keyframe.frame = _time_range[0] * get_room_speed();
-        _keyframe.length = (_time_range[1] - _time_range[0]) * get_room_speed();
-        _keyframe.stretch = true;
-        _keyframe.disabled = false;
-        
-        var _keyframedata = sequence_keyframedata_new(seqtracktype_instance);
-        _keyframedata.objectIndex = _object;
-        _keyframedata.channel = 0;
-        _keyframedata.x = x;
-        _keyframedata.y = y;
-        
-        _keyframe.channels = [_keyframedata];
-        _track.keyframes = [_keyframe];
-        array_push(tracks, _track);
-        return self;
-    }
+	
+	/// @method add_object(object, time_range, x, y)
+	add_object = function(_object, _time_range, _x = 0, _y = 0) {
+	    var _track = sequence_track_new(seqtracktype_instance);
+	    _track.name = "InstanceTrack_" + string(array_length(tracks));
 
-    /// @method add_sprite(sprite, _time_range, x, y)
-    add_sprite = function(_sprite, _time_range, x = 0, y = 0) {
-        var _track = sequence_track_new(seqtracktype_graphic);
-        _track.name = "GraphicTrack_" + string(array_length(tracks));
-        
-        var _keyframe = sequence_keyframe_new(seqtracktype_graphic);
-        _keyframe.frame = _time_range[0] * get_room_speed();
-        _keyframe.length = (_time_range[1] - _time_range[0]) * get_room_speed();
-        _keyframe.stretch = true;
-        _keyframe.disabled = false;
-        
-        var _keyframedata = sequence_keyframedata_new(seqtracktype_graphic);
-        _keyframedata.spriteIndex = _sprite;
-        _keyframedata.channel = 0;
-        _keyframedata.x = x;
-        _keyframedata.y = y;
-        
-        _keyframe.channels = [_keyframedata];
-        _track.keyframes = [_keyframe];
-        array_push(tracks, _track);
-        return self;
-    }
+	    var _keyframe = sequence_keyframe_new(seqtracktype_instance);
+	    _keyframe.frame = _time_range[0] * get_room_speed();
+	    _keyframe.length = (_time_range[1] - _time_range[0]) * get_room_speed();
+	    _keyframe.stretch = false;
+	    _keyframe.disabled = false;
+
+	    var _keyframedata = sequence_keyframedata_new(seqtracktype_instance);
+	    _keyframedata.objectIndex = _object;
+	    //_keyframedata.objectIndex = obj_sequence_object_creator;
+	    _keyframedata.channel = 0;
+	    _keyframedata.x = _x;
+	    _keyframedata.y = _y;
+	    _keyframedata.scaleX = 1;
+	    _keyframedata.scaleY = 1;
+	    _keyframedata.rotation = 0;
+	    _keyframe.channels = [_keyframedata];
+	    _track.keyframes = [_keyframe];
+
+	    // Add end keyframe to ensure object removal
+	    var _end_keyframe = sequence_keyframe_new(seqtracktype_instance);
+	    _end_keyframe.frame = _time_range[1] * get_room_speed();
+	    _end_keyframe.length = 1;
+	    _end_keyframe.stretch = false;
+	    _end_keyframe.disabled = true;
+
+	    var _end_keyframedata = sequence_keyframedata_new(seqtracktype_instance);
+	    _end_keyframedata.objectIndex = _object;
+	    _end_keyframedata.channel = 0;
+	    _end_keyframedata.x = _x;
+	    _end_keyframedata.y = _y;
+	    _end_keyframedata.scaleX = 1;
+	    _end_keyframedata.scaleY = 1;
+	    _end_keyframedata.rotation = 0;
+	    _end_keyframedata.visible = false;
+
+	    _end_keyframe.channels = [_end_keyframedata];
+	    array_push(_track.keyframes, _end_keyframe);
+	    array_push(tracks, _track);
+		
+		// Add a moment to set up the object creator
+		/*
+	    add_moment(function() {
+	        with (_keyframedata.objectIndex) {
+	            object_to_create = _object;
+	            x_pos = _x;
+	            y_pos = _y;
+	            sequence_element_id = layer_sequence_get_instance(self.sequence);
+	        }
+	    }, _time_range[0]);
+		*/
+		
+	    return self;
+	}
+
+
+    /// @method add_sprite(sprite, time_range, x, y)
+	add_sprite = function(_sprite, _time_range, _x = 0, _y = 0) {
+	    var _track = sequence_track_new(seqtracktype_graphic);
+	    _track.name = "GraphicTrack_" + string(array_length(tracks));
     
+	    var _keyframe = sequence_keyframe_new(seqtracktype_graphic);
+	    _keyframe.frame = _time_range[0] * get_room_speed();
+	    _keyframe.length = (_time_range[1] - _time_range[0]) * get_room_speed();
+	    _keyframe.stretch = false;
+	    _keyframe.disabled = false;
+    
+	    var _keyframedata = sequence_keyframedata_new(seqtracktype_graphic);
+	    _keyframedata.spriteIndex = _sprite;
+	    _keyframedata.channel = 0;
+	    _keyframedata.x = _x;
+	    _keyframedata.y = _y;
+	    _keyframedata.scaleX = 1;
+	    _keyframedata.scaleY = 1;
+	    _keyframedata.rotation = 0;
+    
+	    _keyframe.channels = [_keyframedata];
+	    _track.keyframes = [_keyframe];
+    
+	    // Add end keyframe to ensure sprite removal
+	    var _end_keyframe = sequence_keyframe_new(seqtracktype_graphic);
+	    _end_keyframe.frame = _time_range[1] * get_room_speed();
+	    _end_keyframe.length = 1;
+	    _end_keyframe.stretch = false;
+	    _end_keyframe.disabled = true;
+    
+	    var _end_keyframedata = sequence_keyframedata_new(seqtracktype_graphic);
+	    _end_keyframedata.spriteIndex = _sprite;
+	    _end_keyframedata.channel = 0;
+	    _end_keyframedata.x = _x;
+	    _end_keyframedata.y = _y;
+	    _end_keyframedata.scaleX = 1;
+	    _end_keyframedata.scaleY = 1;
+	    _end_keyframedata.rotation = 0;
+	    _end_keyframedata.visible = false;
+    
+	    _end_keyframe.channels = [_end_keyframedata];
+	    array_push(_track.keyframes, _end_keyframe);
+    
+	    array_push(tracks, _track);
+	    return self;
+	}
+
+
     /// @method add_sound(_sound, time_seconds)
     add_sound = function(_sound, _time_seconds) {
         var _track = sequence_track_new(seqtracktype_audio);
-        _track.name = "AudioTrack_" + string(array_length(tracks));
-        
-        var _keyframe = sequence_keyframe_new(seqtracktype_audio);
-        _keyframe.frame = _time_seconds * get_room_speed();
-        _keyframe.length = 1;
-        _keyframe.stretch = false;
-        _keyframe.disabled = false;
-        
-        var _keyframedata = sequence_keyframedata_new(seqtracktype_audio);
-        _keyframedata.soundIndex = _sound;
-        _keyframedata.channel = 0;
-        
-        _keyframe.channels = [_keyframedata];
-        _track.keyframes = [_keyframe];
-        
-        array_push(tracks, _track);
-        
-        return self;
+	    _track.name = "AudioTrack_" + string(array_length(tracks));
+    
+	    var _keyframe = sequence_keyframe_new(seqtracktype_audio);
+	    _keyframe.frame = _time_seconds * get_room_speed();
+	    _keyframe.length = audio_sound_length(_sound) * get_room_speed(); // Set length to sound duration
+	    _keyframe.stretch = false;
+	    _keyframe.disabled = false;
+    
+	    var _keyframedata = sequence_keyframedata_new(seqtracktype_audio);
+	    _keyframedata.soundIndex = _sound;
+	    _keyframedata.channel = 0;
+	    _keyframedata.offset = 0; // Start playing from the beginning of the sound
+	    _keyframedata.pitch = 1; // Normal pitch
+	    _keyframedata.volume = 1; // Full volume
+    
+	    _keyframe.channels = [_keyframedata];
+	    _track.keyframes = [_keyframe];
+	    array_push(tracks, _track);
+	    return self;
     }
     
     /// @method add_moment(_callback, _time_seconds)

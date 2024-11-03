@@ -4,23 +4,25 @@ surface_height = window_get_height();
 alpha = 0;
 
 // Array of messages with timeouts
+/*
 messages = [
     ["[wave]First notification", 1],
     ["[rainbow]Second notification", 2],
     ["Third notification", 1]
 ];
-
+*/
+messages = [];
 active_messages = []; // Stores currently active messages
 current_message_index = 0;
-message_timer = 0;
+_total_messages = 0;
 
-// set first message as active
-set_message_active = function() {
+set_messages = function(_messages) {
+	messages = _messages;
+	_total_messages = array_length(_messages);
 	array_push(active_messages, messages[current_message_index][0]);
+	alarm[0] = get_room_speed() * messages[current_message_index][1];
 };
 
-typist = scribble_typist();
-typist.in(1, 0);
 
 // Optimization variables
 _needs_redraw = false;

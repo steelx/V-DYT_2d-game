@@ -5,8 +5,11 @@
 event_inherited();
 
 // Array of messages with timeouts
-messages = [
-    ["[rainbow] Welcome to Sci-fi 2D Action game[]", 2],
+var _messages = [
+    ["[rainbow] Testing 0.5 seconds[]", 0.5],
+    ["[rainbow] Welcome to Sci-fi 2D Action game[]", 3],
     ["[c_green]The soul is never born nor it dies.[]", 2],
-	["Meet our hero [c_red]V-DYU[]", 2]
+	["Meet our hero [c_red]V-DYT[]", 2]
 ];
+
+set_messages(_messages);
