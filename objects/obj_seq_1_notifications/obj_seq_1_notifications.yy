@@ -1,11 +1,11 @@
 {
   "$GMObject":"",
-  "%Name":"obj_seq_1_subtitles",
+  "%Name":"obj_seq_1_notifications",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_seq_1_subtitles",
+  "name":"obj_seq_1_notifications",
   "overriddenProperties":[],
   "parent":{
     "name":"seq_objects",

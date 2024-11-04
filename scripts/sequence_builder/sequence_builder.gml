@@ -77,18 +77,6 @@ function SequenceBuilder(_name, _duration_seconds) constructor {
 	    array_push(_track.keyframes, _end_keyframe);
 	    array_push(tracks, _track);
 		
-		// Add a moment to set up the object creator
-		/*
-	    add_moment(function() {
-	        with (_keyframedata.objectIndex) {
-	            object_to_create = _object;
-	            x_pos = _x;
-	            y_pos = _y;
-	            sequence_element_id = layer_sequence_get_instance(self.sequence);
-	        }
-	    }, _time_range[0]);
-		*/
-		
 	    return self;
 	}
 

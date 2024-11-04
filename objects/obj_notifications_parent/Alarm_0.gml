@@ -1,4 +1,4 @@
-/// @description Insert description here
+/// @description obj_notifications_parent Alarm 0
 _needs_redraw = true;
 current_message_index += 1;
 
