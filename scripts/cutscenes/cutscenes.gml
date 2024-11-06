@@ -81,6 +81,7 @@ function stop_wind_sound() {
 function start_sequence_chain_1() {
     global.sequence_array = [
 		function() { global.game_state = GAME_STATES.CUTSCENE; },
+		/*
         function () {
 			return create_seq("seq_2a", 6)// TODO: fix this to seconds
 				.add_sound(snd_amb_wind, 2)
@@ -91,8 +92,9 @@ function start_sequence_chain_1() {
 				 }, 6)
 			    .build();
 		},
-		seq_fade_in,
-		seq_1,
+		*/
+		//seq_fade_in,
+		//seq_1,
 		seq_fade_out,
         function() {
 			room_goto_next();

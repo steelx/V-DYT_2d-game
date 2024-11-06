@@ -1,5 +1,5 @@
-/// @description SLIME_ROAM
-// upon alarm slime will change state to MOVE
+/// @description alarm 1
+// enemy roam
 // alarm starts again from animation end
 
 enemy_random_move(1.5, 3);

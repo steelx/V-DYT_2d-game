@@ -15,9 +15,9 @@ function player_within_range(_range) {
 }
 
 function is_player_visible(_visible_range = 32) {
-    return player_within_range(_visible_range);
+    return player_within_range(_visible_range) and is_player_facing();
 }
 
 function is_player_in_attack_range(_attack_range = 16) {
-    return player_within_range(_attack_range) and is_player_facing();
+    return player_within_range(_attack_range);
 }
