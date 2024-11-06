@@ -1,7 +1,6 @@
 /// @description alarm 1
 // enemy roam
 // alarm starts again from animation end
-
 enemy_random_move(1.5, 3);
 sprite_index = spr_archer_run;
 image_speed = 1;

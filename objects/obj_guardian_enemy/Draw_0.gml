@@ -7,3 +7,6 @@ if !enabled {
 event_inherited();
 
 debug_render_mask();
+
+// Draw the ray line
+//draw_visibility_ray(visible_range, attack_range);

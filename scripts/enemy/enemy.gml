@@ -52,4 +52,25 @@ function enemy_random_move(_move_speed = 2, _tiles_to_check = 3) {
     state = CHARACTER_STATE.MOVE;
 }
 
+/// @function move_to_attack_position(player_x, attack_object_x, attack_object_width)
+/// @param {real} player_x The x-coordinate of the player
+/// @param {real} attack_object_x The x-coordinate of the attack object relative to the enemy
+/// @param {real} attack_object_width The width of the attack object
+function move_to_attack_position(player_x, attack_object_x, attack_object_width) {
+    var ideal_distance = abs(attack_object_x) + attack_object_width / 2;
+    var direction_to_player = sign(player_x - x);
+    var ideal_position = player_x - (ideal_distance * direction_to_player);
+    
+    // Calculate the distance to move
+    var distance_to_move = ideal_position - x;
+    
+    // Move the enemy
+    x += distance_to_move;
+    
+    // Ensure the enemy is facing the player
+    image_xscale = direction_to_player;
+    
+    // Return true if we moved, false otherwise
+    return abs(distance_to_move) > 0;
+}
 

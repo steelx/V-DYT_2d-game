@@ -6,7 +6,7 @@ event_inherited();
 max_hp = 3;
 hp = max_hp;
 damage = 2;
-visible_range = 64;// how far enemy can see
+visible_range = 96;// how far enemy can see
 attack_range = 42;
 
 defeated_object = obj_guardian_defeated;

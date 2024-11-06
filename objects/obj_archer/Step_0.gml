@@ -32,7 +32,7 @@ if should_pause_object() {
                     break;
                 }
             } else {
-                roam_counter = roam_counter_init;
+				roam_counter = roam_counter_init;
                 vel_x = 0;
                 state = CHARACTER_STATE.IDLE;
                 sprite_index = spr_archer_idle;
