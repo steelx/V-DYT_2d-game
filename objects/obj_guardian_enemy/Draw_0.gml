@@ -6,4 +6,4 @@ if !enabled {
 // Inherit the parent event
 event_inherited();
 
-//debug_render_mask();
+debug_render_mask();

@@ -40,31 +40,24 @@ disable_self = function () {
 };
 
 // Playing & Managing the Attack Animation
-active_animation = -1;
-sequence_layer = -1;
-active_sequence = -1;
+active_attack_sequence = noone;
 
 start_animation = function (_sequence) {
-	active_animation = _sequence;
-	sequence_layer = layer_create(depth);
-	active_sequence = layer_sequence_create(sequence_layer, x, y, _sequence);
-	layer_sequence_xscale(active_sequence, image_xscale);
-	
+	active_attack_sequence = instance_create_layer(x, y, "Instances", obj_sequence_spawner);
+    with (active_attack_sequence) {
+		sequence = _sequence;
+		spawner = other.id;
+		start_sequence();
+	}
 	disable_self();
-}
+};
 
 check_animation = function () {
-	if (active_sequence == undefined) return;
-	
-	if (layer_sequence_is_finished(active_sequence)) {
-		layer_sequence_destroy(active_sequence);
-		layer_destroy(sequence_layer);
-		
-		active_animation = -1;
-		active_sequence = -1;
-		sequence_layer = -1;
-		
-		enable_self();
-	}
-}
+    if (instance_exists(active_attack_sequence)) {
+        if (active_attack_sequence.check_sequence()) {
+            active_attack_sequence = noone;
+            enable_self();
+        }
+    }
+};
 #endregion
