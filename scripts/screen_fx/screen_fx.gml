@@ -36,3 +36,13 @@ function add_screenshake(_seconds, _shake_amount = -1) {
 		alarm_set(CAMERA_SCREEN_SHAKE, _duration);
 	}
 }
+
+/// @function apply_zoom_motion_fx(duration)
+/// @param {Real} duration Duration of the stop-motion effect in frames
+function apply_zoom_motion_fx(_duration) {
+    // Create a temporary object to manage the effect duration
+    with (instance_create_layer(0, 0, "Enemies", obj_stop_motion_controller)) {
+        frames_left = _duration * get_room_speed();
+        alarm[0] = _duration * get_room_speed();// resume game after duration
+    }
+}

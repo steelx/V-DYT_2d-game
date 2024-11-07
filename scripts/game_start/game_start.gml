@@ -30,5 +30,5 @@ function pause_game() {
 }
 
 function should_pause_object() {
-	return global.game_state == GAME_STATES.PLAYING or global.game_state == GAME_STATES.CUTSCENE;
+	return global.game_state == GAME_STATES.PLAYING;
 }

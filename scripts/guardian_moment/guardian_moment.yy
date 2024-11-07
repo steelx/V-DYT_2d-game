@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"guardian_moment",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"guardian_moment",
+  "parent":{
+    "name":"guardian",
+    "path":"folders/Objects/Characters/Enemies/guardian.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

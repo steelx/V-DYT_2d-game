@@ -11,8 +11,8 @@ with (other) {
 	hp -= other.damage;
     if (hp > 0) {
 		// player hurt fx
-	    create_pixelated_blood_fx();
-		add_screenshake(0.5);
+		create_pixelated_blood_fx();
+		apply_zoom_motion_fx(1.2);
 	}
 		
 	// Change sprite to hurt sprite
