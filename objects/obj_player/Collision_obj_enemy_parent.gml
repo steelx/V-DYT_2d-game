@@ -4,8 +4,6 @@
 // gets hurt.
 // This condition checks if the player's vertical velocity is greater than 0, meaning it's falling down.
 var _excluded_enemy_kill_from_jump = [obj_guardian_enemy, obj_archer];
-
-
 if !array_contains(_excluded_enemy_kill_from_jump, other.object_index)
 	and (state == CHARACTER_STATE.JUMP || state == CHARACTER_STATE.JETPACK_JUMP || vel_y < 0) 
 {
@@ -79,7 +77,7 @@ vel_x = _x_sign * 15;
 
 if (hp > 0) {
 	// Add red border effect
-    add_player_hurt_red(1, 0.8);
+    create_pixelated_blood_fx();
 	add_screenshake(0.5);
 }
 

@@ -8,7 +8,7 @@ image_speed = 1;
 var _audible_distance = 300;
 var _player_distance = distance_to_object(obj_player);
 if _player_distance < _audible_distance {
-    var _sound = audio_play_sound(snd_slash, 0, 0);
+    var _sound = audio_play_sound(snd_guardin_walk, 0, 0);
   
     // Adjust volume based on distance
     var _volume = 1 - (_player_distance / _audible_distance);

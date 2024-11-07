@@ -9,12 +9,12 @@ if should_pause_object() {
     event_inherited();
 	// moved here to get latest player direction
 	var _player_direction = (instance_exists(obj_player)) ? sign(obj_player.x - x) : 0;
-	show_debug_message($"roam_counter {roam_counter}");
+	var _player_above = instance_exists(obj_player) && obj_player.y < y - sprite_height/2;
     
     switch(state) {
         case CHARACTER_STATE.IDLE:
             vel_x = 0;
-			if is_player_in_attack_range(attack_range) or is_player_visible(visible_range) {
+			if ( !_player_above  and (is_player_in_attack_range(attack_range) or is_player_visible(visible_range)) ) {
 				sprite_index = spr_guardian_walk;
 				state = CHARACTER_STATE.MOVE;
 			} else if (roam_counter <= 0) {
@@ -30,7 +30,9 @@ if should_pause_object() {
             break;
             
         case CHARACTER_STATE.MOVE:
-            if (is_player_in_attack_range(attack_range)) {
+            if (!_player_above and can_attack and is_player_in_attack_range(attack_range)) {
+				can_attack = false;
+				alarm[4] = attack_delay;
 				var _attack_object_x = 40; // hammer x away from body
 			    var _attack_object_width = 10; // hammer width
     

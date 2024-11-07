@@ -1,5 +1,13 @@
 /// @description obj_player_attack_hitbox collision with obj_enemy_parent
 
+// Parameters to adjust the blood splash
+create_blood_splash();
+
+// Create the pixel filter effect on the enemy
+/*
+var _pixel_filter = instance_create_layer(other.x, other.y, "Enemies", obj_pixel_filter);
+_pixel_filter.follow_target = other;
+*/
 // Reduce enemy's HP
 other.hp--;
 
@@ -13,7 +21,6 @@ other.vel_y = 0;
 other.state = CHARACTER_STATE.KNOCKBACK;
 
 // Start enemy blinking
-other.no_hurt_frames = 30; // Blink for 30 frames (adjust as needed)
-
-// Play hit sound (if you have one)
+other.no_hurt_frames = 60; // Blink for 30 frames (adjust as needed)
 audio_play_sound(snd_enemy_hit, 1, false);
+

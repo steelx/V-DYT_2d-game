@@ -1,6 +1,6 @@
 {
   "$GMSound":"",
-  "%Name":"tron_esque_bleep",
+  "%Name":"spr_chime1",
   "audioGroupId":{
     "name":"audiogroup_default",
     "path":"audiogroups/audiogroup_default",
@@ -9,17 +9,17 @@
   "bitRate":192,
   "compression":0,
   "conversionMode":0,
-  "duration":1.846168,
-  "name":"tron_esque_bleep",
+  "duration":0.475737,
+  "name":"spr_chime1",
   "parent":{
-    "name":"Beeps, Assorted, Menu, Game-Sounds",
-    "path":"folders/Sounds/Beeps, Assorted, Menu, Game-Sounds.yy",
+    "name":"Basic Beeps",
+    "path":"folders/Sounds/Themed Sets/Basic Beeps.yy",
   },
   "preload":true,
   "resourceType":"GMSound",
   "resourceVersion":"2.0",
   "sampleRate":44100,
-  "soundFile":"tron_esque_bleep",
+  "soundFile":"spr_chime1",
   "type":1,
   "volume":1.0,
 }

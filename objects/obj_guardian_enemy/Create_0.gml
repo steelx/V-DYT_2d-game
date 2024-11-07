@@ -3,14 +3,19 @@
 
 // Inherit the parent event
 event_inherited();
-max_hp = 3;
+max_hp = 20;
 hp = max_hp;
 damage = 2;
-visible_range = 96;// how far enemy can see
+visible_range = 120;// how far enemy can see
 attack_range = 42;
 
 defeated_object = obj_guardian_defeated;
 move_speed = 1.5;
+
+// attack timer
+can_attack = false;
+attack_delay = get_room_speed() * 2;
+alarm[4] = attack_delay;
 
 // Roam behaviour
 move_chance = 0.5;

@@ -9,7 +9,7 @@
   "bitRate":192,
   "compression":0,
   "conversionMode":0,
-  "duration":0.0,
+  "duration":1.26322,
   "name":"synth1_b2",
   "parent":{
     "name":"Synth1 Beeps",

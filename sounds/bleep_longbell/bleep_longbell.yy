@@ -9,7 +9,7 @@
   "bitRate":192,
   "compression":0,
   "conversionMode":0,
-  "duration":0.0,
+  "duration":2.769252,
   "name":"bleep_longbell",
   "parent":{
     "name":"Beeps, Assorted, Menu, Game-Sounds",

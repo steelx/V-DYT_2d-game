@@ -9,7 +9,7 @@
   "bitRate":192,
   "compression":0,
   "conversionMode":0,
-  "duration":0.0,
+  "duration":0.195692,
   "name":"basic_b_tonic",
   "parent":{
     "name":"Basic Beeps",

@@ -9,7 +9,7 @@
   "bitRate":192,
   "compression":0,
   "conversionMode":0,
-  "duration":0.0,
+  "duration":0.296916,
   "name":"basic_b_descend1",
   "parent":{
     "name":"Basic Beeps",

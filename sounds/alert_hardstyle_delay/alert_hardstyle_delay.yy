@@ -9,7 +9,7 @@
   "bitRate":192,
   "compression":0,
   "conversionMode":0,
-  "duration":0.0,
+  "duration":3.692313,
   "name":"alert_hardstyle_delay",
   "parent":{
     "name":"Alerts, Chimes, Jingles",

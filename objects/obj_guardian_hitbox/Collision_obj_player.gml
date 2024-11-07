@@ -9,7 +9,11 @@ with (other) {
 	}
 	// inside WITH 'other' refers to hitbox
 	hp -= other.damage;
-    if (hp > 0) add_screenshake(0.2);
+    if (hp > 0) {
+		// player hurt fx
+	    create_pixelated_blood_fx();
+		add_screenshake(0.5);
+	}
 		
 	// Change sprite to hurt sprite
 	sprite_index = spr_player_hurt;

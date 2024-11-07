@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"effectz",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"effectz",
+  "parent":{
+    "name":"VFX",
+    "path":"folders/Objects/VFX.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

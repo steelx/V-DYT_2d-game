@@ -1,15 +1,17 @@
-/// @description obj_player_attack_hitbox collision with obj_enemy_parent
+/// @description obj_player_superattack_hitbox collision with obj_enemy_parent
 
 // Reduce enemy's HP
 other.hp--;
 
 // Apply knockback to the enemy
 var _knockback_speed = 4; // Adjust this value as needed
-var _knockback_direction = sign(other.x - x);
-//other.vel_x = _knockback_speed * _knockback_direction;
-other.vel_x = lengthdir_x(_knockback_speed, _knockback_direction);
-other.vel_y = 0;
+var _knockback_direction = point_direction(x, y, other.x, other.y);
+var _knockback_x = lengthdir_x(_knockback_speed, _knockback_direction);
+var _knockback_y = lengthdir_y(_knockback_speed, _knockback_direction);
 
+// Apply knockback
+other.vel_x = _knockback_x;
+//other.vel_y = _knockback_y; // NO verticle knockback
 
 // Set the enemy to a knockback state
 other.state = CHARACTER_STATE.KNOCKBACK;

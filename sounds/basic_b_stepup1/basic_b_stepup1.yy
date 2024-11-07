@@ -9,7 +9,7 @@
   "bitRate":192,
   "compression":0,
   "conversionMode":0,
-  "duration":0.0,
+  "duration":0.293537,
   "name":"basic_b_stepup1",
   "parent":{
     "name":"Basic Beeps",
