@@ -15,27 +15,49 @@ var _spacing = 72 * _scale;
 // Health
 draw_player_health(_gui_w, _gui_h, _x, _y, _scale);
     
+#region stats
+// Set the font for Scribble
+scribble_font_set_default("font_stats");
+
 // Jetpack Fuel
 var _screen_bottom = _gui_h - _spacing*2;
 _y += _screen_bottom;
-draw_sprite_ext(spr_ui_jetpack, 0, _x, _y, _scale, _scale, 0, c_white, 1);
+draw_text_scribble(_x, _y, "[scale,"+string(_scale)+"][c_blue]Jetpack Fuel");
 var _jetpack_ratio = obj_player.jetpack_fuel / obj_player.jetpack_max_fuel;
 draw_set_color(c_aqua);
 draw_rectangle(_x+_icon_w, _y+_bar_center, _x+_icon_w+_bar_width * _jetpack_ratio, _y+_bar_center+_bar_height, false);
-    
+
 // Super Attack Charge
-var _jetpack_image_w = sprite_get_width(spr_ui_jetpack);
-_x += _jetpack_image_w;
-draw_sprite_ext(spr_ui_super_attack, 0, _x, _y, _scale, _scale, 0, c_white, 1);
+_x += _spacing;
+draw_text_scribble(_x, _y, "[scale,"+string(_scale)+"][c_yellow]Super Attack");
 var _attack_ratio = obj_player.attack_fuel / obj_player.attack_fuel_max;
-    
+
+// Draw Super Attack charge with pixel animation
+var _pixel_size = 1 * _scale;
+var _bar_pixels_w = 60;
+var _bar_pixels_h = 10;
+var _total_pixels = _bar_pixels_w * _bar_pixels_h;
+var _filled_pixels = round(_attack_ratio * _total_pixels);
+
+for (var _i = 0; _i < _bar_pixels_w; _i++) {
+    for (var _j = 0; _j < _bar_pixels_h; _j++) {
+        var _pixel_index = _i + _j * _bar_pixels_w;
+        var _pixel_x = _x + _icon_w + _i * _pixel_size;
+        var _pixel_y = _y + _bar_center + _j * _pixel_size;
+        
+        if (_pixel_index < _filled_pixels) {
+            draw_set_color(c_yellow);
+            draw_rectangle(_pixel_x, _pixel_y, _pixel_x + _pixel_size, _pixel_y + _pixel_size, false);
+        }
+    }
+}
+
 // Calculate charge time for Super Attack
 var _remaining_fuel = obj_player.attack_fuel_max - obj_player.attack_fuel;
 var _frames_to_full = _remaining_fuel / obj_player.attack_fuel_regeneration_rate;
 var _seconds_to_full = ceil(_frames_to_full / game_get_speed(gamespeed_fps));
-        
+
 // Draw charge time for Super Attack
-draw_set_font(font_stats_small);
-draw_set_halign(fa_left);
-draw_set_valign(fa_top);
-draw_text_color(_x+_icon_w+_scale+5, _y+_bar_center-5, string(_seconds_to_full) + " s", c_white, c_white, c_white, c_white, 1);
+draw_text_scribble(_x+_icon_w+_scale+5, _y+_bar_center-5, 
+    "[scale,"+string(_scale)+"][c_white]" + string(_seconds_to_full) + " s");
+#endregion

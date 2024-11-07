@@ -45,9 +45,9 @@ function is_jump_key_held() {
 
 // Attack / Super Attack
 attack_key_held_timer = 0;
-attack_fuel_max = 40;
+attack_fuel_max = 100;
 attack_fuel = attack_fuel_max;
-attack_fuel_consumption_rate = 40; // Consume points per super attack
+attack_fuel_consumption_rate = 100; // Consume points per super attack
 attack_fuel_regeneration_rate = 0.1; // Regenerate 1 point per frame when not attacking
 
 function is_attack_key_held() {

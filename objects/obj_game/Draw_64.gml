@@ -39,5 +39,12 @@ if (global.game_state == GAME_STATES.PAUSED && global.show_game_menu) {
     }
     // Draw the pause menu surface
     draw_surface(menu_surface, 0, 0);
+	
+	// Reset draw settings
+    draw_set_font(-1);  // Reset to default font
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    draw_set_color(c_white);
+    draw_set_alpha(1);
 }
 
