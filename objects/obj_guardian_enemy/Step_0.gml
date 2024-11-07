@@ -30,6 +30,9 @@ if should_pause_object() {
             break;
             
         case CHARACTER_STATE.MOVE:
+			// Apply movement
+			apply_horizontal_movement();
+		    apply_verticle_movement();
             if (!_player_above and can_attack and is_player_in_attack_range(attack_range)) {
 				can_attack = false;
 				alarm[4] = attack_delay;
@@ -61,10 +64,6 @@ if should_pause_object() {
             }
             break;
     }
-    
-    // Apply movement
-	apply_horizontal_movement();
-    apply_verticle_movement();
     
     // Apply gravity
     if (!is_on_ground()) {

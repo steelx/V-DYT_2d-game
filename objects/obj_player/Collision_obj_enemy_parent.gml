@@ -3,10 +3,12 @@
 // It checks if the player has fallen on top of the enemy, in which case the enemy is defeated. Otherwise, the player
 // gets hurt.
 // This condition checks if the player's vertical velocity is greater than 0, meaning it's falling down.
-var _excluded_enemy_kill_from_jump = [obj_guardian_enemy, obj_archer];
-if !array_contains(_excluded_enemy_kill_from_jump, other.object_index)
-	and (state == CHARACTER_STATE.JUMP || state == CHARACTER_STATE.JETPACK_JUMP || vel_y < 0) 
-{
+
+// _allowed_to_walkpast_enemies who are generally enemies with weapons, and player can move close to them to attack
+var _allowed_to_walkpast_enemies = [obj_guardian_enemy, obj_archer];
+if array_contains(_allowed_to_walkpast_enemies, other.object_index) exit;
+
+if (state == CHARACTER_STATE.JUMP || state == CHARACTER_STATE.JETPACK_JUMP || vel_y < 0) {
     // This checks if the bottom point of the player's collision mask was above the enemy mask's top
     // point, in the previous frame.
     // If this is true, it proves that the player is falling on top of the enemy from above, as it was
