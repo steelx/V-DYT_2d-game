@@ -2,6 +2,9 @@
 #macro GUI_WIDTH 960 
 #macro GUI_HEIGHT 540 
 
+/// ENEMY PARENT
+#macro ENEMY_SMART_SEARCH 11
+
 
 /// CAMERA
 #macro CAMERA_RESET_PAN 0

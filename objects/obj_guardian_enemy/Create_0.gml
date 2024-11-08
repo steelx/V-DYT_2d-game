@@ -12,6 +12,8 @@ attack_range = 42;
 defeated_object = obj_guardian_defeated;
 move_speed = 1.5;
 
+enable_smart = true;
+
 // attack timer
 can_attack = false;
 attack_delay = get_room_speed() * 2;

@@ -28,12 +28,6 @@ if instance_exists(obj_player) and distance_to_object(obj_player) < 156 {
         hp, max_hp,
         "#FFFFFF", "#242434", "#e01f3f"
     );
-    /*
-    draw_healthbar(
-        _bar_x, _bar_y, _bar_x + _bar_width, _bar_y + _bar_height,
-        (hp / max_hp) * 100, c_black, c_red, c_lime, 0, true, true
-    );
-    */
 }
 
 //debug_render_mask();

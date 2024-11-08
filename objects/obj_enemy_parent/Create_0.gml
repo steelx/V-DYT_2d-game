@@ -19,3 +19,16 @@ friction_power = 0;
 
 // Set initial state
 state = CHARACTER_STATE.MOVE;
+
+#region Smart behavior
+// allows enemy to search for player if had attacked him last step
+enable_smart = false;
+
+// Variables for smart behavior
+smart_search_timer = 0;
+smart_search_duration = get_room_speed() * 5;
+original_x = x;
+last_seen_player_x = 0;
+
+alarm[ENEMY_SMART_SEARCH] = -1;
+#endregion

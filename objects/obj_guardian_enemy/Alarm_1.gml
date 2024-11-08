@@ -1,6 +1,6 @@
 /// @description Alarm 1 Roam/Walk behaviour
 /// IDLE > Roam timer > MOVE > (player in attack range ?) > ATTACK
-enemy_random_move(1.5, 3);
+enemy_random_move_v2(move_speed, 3, enable_smart);
 sprite_index = spr_guardian_walk;
 image_speed = 1;
 

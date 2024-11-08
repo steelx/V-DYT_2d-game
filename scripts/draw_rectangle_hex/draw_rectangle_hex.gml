@@ -1,21 +1,21 @@
 /// @function draw_rectangle_hex(x1, y1, x2, y2, color, outline)
-/// @param {real} x1 The x coordinate of the left side of the rectangle.
-/// @param {real} y1 The y coordinate of the top side of the rectangle.
-/// @param {real} x2 The x coordinate of the right side of the rectangle.
-/// @param {real} y2 The y coordinate of the bottom side of the rectangle.
-/// @param {string} color The hex color code (e.g., "#FF0000" for red).
-/// @param {bool} outline Whether to draw only the outline (true) or fill the rectangle (false).
-function draw_rectangle_hex(x1, y1, x2, y2, color, outline = false) {
+/// @param {real} _x1 The x coordinate of the left side of the rectangle.
+/// @param {real} _y1 The y coordinate of the top side of the rectangle.
+/// @param {real} _x2 The x coordinate of the right side of the rectangle.
+/// @param {real} _y2 The y coordinate of the bottom side of the rectangle.
+/// @param {string} _color The hex color code (e.g., "#FF0000" for red).
+/// @param {bool} _outline Whether to draw only the outline (true) or fill the rectangle (false).
+function draw_rectangle_hex(_x1, _y1, _x2, _y2, _color, _outline = false) {
     var _old_color = draw_get_color();
     
     // Convert hex to color
-    var _col = hex_to_color(color);
+    var _col = hex_to_color(_color);
     
     // Set the color
     draw_set_color(_col);
     
     // Draw the rectangle
-    draw_rectangle(x1, y1, x2, y2, outline);
+    draw_rectangle(_x1, _y1, _x2, _y2, _outline);
     
     // Reset the color
     draw_set_color(_old_color);

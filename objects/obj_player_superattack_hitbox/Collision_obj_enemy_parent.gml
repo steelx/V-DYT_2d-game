@@ -1,23 +1,24 @@
 /// @description obj_player_superattack_hitbox collision with obj_enemy_parent
+if (other.no_hurt_frames > 0) exit;
 
 // Reduce enemy's HP
-other.hp--;
+with (other) {
+	create_blood_splash();
+	hp--;
+	if hp > 0 {
+		// Apply knockback to the enemy
+		var _knockback_speed = 6; // Adjust this value as needed
+		var _knockback_direction = point_direction(obj_player.x, obj_player.y, x, y);
+		var _knockback_x = lengthdir_x(_knockback_speed, _knockback_direction);
+		var _knockback_y = lengthdir_y(_knockback_speed, _knockback_direction);
+		vel_x = _knockback_x;
+		vel_y = 0;
 
-// Apply knockback to the enemy
-var _knockback_speed = 4; // Adjust this value as needed
-var _knockback_direction = point_direction(x, y, other.x, other.y);
-var _knockback_x = lengthdir_x(_knockback_speed, _knockback_direction);
-var _knockback_y = lengthdir_y(_knockback_speed, _knockback_direction);
+		// Set the enemy to a knockback state
+		state = CHARACTER_STATE.KNOCKBACK;
 
-// Apply knockback
-other.vel_x = _knockback_x;
-//other.vel_y = _knockback_y; // NO verticle knockback
-
-// Set the enemy to a knockback state
-other.state = CHARACTER_STATE.KNOCKBACK;
-
-// Start enemy blinking
-other.no_hurt_frames = 30; // Blink for 30 frames (adjust as needed)
-
-// Play hit sound (if you have one)
-audio_play_sound(snd_enemy_hit, 1, false);
+		// Start enemy blinking
+		no_hurt_frames = 60;
+		audio_play_sound(snd_enemy_hit, 1, false);
+	}
+}
