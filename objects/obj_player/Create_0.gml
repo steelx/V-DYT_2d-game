@@ -31,7 +31,7 @@ red_border_intensity = 0;
 red_border_active = false;
 
 // Jet pack variables
-jetpack_max_fuel = 10;
+jetpack_max_fuel = 1000;
 jetpack_fuel = jetpack_max_fuel;
 jetpack_fuel_consumption_rate = 1/60; // Consume 1 point per second
 jetpack_fuel_regeneration_rate = 0.2/60; // regeneration 0.2 point per frame

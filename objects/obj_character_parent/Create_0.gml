@@ -44,31 +44,3 @@ no_hurt_frames = 0;
 // This is the object that replaces the character once it is defeated. By default it's set to 'obj_player_defeated'
 // and its value may be changed in a child object.
 defeated_object = obj_player_defeated;
-
-_states = [
-    "PAUSED",
-	"IDLE",
-    "MOVE",
-    "JUMP",
-    "JETPACK_JUMP",
-    "KNOCKBACK",
-    "ATTACK",
-    "SUPER_ATTACK",
-    "ALERT",
-    "CHASE",
-    "SEARCH",
-]
-
-debug_render_mask = function() {
-    draw_set_alpha(0.3);
-	draw_set_color(c_yellow);
-    draw_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom, true);
-    draw_set_alpha(1);
-	draw_text(x, y, _states[state]);
-
-	if object_index == obj_player {
-        draw_text(x, y+10, "Jet Fuel: " + string(jetpack_fuel));
-        draw_set_color(c_white);
-        draw_text(x+10, y+20, "Attack Fuel: " + string(attack_fuel));
-    }
-};

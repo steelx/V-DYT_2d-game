@@ -6,11 +6,19 @@ event_inherited();
 max_hp = 20;
 hp = max_hp;
 damage = 2;
-visible_range = 64;// how far enemy can see
+visible_range = 120;// how far enemy can see
 attack_range = 42;
 
 defeated_object = obj_guardian_defeated;
 move_speed = 1.5;
+
+// Default sprite mapping
+sprites_map[$ CHARACTER_STATE.IDLE] = spr_guardian_idle;
+sprites_map[$ CHARACTER_STATE.MOVE] = spr_guardian_walk;
+sprites_map[$ CHARACTER_STATE.CHASE] = spr_guardian_walk;
+sprites_map[$ CHARACTER_STATE.SEARCH] = spr_guardian_walk;
+sprites_map[$ CHARACTER_STATE.ALERT] = spr_guardian_idle;
+sprites_map[$ CHARACTER_STATE.ATTACK] = spr_guardian_idle;
 
 enable_smart = true;
 
@@ -20,11 +28,9 @@ attack_delay = get_room_speed() * 2;
 alarm[4] = attack_delay;
 
 // Roam behaviour
-move_chance = 0.5;
+move_chance = 1;
 state = CHARACTER_STATE.IDLE;
 move_chance = 0.5;
-roam_timer = get_room_speed() * 3;
-alarm_set(1, roam_timer);
 
 
 #region Attack Sequence
@@ -37,7 +43,7 @@ enable_self = function () {
 	image_alpha = 1;
 	state = CHARACTER_STATE.IDLE;
 	image_index = spr_guardian_idle;
-	alarm_set(1, roam_timer*choose(2, 3));
+	alarm_set(1, 1);
 };
 
 disable_self = function () {

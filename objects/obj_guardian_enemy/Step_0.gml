@@ -10,19 +10,7 @@ var _player_above = instance_exists(obj_player) && obj_player.y < y - sprite_hei
 
 switch(state) {
     case CHARACTER_STATE.IDLE:
-        vel_x = 0;
-        if (!_player_above && (is_player_in_attack_range(attack_range) || is_player_visible(visible_range))) {
-            sprite_index = spr_guardian_walk;
-            state = CHARACTER_STATE.CHASE;
-        } else if (alarm[1] <= 0) {
-            // Transition to MOVE based on move_chance
-            if (random(1) < move_chance) {
-                enemy_random_move_v2(move_speed, 9);
-                sprite_index = spr_guardian_walk;
-            } else {
-                alarm_set(1, roam_timer * choose(2, 3));
-            }
-        }
+        handle_idle_state();
         break;
 
     case CHARACTER_STATE.ATTACK:
@@ -31,31 +19,22 @@ switch(state) {
         break;
 
     case CHARACTER_STATE.MOVE:
-        // Check if player is visible during random movement
-        if (!_player_above and is_player_visible(visible_range)) {
-            state = CHARACTER_STATE.CHASE;
-			vel_x = move_speed * (sign(obj_player.x - x));
-            last_seen_player_x = obj_player.x;
+        if (check_player_visibility()) {
+            transition_to_chase();
+        } else if (!handle_patrol_movement() && abs(vel_x) < 0.1) {
+            state = CHARACTER_STATE.IDLE;
+            reset_roam_count();
         }
         break;
 
     case CHARACTER_STATE.CHASE:
-        if (!_player_above && can_attack && is_player_in_attack_range(attack_range)) {
-            can_attack = false;
-            alarm[4] = attack_delay;
-            var _attack_object_x = 40;
-            var _attack_object_width = 10;
-            if (move_to_attack_position(obj_player.xprevious, _attack_object_x, _attack_object_width)) {
-                alarm[3] = 1;
-            } else {
-                state = CHARACTER_STATE.ATTACK;
-            }
-			break;
-		} else if (!is_player_visible(visible_range)) {
-			// Player is out of visible range, transition to ALERT
-	        state = CHARACTER_STATE.ALERT;
-	        alert_count = alert_count_init;
-		}
+		sprite_index = spr_guardian_walk;
+		vel_x = move_speed * (sign(obj_player.x - x));
+		if (check_player_attackable()) {
+            if (perform_attack_sequence()) break;
+        } else if (!check_player_visibility()) {
+            transition_to_alert();
+        }
         break;
 
     case CHARACTER_STATE.ALERT:
@@ -63,26 +42,32 @@ switch(state) {
         sprite_index = spr_guardian_idle;
         
         if (!_player_above and is_player_visible(visible_range)) {
-            state = CHARACTER_STATE.CHASE;
+            transition_to_state(CHARACTER_STATE.CHASE);
             break;
         }
 		if (!_player_above and can_attack and is_player_in_attack_range(attack_range)) {
-			state = CHARACTER_STATE.ATTACK;
+			transition_to_state(CHARACTER_STATE.ATTACK);
             break;
 		}
         
-        alert_count--;
-        if (alert_count <= 0) {
-            state = CHARACTER_STATE.SEARCH;
-            search_count = search_count_init;
-			search_direction = sign(last_seen_player_x - x);
-			search_target_x = last_seen_player_x;
+        // Check if we were recently knocked back and should counter-attack
+	    var _was_knocked_back = get_last_state() == CHARACTER_STATE.KNOCKBACK;
+	    if (_was_knocked_back && can_attack && is_player_in_attack_range(attack_range)) {
+	        transition_to_state(CHARACTER_STATE.ATTACK);
+	        break;
+	    }
+    
+	    alert_count--;
+	    if (alert_count <= 0) {
+	        transition_to_state(CHARACTER_STATE.SEARCH);
+	        search_count = search_count_init;
+	        search_direction = sign(last_seen_player_x - x);
+	        search_target_x = last_seen_player_x;
 	        image_xscale = search_direction;
-			sprite_index = spr_guardian_walk;
-        }
-        break;
+	    }
+	    break;
 
-    case CHARACTER_STATE.SEARCH:
+    case CHARACTER_STATE.SEARCH: {
 		if (!_player_above && is_player_visible(visible_range)) {
 	        state = CHARACTER_STATE.CHASE;
 	        break;
@@ -112,13 +97,15 @@ switch(state) {
     
 	    search_count--;
 	    if (search_count <= 0) {
-	        alarm_set(1, 1);
+	        transition_to_idle();
 	        ds_list_clear(search_path_points);
 	        break;
 	    }
     
 	    // Move safely towards the target point
 	    enemy_move_to(_current_target, move_speed);
+		break;
+	}
 }
 
 apply_horizontal_movement();

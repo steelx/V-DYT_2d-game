@@ -9,6 +9,8 @@ attack_range = 42;
 
 // This sets the movement speed for the enemies.
 move_speed = 1.5;
+roam_count_max = get_room_speed();
+roam_count = roam_count_max;
 
 // This applies either move_speed or negative move_speed to the enemy's X velocity. This way the enemy will
 // either move left or right (at random).
@@ -17,17 +19,15 @@ vel_x = choose(-move_speed, move_speed);
 // This sets the friction to 0 so the enemy never comes to a stop.
 friction_power = 0;
 
-prev_states = [];
-change_state = function(_state) {
-	state = _state;
-	if (array_length(prev_states) < 5) {
-		array_push(prev_states, _state);
-	} else {
-		array_shift(prev_states);
-		array_push(prev_states, _state);
-		show_debug_message($"prev_states: {prev_states}");
-	}
-};
+#region states map
+// State history (last 3 states)
+prev_states = array_create(3, CHARACTER_STATE.IDLE);
+
+// update these in child objects
+sprites_map = {};// CHARACTER_STATE length
+sprites_map[$ CHARACTER_STATE.IDLE] = spr_player_idle;
+
+#endregion
 
 #region Search behavior
 // allows enemy to search for player if had attacked him last step
@@ -40,7 +40,7 @@ search_count_init = get_room_speed() * 5;
 search_count = search_count_init;
 search_direction = image_xscale;
 search_target_x = x;
-original_x = x;
+
 last_seen_player_x = 0;
 
 search_path_points = ds_list_create();
