@@ -22,6 +22,7 @@ if (is_jump_key_held()) {
             sprite_index = spr_player_jet_jump;
             image_index = 0;
             image_speed = 1;
+			move_speed += move_speed*0.3;// increase speed during jetpack move
         }
     }
     

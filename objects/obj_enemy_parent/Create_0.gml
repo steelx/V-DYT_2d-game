@@ -17,18 +17,34 @@ vel_x = choose(-move_speed, move_speed);
 // This sets the friction to 0 so the enemy never comes to a stop.
 friction_power = 0;
 
-// Set initial state
-state = CHARACTER_STATE.MOVE;
+prev_states = [];
+change_state = function(_state) {
+	state = _state;
+	if (array_length(prev_states) < 5) {
+		array_push(prev_states, _state);
+	} else {
+		array_shift(prev_states);
+		array_push(prev_states, _state);
+		show_debug_message($"prev_states: {prev_states}");
+	}
+};
 
-#region Smart behavior
+#region Search behavior
 // allows enemy to search for player if had attacked him last step
 enable_smart = false;
 
 // Variables for smart behavior
-smart_search_timer = 0;
-smart_search_duration = get_room_speed() * 3;
+alert_count_init = get_room_speed() * 2;
+alert_count = alert_count_init;
+search_count_init = get_room_speed() * 5;
+search_count = search_count_init;
+search_direction = image_xscale;
+search_target_x = x;
 original_x = x;
 last_seen_player_x = 0;
 
-alarm[ENEMY_SMART_SEARCH] = -1;
+search_path_points = ds_list_create();
+current_path_point = 0;
+patrol_width = 128; // How far to patrol from original position
+search_point_spacing = 32; // Distance between search points
 #endregion

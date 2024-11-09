@@ -53,7 +53,10 @@ _states = [
     "JETPACK_JUMP",
     "KNOCKBACK",
     "ATTACK",
-    "SUPER_ATTACK"
+    "SUPER_ATTACK",
+    "ALERT",
+    "CHASE",
+    "SEARCH",
 ]
 
 debug_render_mask = function() {

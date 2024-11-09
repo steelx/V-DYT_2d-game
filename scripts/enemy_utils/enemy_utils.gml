@@ -60,3 +60,16 @@ function draw_visibility_ray(_visible_range, _attack_range) {
     );
     draw_set_alpha(1);
 }
+
+function generate_search_path() {
+    ds_list_clear(search_path_points);
+    
+    // Generate points in a zigzag pattern
+    var _points = ceil(patrol_width / search_point_spacing);
+    var _start_x = x - patrol_width/2;
+    
+    for (var i = 0; i <= _points; i++) {
+        var _point_x = _start_x + (i * search_point_spacing);
+        ds_list_add(search_path_points, _point_x);
+    }
+}

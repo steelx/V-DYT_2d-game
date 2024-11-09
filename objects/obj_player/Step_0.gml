@@ -9,6 +9,7 @@ player_input();
 switch(state) {
     case CHARACTER_STATE.IDLE:
         // Idle state behavior
+		move_speed = move_speed_init;
         vel_x = 0;
 		obj_camera.zoom_level = 1;
         break;

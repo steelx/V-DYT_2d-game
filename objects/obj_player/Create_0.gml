@@ -15,7 +15,8 @@ coins = 0;
 in_knockback = false;
 defeated_object = obj_player_defeated;
 jump_speed = 7;
-move_speed = 1.6;
+move_speed_init = 2;
+move_speed = move_speed_init;
 
 // Bounce Shader variables
 trail_intensity = 0;
