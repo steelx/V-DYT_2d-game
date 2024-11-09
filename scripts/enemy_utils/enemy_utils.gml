@@ -44,25 +44,19 @@ function is_player_visible_direction(_range, _direction) {
     return (sign(_distance) == _direction) && (abs(_distance) <= _range);
 }
 
-
-function draw_visibility_ray(_visible_range, _attack_range, _draw_degug = true) {
-	// Draw the ray line
-	var _ray_length = _visible_range;
-	var _ray_direction = (image_xscale > 0) ? 0 : 180;
-	var _ray_end_x = x + lengthdir_x(_ray_length, _ray_direction);
-	var _ray_end_y = y - sprite_height / 2 + lengthdir_y(_ray_length, _ray_direction);
-	var _ray_color = c_yellow;
-
-	if (is_player_in_attack_range(_attack_range)) {
-	    _ray_color = c_red;
-	}
-
-	draw_line_width_color(x, y - sprite_height / 2, _ray_end_x, _ray_end_y, 1, _ray_color, _ray_color);
-	// Debug: draw visible and attack ranges
-	if _draw_degug {
-		draw_set_alpha(0.2);
-		draw_circle_color(x, y, _visible_range, c_yellow, c_yellow, false);
-		draw_circle_color(x, y, _attack_range, c_red, c_red, false);
-		draw_set_alpha(1);
-	}
+function draw_visibility_ray(_visible_range, _attack_range) {
+    draw_set_alpha(0.2);
+    draw_rectangle_color(
+        x - _visible_range, y - sprite_height,
+        x + _visible_range, y,
+        c_yellow, c_yellow, c_yellow, c_yellow,
+        false
+    );
+    draw_rectangle_color(
+        x - _attack_range, y - sprite_height,
+        x + _attack_range, y,
+        c_red, c_red, c_red, c_red,
+        false
+    );
+    draw_set_alpha(1);
 }

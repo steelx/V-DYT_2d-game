@@ -20,11 +20,13 @@ attack_delay = get_room_speed() * 2;
 alarm[4] = attack_delay;
 
 // Roam behaviour
+state = CHARACTER_STATE.MOVE;
 move_chance = 0.5;
-roam_counter_init = 120;
-roam_counter = roam_counter_init;
-roam_timer = get_room_speed();
+state = CHARACTER_STATE.IDLE;
+move_chance = 0.5;
+roam_timer = get_room_speed() * 3;
 alarm_set(1, roam_timer);
+
 
 #region Attack Sequence
 // disable guardian enemy when attack sequence is running

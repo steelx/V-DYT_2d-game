@@ -2,6 +2,9 @@
 
 // Inherit the parent event
 event_inherited();
+if (enable_smart and smart_search_timer > 0) {
+	smart_search_timer--;
+}
 
 switch (state) {
     case CHARACTER_STATE.KNOCKBACK:

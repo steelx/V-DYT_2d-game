@@ -26,7 +26,7 @@ enable_smart = false;
 
 // Variables for smart behavior
 smart_search_timer = 0;
-smart_search_duration = get_room_speed() * 5;
+smart_search_duration = get_room_speed() * 3;
 original_x = x;
 last_seen_player_x = 0;
 
