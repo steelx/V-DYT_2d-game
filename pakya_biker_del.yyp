@@ -286,6 +286,7 @@
     {"id":{"name":"sequence_builder","path":"scripts/sequence_builder/sequence_builder.yy",},},
     {"id":{"name":"src_dialog_draw","path":"scripts/src_dialog_draw/src_dialog_draw.yy",},},
     {"id":{"name":"src_dialog_func","path":"scripts/src_dialog_func/src_dialog_func.yy",},},
+    {"id":{"name":"state_utils","path":"scripts/state_utils/state_utils.yy",},},
     {"id":{"name":"string_height_scribble_ext","path":"scripts/string_height_scribble_ext/string_height_scribble_ext.yy",},},
     {"id":{"name":"string_height_scribble","path":"scripts/string_height_scribble/string_height_scribble.yy",},},
     {"id":{"name":"string_length_scribble","path":"scripts/string_length_scribble/string_length_scribble.yy",},},

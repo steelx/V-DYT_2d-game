@@ -6,8 +6,8 @@ if !enabled {
 // Inherit the parent event
 event_inherited();
 
-draw_debug_info();
+//draw_debug_info();
 //debug_render_mask();
+show_debug_message($"xS: {image_xscale}, s:{obj_game._states[state]}, Roam: {roam_count}, lastSeenX: {last_seen_player_x}");
 
-// Draw the ray line
 //draw_visibility_ray(visible_range, attack_range);

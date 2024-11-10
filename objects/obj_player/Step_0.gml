@@ -11,7 +11,6 @@ switch(state) {
         // Idle state behavior
 		move_speed = move_speed_init;
         vel_x = 0;
-		obj_camera.zoom_level = 1;
         break;
     case CHARACTER_STATE.MOVE:
         apply_horizontal_movement();
@@ -80,6 +79,7 @@ apply_verticle_movement();
 /// Regenerate jetpack fuel when grounded
 /// (in future add fuel collectible items and remove this code)
 if (grounded && jetpack_fuel < jetpack_max_fuel) {
+	obj_camera.zoom_level = 1;
     jetpack_fuel += jetpack_fuel_regeneration_rate;
     jetpack_fuel = min(jetpack_fuel, jetpack_max_fuel);
 }
