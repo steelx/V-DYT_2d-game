@@ -75,3 +75,86 @@ check_animation = function () {
     }
 };
 #endregion
+
+/*
+Behavior Tree State Transition Example:
+
+1. Selector (_selector_root)
+   - Tries each child until one succeeds
+   - If all fail, moves to next child
+
+2. Sequence (_sequence_combat)
+   - Must complete all children in order
+   - If any fail, the whole sequence fails
+
+3. Combat Sequence Example:
+   DetectPlayer (Success) -> CombatSelector -> Attack (Failure) -> Chase (Running)
+   Next frame:
+   DetectPlayer (Success) -> CombatSelector -> Attack (Success) -> Stop
+
+State Flow:
+Root
+└── Selector (root)
+    ├── Sequence (combat)
+    │   ├── DetectPlayer
+    │   └── Selector (combat)
+    │       ├── Attack
+    │       └── Chase
+    └── Sequence (patrol)
+        ├── Idle
+        └── Patrol
+
+Example Transitions:
+- If DetectPlayer returns Success:
+  - Try Attack (if in range returns Success, execute attack)
+  - If Attack fails, try Chase (returns Running while moving to player)
+  
+- If DetectPlayer returns Failure:
+  - Entire combat sequence fails
+  - Falls back to patrol sequence
+*/
+#region Behaviour_tree
+// Initialize behavior tree
+bt_root = new BTreeRoot(id);
+
+// Create root selector
+var _selector_root = new BTreeSelector();
+
+// Create combat sequence
+var _sequence_combat = new BTreeSequence();
+var _combat_selector = new BTreeSelector(); // NEW: selector for attack/chase
+
+// Create patrol sequence
+var _sequence_patrol = new BTreeSequence();
+
+// Create tasks
+var _detect_player = new GuardianDetectPlayerTask(visible_range);
+var _attack_player = new GuardianAttackTask();
+var _chase_player = new GuardianChaseTask(move_speed);
+var _idle_task = new GuardianIdleTask();
+var _patrol_task = new GuardianPatrolTask(move_speed);
+
+// Build the tree
+bt_root.ChildAdd(_selector_root);
+
+// Combat sequence: detect then select between attack/chase
+_sequence_combat.ChildAdd(_detect_player);
+_sequence_combat.ChildAdd(_combat_selector);
+
+// Combat selector: try attack first, if fails then chase
+_combat_selector.ChildAdd(_attack_player);
+_combat_selector.ChildAdd(_chase_player);
+
+// Patrol sequence
+_sequence_patrol.ChildAdd(_idle_task);
+_sequence_patrol.ChildAdd(_patrol_task);
+
+// Add sequences to root selector
+_selector_root.ChildAdd(_sequence_combat);
+_selector_root.ChildAdd(_sequence_patrol);
+
+// Initialize the tree
+bt_root.Init();
+#endregion
+
+

@@ -1,4 +1,4 @@
-/// @description enemy parent End Step
+/// @description obj_enemy_parent End Step
 
 // Inherit the parent event
 event_inherited();

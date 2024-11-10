@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"debug_bt",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"debug_bt",
+  "parent":{
+    "name":"behaviour_tree",
+    "path":"folders/Scripts/behaviour_tree.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"BT_guardian_enemy",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"BT_guardian_enemy",
+  "parent":{
+    "name":"guardian",
+    "path":"folders/Objects/Characters/Enemies/guardian.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

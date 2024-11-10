@@ -1,5 +1,5 @@
-/// @desc obj_enemy_parent -> inheriting obj_character_parent
-
+/// @desc obj_enemy_parent Create event
+// inheriting obj_character_parent
 event_inherited();
 
 // This is the amount of damage the enemy does to the player.
