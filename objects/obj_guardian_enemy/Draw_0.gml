@@ -6,4 +6,4 @@ if !enabled {
 // Inherit the parent event
 event_inherited();
 
-draw_visibility_ray(visible_range, attack_range);
+//draw_visibility_ray(visible_range, attack_range);

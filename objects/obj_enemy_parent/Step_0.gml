@@ -2,6 +2,7 @@
 
 // Inherit the parent event
 event_inherited();
+if (state == noone) exit;
 
 switch (state) {
     case CHARACTER_STATE.KNOCKBACK:
@@ -15,7 +16,8 @@ switch (state) {
         if (abs(vel_x) < 0.1) {
             vel_x = 0;
             vel_y = 0;
-            transition_to_chase();
+			transition_to_chase(); // For non-BT enemies
+            
         }
         break;
 }

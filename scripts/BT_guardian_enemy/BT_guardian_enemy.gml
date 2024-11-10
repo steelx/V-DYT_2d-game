@@ -32,12 +32,7 @@ function GuardianDetectPlayerTask(_visible_range) : BTreeLeaf() constructor {
             var _dir_to_player = point_direction(x, y, obj_player.x, obj_player.y);
             
             // Check if player is in the correct direction based on facing
-            var _in_view_arc = false;
-            if (image_xscale > 0) {
-                _in_view_arc = (_dir_to_player >= 270 || _dir_to_player <= 90);
-            } else if (image_xscale < 0) {
-                _in_view_arc = (_dir_to_player >= 90 && _dir_to_player <= 270);
-            }
+            var _in_view_arc = is_player_facing();
             
             if (!_player_above && _within_range && _in_view_arc) {
                 last_seen_player_x = obj_player.x;
@@ -49,6 +44,8 @@ function GuardianDetectPlayerTask(_visible_range) : BTreeLeaf() constructor {
     }
 }
 
+// 1 Attack task is part of combat selector, 
+// which mean if Failure it will go next in selector, and Success means goes back to Detector state
 function GuardianAttackTask() : BTreeLeaf() constructor {
     name = "Guardian Attack Task";
     
@@ -57,8 +54,11 @@ function GuardianAttackTask() : BTreeLeaf() constructor {
         if (!instance_exists(obj_player)) return BTStates.Failure;
         
         with(_user) {
+			if (instance_exists(active_attack_sequence)) {
+				return BTStates.Success;
+			}
+			
             var _dist = distance_to_object(obj_player);
-            
             if (_dist <= attack_range && can_attack) {
                 // Stop and face player
                 vel_x = 0;
@@ -71,11 +71,13 @@ function GuardianAttackTask() : BTreeLeaf() constructor {
                 return BTStates.Running;
             }
             
-            return BTStates.Success; // Can't attack, let chase happen
+            return BTStates.Success; // Choose next in Selector, Chase
         }
     }
 }
 
+// 2 Chase task is part of combat selector (Only if Attack fails), 
+// which mean if Failure it goes back to GuardianDetectPlayerTask
 function GuardianChaseTask(_move_speed) : BTreeLeaf() constructor {
     name = "Guardian Chase Task";
     chase_speed = _move_speed;
@@ -90,16 +92,18 @@ function GuardianChaseTask(_move_speed) : BTreeLeaf() constructor {
             // If too far, stop chasing
             if (_dist >= visible_range) {
                 vel_x = 0;
-                return BTStates.Failure;
+                return BTStates.Success;
             }
 			
-			// If in attack range, stay in combat but let attack task handle it
+			// If in attack range, Failure goes back to Detect seq, and comes back to Attack
+			// Since Attack is 1st node in selector
             if (_dist <= attack_range) {
                 vel_x = 0;
                 return BTStates.Failure;
             }
             
             // Continue chase
+			last_seen_player_x = obj_player.x;
             sprite_index = sprites_map[$ CHARACTER_STATE.CHASE];
             vel_x = other.chase_speed * sign(obj_player.x - x);
             image_xscale = sign(vel_x);
@@ -109,7 +113,7 @@ function GuardianChaseTask(_move_speed) : BTreeLeaf() constructor {
 }
 
 
-// Add detection to patrol task
+
 function GuardianPatrolTask(_move_speed) : BTreeLeaf() constructor {
     name = "Guardian Patrol Task";
     patrol_speed = _move_speed;
@@ -119,7 +123,8 @@ function GuardianPatrolTask(_move_speed) : BTreeLeaf() constructor {
         
         with(_user) {
             // First check if player is detected
-            if (check_player_visibility()) {
+            if (check_player_visibility() or last_seen_player_x != noone) {
+				last_seen_player_x = noone;
                 return BTStates.Failure; // Exit patrol to allow combat sequence
             }
             
@@ -138,3 +143,4 @@ function GuardianPatrolTask(_move_speed) : BTreeLeaf() constructor {
         }
     }
 }
+

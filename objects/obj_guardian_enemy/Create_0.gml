@@ -7,7 +7,7 @@ max_hp = 20;
 hp = max_hp;
 damage = 2;
 visible_range = 120;// how far enemy can see
-attack_range = 42;
+attack_range = 40;
 
 defeated_object = obj_guardian_defeated;
 move_speed = 1.5;
@@ -26,10 +26,10 @@ enable_smart = true;
 can_attack = false;
 attack_delay = get_room_speed() * 2;
 alarm[4] = attack_delay;
+last_seen_player_x = noone;
 
 // Roam behaviour
 move_chance = 1;
-state = CHARACTER_STATE.IDLE;
 move_chance = 0.5;
 
 
@@ -64,6 +64,7 @@ start_animation = function (_sequence) {
 		start_sequence();
 	}
 	disable_self();
+	return active_attack_sequence;
 };
 
 check_animation = function () {
@@ -111,7 +112,7 @@ Root
    -> Root Selector stays on Combat
 */
 #region Behaviour_tree
-
+state = CHARACTER_STATE.IDLE;
 bt_root = new BTreeRoot(id);
 
 // Create root selector
@@ -119,34 +120,36 @@ var _selector_root = new BTreeSelector();
 
 var _detect_player = new GuardianDetectPlayerTask(visible_range);
 
-// Create combat sequence selector (for attack OR chase)
-var _sequence_combat = new BTreeSequence();
-var _combat_actions = new BTreeSelector();
+// Combat Sequence & selector (for attack OR chase)
+var _combat_sequence = new BTreeSequence();
+var _combat_selector = new BTreeSelector();
 var _attack_player_task = new GuardianAttackTask();
 var _chase_player_task = new GuardianChaseTask(move_speed);
 
-// Create patrol sequence
-var _sequence_patrol = new BTreeSequence();
+// Patrol Sequence
+var _patrol_sequence = new BTreeSequence();
 var _idle_task = new GuardianIdleTask();
 var _patrol_task = new GuardianPatrolTask(move_speed);
+
 
 // Build the tree:
 bt_root.ChildAdd(_selector_root);
 
 // Combat sequence
-_sequence_combat.ChildAdd(_detect_player);
-_sequence_combat.ChildAdd(_combat_actions);
-_combat_actions.ChildAdd(_attack_player_task);
-_combat_actions.ChildAdd(_chase_player_task);
+_combat_sequence.ChildAdd(_detect_player);
+_combat_sequence.ChildAdd(_combat_selector);
+_combat_selector.ChildAdd(_attack_player_task);
+_combat_selector.ChildAdd(_chase_player_task);
 
 
 // Patrol sequence
-_sequence_patrol.ChildAdd(_idle_task);
-_sequence_patrol.ChildAdd(_patrol_task);
+_patrol_sequence.ChildAdd(_idle_task);
+_patrol_sequence.ChildAdd(_patrol_task);
 
 // Add main sequences to root selector
-_selector_root.ChildAdd(_sequence_combat);
-_selector_root.ChildAdd(_sequence_patrol);
+_selector_root.ChildAdd(_combat_sequence);
+_selector_root.ChildAdd(_patrol_sequence);
+
 
 // Initialize the tree
 bt_root.Init();
