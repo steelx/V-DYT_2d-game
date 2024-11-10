@@ -1,0 +1,73 @@
+// BEHAVIOR TREE TUTORIAL
+// Part 1: Understanding Sequence and Selector Nodes
+/*
+SELECTOR NODE (OR):
+- Tries each child in order until one succeeds
+- Returns SUCCESS if any child succeeds
+- Returns FAILURE only if ALL children fail
+- Like an OR gate: need only one path to work
+
+SEQUENCE NODE (AND):
+- Must complete ALL children in order
+- Returns FAILURE if any child fails
+- Returns SUCCESS only if ALL children succeed
+- Like an AND gate: need all steps to work
+*/
+
+// Example of your combat sequence flow:
+sequence Combat {
+    DetectPlayer()  // Must succeed first
+    selector CombatActions {
+        Attack()    // Try first
+        Chase()     // Only if Attack fails
+    }
+}
+
+// Part 2: Flow Examples
+
+// Example 1: Attack Failure Flow
+if (DetectPlayer == SUCCESS) {
+    if (Attack == FAILURE) {
+        // Selector will try Chase next
+        if (Chase == SUCCESS) {
+            // Combat sequence continues
+        } else {
+            // If Chase also fails, entire Combat sequence fails
+            // Root selector will try Patrol sequence
+        }
+    }
+}
+
+// Example 2: Chase Failure Flow
+if (DetectPlayer == SUCCESS) {
+    if (Attack == FAILURE && Chase == FAILURE) {
+        // Both combat actions failed
+        // Entire Combat sequence fails
+        // Root selector moves to Patrol sequence
+    }
+}
+
+// Part 3: Practical Implementation
+// Your implementation correctly shows this hierarchy:
+/*
+Root
+└── Selector (Root)                  // Tries Combat OR Patrol
+    ├── Sequence (Combat)            // Needs BOTH detect AND action
+    │   ├── DetectPlayer            
+    │   └── Selector (Combat Actions) // Tries Attack OR Chase
+    │       ├── Attack              
+    │       └── Chase               
+    └── Sequence (Patrol)            // Needs BOTH idle AND patrol
+        ├── Idle                    
+        └── Patrol                  
+*/
+
+// Key Points:
+// 1. Order DOES matter in both Sequences and Selectors
+// 2. In your Combat Actions selector:
+//    - Attack is tried first
+//    - Chase is only attempted if Attack fails
+// 3. If both Attack AND Chase fail:
+//    - Combat sequence fails
+//    - Root selector moves to Patrol sequence
+// 4. Patrol sequence will similarly fail if either Idle or Patrol fails

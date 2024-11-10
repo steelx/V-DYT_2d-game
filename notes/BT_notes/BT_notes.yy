@@ -1,0 +1,11 @@
+{
+  "$GMNotes":"",
+  "%Name":"BT_notes",
+  "name":"BT_notes",
+  "parent":{
+    "name":"guardian",
+    "path":"folders/Objects/Characters/Enemies/guardian.yy",
+  },
+  "resourceType":"GMNotes",
+  "resourceVersion":"2.0",
+}

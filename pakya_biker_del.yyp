@@ -112,6 +112,7 @@
     {"id":{"name":"font_title","path":"fonts/font_title/font_title.yy",},},
     {"id":{"name":"font_tooltip","path":"fonts/font_tooltip/font_tooltip.yy",},},
     {"id":{"name":"scribble_fallback_font","path":"fonts/scribble_fallback_font/scribble_fallback_font.yy",},},
+    {"id":{"name":"BT_notes","path":"notes/BT_notes/BT_notes.yy",},},
     {"id":{"name":"obj_archer_defeated","path":"objects/obj_archer_defeated/obj_archer_defeated.yy",},},
     {"id":{"name":"obj_archer","path":"objects/obj_archer/obj_archer.yy",},},
     {"id":{"name":"obj_arrow","path":"objects/obj_arrow/obj_arrow.yy",},},

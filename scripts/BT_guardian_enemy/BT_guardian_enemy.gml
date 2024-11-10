@@ -71,7 +71,7 @@ function GuardianAttackTask() : BTreeLeaf() constructor {
                 return BTStates.Running;
             }
             
-            return BTStates.Failure; // Can't attack, let chase happen
+            return BTStates.Success; // Can't attack, let chase happen
         }
     }
 }
@@ -87,14 +87,14 @@ function GuardianChaseTask(_move_speed) : BTreeLeaf() constructor {
         with(_user) {
             var _dist = distance_to_object(obj_player);
             
-            // If in attack range, let attack task take over
-            if (_dist <= attack_range) {
-                vel_x = 0;
-                return BTStates.Failure; // Important: Return FAILURE so selector tries attack
-            }
-            
             // If too far, stop chasing
             if (_dist >= visible_range) {
+                vel_x = 0;
+                return BTStates.Failure;
+            }
+			
+			// If in attack range, stay in combat but let attack task handle it
+            if (_dist <= attack_range) {
                 vel_x = 0;
                 return BTStates.Failure;
             }

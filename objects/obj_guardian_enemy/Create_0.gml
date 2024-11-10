@@ -77,79 +77,74 @@ check_animation = function () {
 #endregion
 
 /*
-Behavior Tree State Transition Example:
-
-1. Selector (_selector_root)
-   - Tries each child until one succeeds
-   - If all fail, moves to next child
-
-2. Sequence (_sequence_combat)
-   - Must complete all children in order
-   - If any fail, the whole sequence fails
-
-3. Combat Sequence Example:
-   DetectPlayer (Success) -> CombatSelector -> Attack (Failure) -> Chase (Running)
-   Next frame:
-   DetectPlayer (Success) -> CombatSelector -> Attack (Success) -> Stop
-
-State Flow:
+Behaviour tree :: State Flow =>
+// Tree Structure:
 Root
-└── Selector (root)
-    ├── Sequence (combat)
-    │   ├── DetectPlayer
-    │   └── Selector (combat)
-    │       ├── Attack
-    │       └── Chase
-    └── Sequence (patrol)
-        ├── Idle
-        └── Patrol
+└── Selector (Root)
+    ├── Sequence (Combat)            // Combat (if attack and chase Fail) Failiure -> goes to Patrol
+    │   ├── DetectPlayer            // Must succeed to continue combat
+    │   └── Selector (Combat Actions) // Try Attack OR Chase
+    │       ├── Attack              // Try first
+    │       └── Chase               // Fallback if attack fails
+    └── Sequence (Patrol)           // Patrol Failiure -> goes to Combat
+        ├── Idle                    // Must succeed to continue patrol
+        └── Patrol                  // Next patrol action
 
-Example Transitions:
-- If DetectPlayer returns Success:
-  - Try Attack (if in range returns Success, execute attack)
-  - If Attack fails, try Chase (returns Running while moving to player)
-  
-- If DetectPlayer returns Failure:
-  - Entire combat sequence fails
-  - Falls back to patrol sequence
+// Example flow:
+1. DetectPlayer returns Failure
+   -> Combat Sequence fails
+   -> Root Selector tries Patrol Sequence
+
+2. DetectPlayer returns Success
+   -> Combat Sequence continues to Attack
+   -> If Attack returns Failure
+      -> Combat Actions Selector tries Chase
+   -> If both Attack AND Chase fail
+      -> Combat Sequence fails
+      -> Root Selector tries Patrol Sequence
+
+3. DetectPlayer returns Success
+   -> Combat Sequence continues to Attack
+   -> If Attack returns Running
+      -> Stay in Attack
+   -> Combat Sequence stays Running
+   -> Root Selector stays on Combat
 */
 #region Behaviour_tree
-// Initialize behavior tree
+
 bt_root = new BTreeRoot(id);
 
 // Create root selector
 var _selector_root = new BTreeSelector();
 
-// Create combat sequence
+var _detect_player = new GuardianDetectPlayerTask(visible_range);
+
+// Create combat sequence selector (for attack OR chase)
 var _sequence_combat = new BTreeSequence();
-var _combat_selector = new BTreeSelector(); // NEW: selector for attack/chase
+var _combat_actions = new BTreeSelector();
+var _attack_player_task = new GuardianAttackTask();
+var _chase_player_task = new GuardianChaseTask(move_speed);
 
 // Create patrol sequence
 var _sequence_patrol = new BTreeSequence();
-
-// Create tasks
-var _detect_player = new GuardianDetectPlayerTask(visible_range);
-var _attack_player = new GuardianAttackTask();
-var _chase_player = new GuardianChaseTask(move_speed);
 var _idle_task = new GuardianIdleTask();
 var _patrol_task = new GuardianPatrolTask(move_speed);
 
-// Build the tree
+// Build the tree:
 bt_root.ChildAdd(_selector_root);
 
-// Combat sequence: detect then select between attack/chase
+// Combat sequence
 _sequence_combat.ChildAdd(_detect_player);
-_sequence_combat.ChildAdd(_combat_selector);
+_sequence_combat.ChildAdd(_combat_actions);
+_combat_actions.ChildAdd(_attack_player_task);
+_combat_actions.ChildAdd(_chase_player_task);
 
-// Combat selector: try attack first, if fails then chase
-_combat_selector.ChildAdd(_attack_player);
-_combat_selector.ChildAdd(_chase_player);
 
 // Patrol sequence
 _sequence_patrol.ChildAdd(_idle_task);
 _sequence_patrol.ChildAdd(_patrol_task);
 
-// Add sequences to root selector
+// Add main sequences to root selector
 _selector_root.ChildAdd(_sequence_combat);
 _selector_root.ChildAdd(_sequence_patrol);
 
