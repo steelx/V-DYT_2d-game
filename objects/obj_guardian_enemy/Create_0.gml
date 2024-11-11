@@ -38,6 +38,7 @@ move_chance = 0.5;
 // we hide this object when enabled is false
 enabled = true;
 
+
 enable_self = function () {
 	enabled = true;
 	image_alpha = 1;
@@ -146,7 +147,8 @@ var _detect_player = new GuardianDetectPlayerTask(visible_range);
 // Combat Sequence & selector (for attack OR chase)
 var _combat_sequence = new BTreeSequence();
 var _combat_selector = new BTreeSelector();
-var _attack_player_task = new GuardianAttackTask();
+//var _attack_player_task = new GuardianAttackTask();
+var _attack_player_task = new GuardianAttack2Task(seq_guardian_attack, 1);
 var _chase_player_task = new GuardianChaseTask(move_speed);
 
 // Patrol Sequence

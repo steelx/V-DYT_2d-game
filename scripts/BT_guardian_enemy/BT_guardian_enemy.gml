@@ -44,6 +44,116 @@ function GuardianDetectPlayerTask(_visible_range) : BTreeLeaf() constructor {
     }
 }
 
+/*
+Attack Task is inside a Sequence (Combat Sequence),
+and in a Sequence, if ANY child fails, the entire sequence fails (hence it would go to Patrol)
+thats why if we need to go go Chase we need to return Success if player is not in attack range.
+*/
+function GuardianAttack2Task(_seqeunce_file, _animation_duration_seconds): BTreeLeaf() constructor {
+    name = "Guardian Attack2 Task";
+    
+    // Animation management properties
+    sequence_file = _seqeunce_file;
+    sequence_layer = -1;
+    active_sequence = noone;
+    animation_timer = 0;
+    animation_duration = get_room_speed() * _animation_duration_seconds;
+	
+	attack_cooldown = 0;
+	attack_cooldown_duration = get_room_speed() * 2; // 2 seconds between attacks
+    
+    static start_sequence = function(_user, _sequence) {
+        sequence_layer = layer_create(_user.depth - 1);
+        active_sequence = layer_sequence_create(sequence_layer, _user.x, _user.y, _sequence);
+        layer_sequence_xscale(active_sequence, _user.image_xscale);
+        animation_timer = animation_duration;
+		
+		// reset attack cooldown
+		attack_cooldown = attack_cooldown_duration;
+        
+        // Disable the user object during animation
+        with(_user) {
+            enabled = false;
+            vel_x = 0;
+            vel_y = 0;
+            image_alpha = 0;
+        }
+    }
+    
+    static cleanup_sequence = function(_user) {
+        if (active_sequence != noone) {
+            layer_sequence_destroy(active_sequence);
+            active_sequence = noone;
+        }
+        if (sequence_layer != -1) {
+            layer_destroy(sequence_layer);
+            sequence_layer = -1;
+        }
+        
+        // Re-enable the user object
+        with(_user) {
+            enabled = true;
+            image_alpha = 1;
+            state = CHARACTER_STATE.IDLE;
+            sprite_index = spr_guardian_idle;
+        }
+    }
+    
+    static Process = function() {
+        var _user = black_board_ref.user;
+        if (!instance_exists(obj_player)) return BTStates.Failure;
+        
+        with(_user) {
+            // Update attack cooldown
+            if (other.attack_cooldown > 0) {
+                other.attack_cooldown--;
+            }
+            
+            // Check if we're currently in an animation
+            if (other.sequence_layer != -1) {
+                // Update animation timer
+                other.animation_timer--;
+                
+                if (other.animation_timer <= 0) {
+                    // Animation duration finished, clean up
+                    other.cleanup_sequence(_user);
+                    
+                    // Check if we can start another attack
+                    if (other.attack_cooldown <= 0 && distance_to_object(obj_player) <= attack_range) {
+                        other.start_sequence(id, other.sequence_file);
+                        return BTStates.Running;
+                    } else {
+                        // Can't attack again, switch to chase
+                        return BTStates.Success;
+                    }
+                }
+                return BTStates.Running;
+            }
+            // No active animation, check if we can start a new attack
+            var _dist = distance_to_object(obj_player);
+            if (_dist <= attack_range && other.attack_cooldown <= 0) {
+                // Stop and face player
+                image_xscale = sign(obj_player.x - x);
+                
+                // Start attack sequence
+                other.start_sequence(id, other.sequence_file);
+                return BTStates.Running;
+            }
+            
+             // Success, Choose next in Selector -> Chase
+            return BTStates.Success;
+        }
+    }
+    
+    static OnTerminate = function() {
+        // Clean up if task is terminated while animation is running
+        if (active_sequence != noone) {
+            cleanup_sequence(black_board_ref.user);
+        }
+    }
+}
+
+
 // 1 Attack task is part of combat selector, 
 // which mean if Failure it will go next in selector, and Success means goes back to Detector state
 function GuardianAttackTask() : BTreeLeaf() constructor {
@@ -207,3 +317,4 @@ function GuardianKnockbackSequenceContainer() : BTreeSequence() constructor {
         knockback_task.TriggerKnockback(_direction, _speed);
     }
 }
+
