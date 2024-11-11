@@ -6,7 +6,7 @@ function draw_behavior_tree_debug() {
     draw_set_color(c_white);
     draw_set_halign(fa_left);
     
-    var _current_node = bt_root.black_board.running_node;
+    var _current_node = bt_root.black_board.running_node ?? bt_root.black_board.root_reference;
     var _node_name = _current_node == noone ? "None" : _current_node.name;
     
     draw_text(_x, y + _y_offset, "Current Node: " + _node_name);

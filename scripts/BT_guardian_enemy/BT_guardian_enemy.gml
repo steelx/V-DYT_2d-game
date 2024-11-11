@@ -1,4 +1,5 @@
 /// @description Guardian Enemy Behavior Tree Tasks
+#region Patrol sequence
 function GuardianIdleTask() : BTreeLeaf() constructor {
     name = "Guardian Idle Task";
     
@@ -6,42 +7,100 @@ function GuardianIdleTask() : BTreeLeaf() constructor {
         var _user = black_board_ref.user;
         _user.vel_x = 0;
         _user.sprite_index = _user.sprites_map[$ CHARACTER_STATE.IDLE];
+		
+		with(_user) {
+			if (check_player_visibility() or last_seen_player_x != noone) {
+				last_seen_player_x = noone;
+	            return BTStates.Failure; // Exit Patrol Sequence
+	        }
         
-        if (_user.roam_count > 0) {
-            _user.roam_count--;
-            return BTStates.Running;
-        }
+	        if (roam_count > 0) {
+	            roam_count--;
+	            return BTStates.Running;
+	        }
+		}
         
         return BTStates.Success;
     }
 }
 
 
+function GuardianPatrolTask(_move_speed) : BTreeLeaf() constructor {
+    name = "Guardian Patrol Task";
+    patrol_speed = _move_speed;
+    
+    static Process = function() {
+        var _user = black_board_ref.user;
+        
+        with(_user) {
+            // First check if player is detected
+            if (check_player_visibility() or last_seen_player_x != noone) {
+				last_seen_player_x = noone;
+                return BTStates.Failure; // Exit patrol to allow combat sequence
+            }
+            
+            var _distance_from_start = abs(x - xstart);
+            
+            if (_distance_from_start > patrol_width) {
+                var _return_direction = sign(xstart - x);
+                vel_x = other.patrol_speed * _return_direction;
+                image_xscale = _return_direction;
+            } else {
+                vel_x = other.patrol_speed * image_xscale;
+            }
+            
+            sprite_index = sprites_map[$ CHARACTER_STATE.MOVE];
+            return BTStates.Success;
+        }
+    }
+}
+
+#endregion
+
+#region Combat seqeunce (ALL must Success)
+
 function GuardianDetectPlayerTask(_visible_range) : BTreeLeaf() constructor {
     name = "Guardian Detect Player Task";
+	visible_range = _visible_range;
     
     static Process = function() {
         var _user = black_board_ref.user;
         if (!instance_exists(obj_player)) return BTStates.Failure;
         
-        var _result = BTStates.Failure;
-        
         with(_user) {
             var _player_above = obj_player.y < y - sprite_height/2;
-            var _within_range = distance_to_object(obj_player) < visible_range;
-            var _dir_to_player = point_direction(x, y, obj_player.x, obj_player.y);
-            
+            var _within_range = distance_to_object(obj_player) < other.visible_range;
             // Check if player is in the correct direction based on facing
-            var _in_view_arc = is_player_facing();
+            var _in_view = is_player_facing();
             
-            if (!_player_above && _within_range && _in_view_arc) {
-                last_seen_player_x = obj_player.x;
-                _result = BTStates.Success;
+            if (!_player_above and _within_range and _in_view) {
+                // Should return Success if player is detected to continue combat sequence
+                return BTStates.Success;
             }
         }
         
-        return _result;
+        // Return Failure if player not detected, allowing tree to try patrol sequence
+        return BTStates.Failure;
     }
+}
+
+function GuardianCheckAttackRangeTask(_attack_range = 40): BTreeLeaf() constructor {
+	name = "Guardian Attack Range Task";
+	attack_range = _attack_range;
+	
+	static Process = function() {
+		var _user = black_board_ref.user;
+        if (!instance_exists(obj_player)) return BTStates.Failure;
+		
+		with(_user) {
+			var _dist = distance_to_object(obj_player);
+            if (_dist <= other.attack_range) {
+				return BTStates.Success;// Success means next in Sequence i.e. Attack
+			}
+			
+			return BTStates.Failure;
+		}
+	}
 }
 
 /*
@@ -49,7 +108,7 @@ Attack Task is inside a Sequence (Combat Sequence),
 and in a Sequence, if ANY child fails, the entire sequence fails (hence it would go to Patrol)
 thats why if we need to go go Chase we need to return Success if player is not in attack range.
 */
-function GuardianAttack2Task(_seqeunce_file, _animation_duration_seconds): BTreeLeaf() constructor {
+function GuardianAttackTask(_seqeunce_file, _animation_duration_seconds): BTreeLeaf() constructor {
     name = "Guardian Attack2 Task";
     
     // Animation management properties
@@ -123,16 +182,14 @@ function GuardianAttack2Task(_seqeunce_file, _animation_duration_seconds): BTree
                         other.start_sequence(id, other.sequence_file);
                         return BTStates.Running;
                     } else {
-                        // Can't attack again, switch to chase
-                        return BTStates.Success;
+                        return BTStates.Failure; // Failure to allow Chase
                     }
                 }
                 return BTStates.Running;
             }
             // No active animation, check if we can start a new attack
-            var _dist = distance_to_object(obj_player);
-            if (_dist <= attack_range && other.attack_cooldown <= 0) {
-                // Stop and face player
+            if (other.attack_cooldown <= 0) {
+                // face player
                 image_xscale = sign(obj_player.x - x);
                 
                 // Start attack sequence
@@ -140,8 +197,8 @@ function GuardianAttack2Task(_seqeunce_file, _animation_duration_seconds): BTree
                 return BTStates.Running;
             }
             
-             // Success, Choose next in Selector -> Chase
-            return BTStates.Success;
+             // Failure, exit the Sequence -> next Chase Sequence
+            return BTStates.Failure;
         }
     }
     
@@ -149,39 +206,6 @@ function GuardianAttack2Task(_seqeunce_file, _animation_duration_seconds): BTree
         // Clean up if task is terminated while animation is running
         if (active_sequence != noone) {
             cleanup_sequence(black_board_ref.user);
-        }
-    }
-}
-
-
-// 1 Attack task is part of combat selector, 
-// which mean if Failure it will go next in selector, and Success means goes back to Detector state
-function GuardianAttackTask() : BTreeLeaf() constructor {
-    name = "Guardian Attack Task";
-    
-    static Process = function() {
-        var _user = black_board_ref.user;
-        if (!instance_exists(obj_player)) return BTStates.Failure;
-        
-        with(_user) {
-			if (instance_exists(active_attack_sequence)) {
-				return BTStates.Success;
-			}
-			
-            var _dist = distance_to_object(obj_player);
-            if (_dist <= attack_range && can_attack) {
-                // Stop and face player
-                vel_x = 0;
-                image_xscale = sign(obj_player.x - x);
-                
-                // Start attack
-                can_attack = false;
-                alarm[4] = attack_delay;
-                start_animation(seq_guardian_attack);
-                return BTStates.Running;
-            }
-            
-            return BTStates.Success; // Choose next in Selector, Chase
         }
     }
 }
@@ -202,14 +226,14 @@ function GuardianChaseTask(_move_speed) : BTreeLeaf() constructor {
             // If too far, stop chasing
             if (_dist >= visible_range) {
                 vel_x = 0;
-                return BTStates.Success;
+                return BTStates.Failure;// (1st fail goes to Attack Sequence, attack fail goes to Patrol)
             }
 			
 			// If in attack range, Failure goes back to Detect seq, and comes back to Attack
 			// Since Attack is 1st node in selector
             if (_dist <= attack_range) {
                 vel_x = 0;
-                return BTStates.Failure;
+                return BTStates.Success; // Success to try next in Combat Sequence
             }
             
             // Continue chase
@@ -222,37 +246,9 @@ function GuardianChaseTask(_move_speed) : BTreeLeaf() constructor {
     }
 }
 
+#endregion
 
-
-function GuardianPatrolTask(_move_speed) : BTreeLeaf() constructor {
-    name = "Guardian Patrol Task";
-    patrol_speed = _move_speed;
-    
-    static Process = function() {
-        var _user = black_board_ref.user;
-        
-        with(_user) {
-            // First check if player is detected
-            if (check_player_visibility() or last_seen_player_x != noone) {
-				last_seen_player_x = noone;
-                return BTStates.Failure; // Exit patrol to allow combat sequence
-            }
-            
-            var _distance_from_start = abs(x - xstart);
-            
-            if (_distance_from_start > patrol_width) {
-                var _return_direction = sign(xstart - x);
-                vel_x = other.patrol_speed * _return_direction;
-                image_xscale = _return_direction;
-            } else {
-                vel_x = other.patrol_speed * image_xscale;
-            }
-            
-            sprite_index = sprites_map[$ CHARACTER_STATE.MOVE];
-            return BTStates.Success;
-        }
-    }
-}
+#region Knockback
 
 // Knockback Task without state dependency
 function GuardianKnockbackTask() : BTreeLeaf() constructor {
@@ -271,7 +267,7 @@ function GuardianKnockbackTask() : BTreeLeaf() constructor {
         with(_user) {
             // If knockback hasn't been triggered, don't process
             if (!other.is_active) {
-                return BTStates.Failure;
+                return BTStates.Failure;// Failure to move to Combat
             }
             
             // Apply knockback velocity with friction
@@ -283,7 +279,7 @@ function GuardianKnockbackTask() : BTreeLeaf() constructor {
             if (abs(other.knockback_vel_x) < 0.1) {
                 other.is_active = false;
                 other.knockback_vel_x = 0;
-                return BTStates.Success;
+                return BTStates.Failure;// Failure to move to Combat
             }
             
             // Override normal movement during knockback
@@ -317,4 +313,4 @@ function GuardianKnockbackSequenceContainer() : BTreeSequence() constructor {
         knockback_task.TriggerKnockback(_direction, _speed);
     }
 }
-
+#endregion

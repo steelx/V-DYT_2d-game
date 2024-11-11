@@ -38,7 +38,6 @@ move_chance = 0.5;
 // we hide this object when enabled is false
 enabled = true;
 
-
 enable_self = function () {
 	enabled = true;
 	image_alpha = 1;
@@ -142,14 +141,14 @@ bt_root = new BTreeRoot(id);
 // Create root selector
 var _selector_root = new BTreeSelector();
 
-var _detect_player = new GuardianDetectPlayerTask(visible_range);
-
 // Combat Sequence & selector (for attack OR chase)
 var _combat_sequence = new BTreeSequence();
 var _combat_selector = new BTreeSelector();
-//var _attack_player_task = new GuardianAttackTask();
-var _attack_player_task = new GuardianAttack2Task(seq_guardian_attack, 1);
+var _detect_player = new GuardianDetectPlayerTask(visible_range);
 var _chase_player_task = new GuardianChaseTask(move_speed);
+var _attack_sequence = new BTreeSequence();
+var _attack_range_task = new GuardianCheckAttackRangeTask(attack_range);
+_attack_player_task = new GuardianAttackTask(seq_guardian_attack, 1);
 
 // Patrol Sequence
 var _patrol_sequence = new BTreeSequence();
@@ -166,8 +165,13 @@ bt_root.ChildAdd(_selector_root);
 // Combat sequence
 _combat_sequence.ChildAdd(_detect_player);
 _combat_sequence.ChildAdd(_combat_selector);
-_combat_selector.ChildAdd(_attack_player_task);
+
+_combat_selector.ChildAdd(_attack_sequence);
 _combat_selector.ChildAdd(_chase_player_task);
+
+_attack_sequence.ChildAdd(_attack_range_task);
+_attack_sequence.ChildAdd(_attack_player_task);
+
 
 // Patrol sequence
 _patrol_sequence.ChildAdd(_idle_task);
