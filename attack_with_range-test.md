@@ -1,3 +1,4 @@
+```bash
 Root
 └── Selector Root
     ├── Knockback Sequence
@@ -11,10 +12,10 @@ Root
     └── Patrol Sequence
         ├── Idle Task
         └── Patrol Task
-
-Attack Sequence fails
-Combat Selector moves to Chase Sequence
-Guardian will chase the player if they're detected but not in attack range
+```
+ - Attack Sequence fails
+ - Combat Selector moves to Chase Sequence
+ - Guardian will chase the player if they're detected but not in attack range
 
 
 ```
