@@ -40,11 +40,11 @@ bt_root
 └── selector_root
     ├── knockback_sequence
     ├── combat_selector
-    │   ├── detect_player (visible_range)
-    │   ├── attack_sequence
+    │   ├── detect_player (visible_range) [Failure will go to patrol, Success will go to Attack]
+    │   ├── attack_sequence [if any Task Failure in Attack will lead to Chase]
     │   │   ├── check_attack_range
     │   │   └── attack_player_task (seq_guardian_attack, 1)
-    │   └── chase_sequence
+    │   └── chase_sequence [Failure will go to patrol, Success will go to Attack]
     │       └── chase_player_task (move_speed)
     └── patrol_sequence
         ├── idle_task
