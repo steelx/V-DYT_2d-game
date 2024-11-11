@@ -144,3 +144,32 @@ function GuardianPatrolTask(_move_speed) : BTreeLeaf() constructor {
     }
 }
 
+function GuardianKnockbackTask() : BTreeLeaf() constructor {
+    name = "Guardian Knockback Task";
+    
+    static Process = function() {
+        var _user = black_board_ref.user;
+        
+        with(_user) {
+			if knockback_active == false {
+				return BTStates.Failure;
+			}
+			show_debug_message("Process knockback");
+			
+            // Process knockback
+            x += vel_x;
+            vel_x *= 0.9;
+            
+            // Check if knockback is finished
+            if (abs(vel_x) < 0.1) {
+                vel_x = 0;
+                vel_y = 0;
+				knockback_active = false;
+                state = noone; // Reset state to let BT take control
+                return BTStates.Failure; // Let combat/patrol take over
+            }
+            
+            return BTStates.Running; // Stay in knockback
+        }
+    }
+}

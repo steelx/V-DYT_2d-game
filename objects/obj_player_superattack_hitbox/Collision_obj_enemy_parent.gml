@@ -16,6 +16,7 @@ with (other) {
 
 		// Set the enemy to a knockback state
 		state = CHARACTER_STATE.KNOCKBACK;
+		knockback_active = true;
 
 		// Start enemy blinking
 		no_hurt_frames = 60;

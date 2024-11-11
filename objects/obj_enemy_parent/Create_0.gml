@@ -18,6 +18,7 @@ vel_x = choose(-move_speed, move_speed);
 
 // This sets the friction to 0 so the enemy never comes to a stop.
 friction_power = 0;
+knockback_active = false; // for BT objects
 
 #region states map
 // State history (last 3 states)

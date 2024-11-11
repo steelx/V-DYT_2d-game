@@ -112,7 +112,7 @@ Root
    -> Root Selector stays on Combat
 */
 #region Behaviour_tree
-state = CHARACTER_STATE.IDLE;
+state = noone;
 bt_root = new BTreeRoot(id);
 
 // Create root selector
@@ -131,6 +131,10 @@ var _patrol_sequence = new BTreeSequence();
 var _idle_task = new GuardianIdleTask();
 var _patrol_task = new GuardianPatrolTask(move_speed);
 
+// Knockback Sequence
+var _knockback_sequence = new BTreeSequence();
+var _knockback_task = new GuardianKnockbackTask();
+
 
 // Build the tree:
 bt_root.ChildAdd(_selector_root);
@@ -141,14 +145,17 @@ _combat_sequence.ChildAdd(_combat_selector);
 _combat_selector.ChildAdd(_attack_player_task);
 _combat_selector.ChildAdd(_chase_player_task);
 
-
 // Patrol sequence
 _patrol_sequence.ChildAdd(_idle_task);
 _patrol_sequence.ChildAdd(_patrol_task);
 
+// Knockback sequence
+_knockback_sequence.ChildAdd(_knockback_task);
+
 // Add main sequences to root selector
 _selector_root.ChildAdd(_combat_sequence);
 _selector_root.ChildAdd(_patrol_sequence);
+_selector_root.ChildAdd(_knockback_sequence);
 
 
 // Initialize the tree
