@@ -77,6 +77,29 @@ check_animation = function () {
 };
 #endregion
 
+#region Knockback
+knockback_friction = 0.5; // Adjust as needed
+
+// Store reference to knockback sequence for access from collisions
+knockback_sequence = noone;
+
+// Utility function to smoothly approach a value
+approach = function(_current, _target, _amount) {
+    if (_current < _target) {
+        return min(_current + _amount, _target);
+    } else {
+        return max(_current - _amount, _target);
+    }
+};
+
+// Function to trigger knockback from collision
+apply_knockback = function(_hit_direction, _knockback_speed = 2) {
+    // Trigger knockback through behavior tree
+    if (knockback_sequence != noone) {
+        knockback_sequence.TriggerKnockback(_hit_direction, _knockback_speed);
+    }
+};
+#endregion
 /*
 Behaviour tree :: State Flow =>
 // Tree Structure:
@@ -132,8 +155,7 @@ var _idle_task = new GuardianIdleTask();
 var _patrol_task = new GuardianPatrolTask(move_speed);
 
 // Knockback Sequence
-var _knockback_sequence = new BTreeSequence();
-var _knockback_task = new GuardianKnockbackTask();
+knockback_sequence = new GuardianKnockbackSequenceContainer();
 
 
 // Build the tree:
@@ -149,13 +171,10 @@ _combat_selector.ChildAdd(_chase_player_task);
 _patrol_sequence.ChildAdd(_idle_task);
 _patrol_sequence.ChildAdd(_patrol_task);
 
-// Knockback sequence
-_knockback_sequence.ChildAdd(_knockback_task);
-
 // Add main sequences to root selector
+_selector_root.ChildAdd(knockback_sequence);
 _selector_root.ChildAdd(_combat_sequence);
 _selector_root.ChildAdd(_patrol_sequence);
-_selector_root.ChildAdd(_knockback_sequence);
 
 
 // Initialize the tree

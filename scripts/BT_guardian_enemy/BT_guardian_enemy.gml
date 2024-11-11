@@ -144,32 +144,66 @@ function GuardianPatrolTask(_move_speed) : BTreeLeaf() constructor {
     }
 }
 
+// Knockback Task without state dependency
 function GuardianKnockbackTask() : BTreeLeaf() constructor {
     name = "Guardian Knockback Task";
+    is_active = false;
+    knockback_vel_x = 0;
+    
+    static Start = function() {
+        is_active = false;
+        knockback_vel_x = 0;
+    }
     
     static Process = function() {
         var _user = black_board_ref.user;
         
         with(_user) {
-			if knockback_active == false {
-				return BTStates.Failure;
-			}
-			show_debug_message("Process knockback");
-			
-            // Process knockback
-            x += vel_x;
-            vel_x *= 0.9;
-            
-            // Check if knockback is finished
-            if (abs(vel_x) < 0.1) {
-                vel_x = 0;
-                vel_y = 0;
-				knockback_active = false;
-                state = noone; // Reset state to let BT take control
-                return BTStates.Failure; // Let combat/patrol take over
+            // If knockback hasn't been triggered, don't process
+            if (!other.is_active) {
+                return BTStates.Failure;
             }
             
-            return BTStates.Running; // Stay in knockback
+            // Apply knockback velocity with friction
+			vel_x = 0;
+            x += other.knockback_vel_x;
+            other.knockback_vel_x = approach(other.knockback_vel_x, 0, knockback_friction);
+            
+            // Check if knockback has ended
+            if (abs(other.knockback_vel_x) < 0.1) {
+                other.is_active = false;
+                other.knockback_vel_x = 0;
+                return BTStates.Success;
+            }
+            
+            // Override normal movement during knockback
+            vel_x = 0;
+            
+            return BTStates.Running;
         }
+    }
+    
+    // Method to trigger knockback from outside
+    static TriggerKnockback = function(_direction, _speed) {
+        is_active = true;
+        knockback_vel_x = lengthdir_x(_speed, _direction);
+    }
+}
+
+// Knockback Sequence Container
+function GuardianKnockbackSequenceContainer() : BTreeSequence() constructor {
+    name = "Guardian Knockback Sequence";
+    
+    // Create child tasks
+    knockback_task = new GuardianKnockbackTask();
+    //knockback_succeeder = new BTreeSucceeder();
+    
+    // Add children in sequence
+    ChildAdd(knockback_task);
+    //ChildAdd(knockback_succeeder);
+    
+    // Expose method to trigger knockback
+    static TriggerKnockback = function(_direction, _speed) {
+        knockback_task.TriggerKnockback(_direction, _speed);
     }
 }
