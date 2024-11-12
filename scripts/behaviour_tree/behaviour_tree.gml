@@ -71,10 +71,10 @@ function BTreeNode() constructor{
 	}
 	
 	static DrawGUI = function(_world_x, _world_y) {
-        // Convert world coordinates to GUI coordinates
-		var _world_xy = world_to_gui(_world_x, _world_y)
-        var _gui_x = room_x_to_gui(_world_x);
-		var _gui_y = room_y_to_gui(_world_y);
+        //var _gui_x = room_x_to_gui(_world_x);
+		//var _gui_y = room_y_to_gui(_world_y);
+		var _gui_x = _world_x;
+		var _gui_y = _world_y;
         
         var _color = c_white;
         switch(status) {
@@ -90,9 +90,17 @@ function BTreeNode() constructor{
         
         // Draw status above object
         draw_text(_gui_x, _gui_y - 10, name);
-        if(black_board_ref != noone && black_board_ref.running_node != noone) {
-            draw_text(_gui_x, _gui_y - 25, "Running: " + black_board_ref.running_node.name);
-        }
+		if (black_board_ref != noone && black_board_ref.running_node != noone) {
+			if variable_struct_exists(black_board_ref.running_node, "selector_name") {
+				draw_text(_gui_x, _gui_y - 25, "Running: " + black_board_ref.running_node.selector_name);
+			} else if variable_struct_exists(black_board_ref.running_node, "sequence_name") {
+				draw_text(_gui_x, _gui_y - 25, "Running: " + black_board_ref.running_node.sequence_name);
+			} else {
+	            draw_text(_gui_x, _gui_y - 25, "Running: " + black_board_ref.running_node.name);
+	        }
+		}
+		
+        
         
         // Reset draw properties
         draw_set_color(c_white);
