@@ -3,6 +3,9 @@
 
 // Inherit the parent event
 event_inherited();
+surface_width = window_get_width();  // Match viewport width
+surface_height = window_get_height(); // Match viewport height
+gui_surface = surface_create(surface_width, surface_height);
 max_hp = 20;
 hp = max_hp;
 damage = 2;
@@ -171,7 +174,7 @@ bt_root.ChildAdd(_selector_root);
 _combat_selector.ChildAdd(_detect_player);
 _combat_selector.ChildAdd(_attack_sequence);
 _combat_selector.ChildAdd(_chase_sequence);
-//_combat_selector.ChildAdd(_alert_sequence);
+_combat_selector.ChildAdd(_alert_sequence);
 
 _attack_sequence.ChildAdd(_attack_range_task);
 _attack_sequence.ChildAdd(_attack_player_task);

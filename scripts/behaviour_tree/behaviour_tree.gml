@@ -69,6 +69,36 @@ function BTreeNode() constructor{
 		
 		return _status
 	}
+	
+	static DrawGUI = function(_world_x, _world_y) {
+        // Convert world coordinates to GUI coordinates
+		var _world_xy = world_to_gui(_world_x, _world_y)
+        var _gui_x = room_x_to_gui(_world_x);
+		var _gui_y = room_y_to_gui(_world_y);
+        
+        var _color = c_white;
+        switch(status) {
+            case BTStates.Running: _color = c_yellow; break;
+            case BTStates.Success: _color = c_lime; break;
+            case BTStates.Failure: _color = c_red; break;
+            case BTStates.Off: _color = c_gray; break;
+        }
+        
+        draw_set_color(_color);
+        draw_set_halign(fa_center);
+        draw_set_valign(fa_bottom);
+        
+        // Draw status above object
+        draw_text(_gui_x, _gui_y - 10, name);
+        if(black_board_ref != noone && black_board_ref.running_node != noone) {
+            draw_text(_gui_x, _gui_y - 25, "Running: " + black_board_ref.running_node.name);
+        }
+        
+        // Reset draw properties
+        draw_set_color(c_white);
+        draw_set_halign(fa_left);
+        draw_set_valign(fa_top);
+    }
 
 }
 
@@ -123,6 +153,39 @@ function BTreeRoot(inst_id): BTreeNode() constructor{
 		children[0] = child_node;
 		children_arr_len = 1;
 	}
+	
+	/// @override
+    static DrawGUI = function(x = 10, y = 10) {
+        // Draw root status
+        var _color = c_white;
+        switch(status) {
+            case BTStates.Running: _color = c_yellow; break;
+            case BTStates.Success: _color = c_lime; break;
+            case BTStates.Failure: _color = c_red; break;
+            case BTStates.Off: _color = c_gray; break;
+        }
+        
+        draw_set_color(_color);
+        draw_set_halign(fa_left);
+        draw_set_valign(fa_top);
+        draw_text(x, y, "BT Status: " + name);
+        
+        // Draw running node if exists
+        if(black_board.running_node != noone) {
+            draw_text(x, y + 20, "Active Node: " + black_board.running_node.name);
+            
+            // If running node has sequence/selector name, show it
+            var _running_node = black_board.running_node;
+            if(variable_struct_exists(_running_node, "sequence_name")) {
+                draw_text(x, y + 40, "Sequence: " + _running_node.sequence_name);
+            }
+            else if(variable_struct_exists(_running_node, "selector_name")) {
+                draw_text(x, y + 40, "Selector: " + _running_node.selector_name);
+            }
+        }
+        
+        draw_set_color(c_white);
+    }
 }
 
 function BTreeSequence(_sequence_name = "") : BTreeComposite() constructor{

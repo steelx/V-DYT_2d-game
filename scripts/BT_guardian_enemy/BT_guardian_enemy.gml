@@ -56,7 +56,7 @@ function GuardianPatrolTask(_move_speed) : BTreeLeaf() constructor {
 
 #endregion
 
-#region Combat seqeunce (ALL must Success)
+#region Combat Selector (Atleast 1 must Success)
 
 function GuardianDetectPlayerTask(_visible_range) : BTreeLeaf() constructor {
     name = "Guardian Detect Player Task";
