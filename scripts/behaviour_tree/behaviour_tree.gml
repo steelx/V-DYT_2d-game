@@ -35,18 +35,33 @@ function BTreeNode() constructor{
         ++children_arr_len;
     }
 	
-		static NodeProcess = function(_node){
+	static FindNodeByName = function(_name) {
+        // Check if this node matches the name
+        if (name == _name) return self;
+        
+        // Check children recursively
+        var _i = 0;
+        repeat(children_arr_len) {
+            var _found = children[_i].FindNodeByName(_name);
+            if (_found != noone) return _found;
+            ++_i;
+        }
+        
+        return noone;
+    }
+	
+	static NodeProcess = function(_node){
 		
-			if(_node.visited == false){ // Initial configure
-        _node.black_board_ref = black_board_ref; 
-        _node.visited = true;
-        _node.Init();
-      }
+		if(_node.visited == false){ // Initial configure
+			_node.black_board_ref = black_board_ref; 
+			_node.visited = true;
+			_node.Init();
+		}
 		
 		var _status = _node.Process(); // Returning State
 		
 		if(_status == BTStates.Running and black_board_ref.running_node == noone){
-		  black_board_ref.running_node = _node
+			black_board_ref.running_node = _node
 		}
 		else if( _status != BTStates.Running and black_board_ref.running_node != noone){
 			black_board_ref.running_node = noone;
@@ -75,16 +90,16 @@ function BTreeDecorator() : BTreeNode() constructor{
 /// @param inst_id - Expects an instance id.
 function BTreeRoot(inst_id): BTreeNode() constructor{
 	name = "BT_ROOT";
-	status = BTStates.Off;          
+	status = BTStates.Off;
 	array_push(children, noone);    
 	
-  black_board = {  
-		  user : inst_id,           
-      root_reference : other,     
-      running_node: noone,        
-  };
+	black_board = {  
+			user : inst_id,           
+	    root_reference : other,     
+	    running_node: noone,        
+	};
     
-  black_board_ref = black_board; 
+	black_board_ref = black_board; 
     
 	/// @override 
 	static Init = function(){
@@ -97,21 +112,22 @@ function BTreeRoot(inst_id): BTreeNode() constructor{
 			NodeProcess(black_board.running_node);
 		
 		else if(children[0] != noone){
-		    if(status == BTStates.Running)
-		       NodeProcess(children[0]);
-        }
-    }
+			if(status == BTStates.Running)
+			    NodeProcess(children[0]);
+	    }
+	}
 
 	/// @override 
 	/// @param child_node - Expects a BTreeNode.
 	static ChildAdd = function(child_node){
 		children[0] = child_node;
 		children_arr_len = 1;
-  }
+	}
 }
 
-function BTreeSequence() : BTreeComposite() constructor{
+function BTreeSequence(_sequence_name = "") : BTreeComposite() constructor{
 	name = "BT_SEQUENCE";
+	sequence_name = _sequence_name;
         
     /// @override 
     static Process = function(){
@@ -131,8 +147,9 @@ function BTreeSequence() : BTreeComposite() constructor{
     }
 }
 
-function BTreeSelector() : BTreeComposite() constructor{
-		name = "BT_SELECTOR";
+function BTreeSelector(_selector_name = "") : BTreeComposite() constructor{
+	name = "BT_SELECTOR";
+	selector_name = _selector_name
     
 		/// @override
     static Process = function(){

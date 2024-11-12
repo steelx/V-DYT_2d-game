@@ -9,7 +9,7 @@ function GuardianIdleTask() : BTreeLeaf() constructor {
         _user.sprite_index = _user.sprites_map[$ CHARACTER_STATE.IDLE];
 		
 		with(_user) {
-			if (check_player_visibility() or last_seen_player_x != noone) {
+			if (check_player_visibility()) {
 				last_seen_player_x = noone;
 	            return BTStates.Failure; // Exit Patrol Sequence
 	        }
@@ -34,8 +34,7 @@ function GuardianPatrolTask(_move_speed) : BTreeLeaf() constructor {
         
         with(_user) {
             // First check if player is detected
-            if (check_player_visibility() or last_seen_player_x != noone) {
-				last_seen_player_x = noone;
+            if (check_player_visibility()) {
                 return BTStates.Failure; // Exit patrol to allow combat sequence
             }
             
@@ -169,7 +168,8 @@ function GuardianAttackTask(_seqeunce_file, _animation_duration_seconds): BTreeL
             }
 			
 			// face player
-            image_xscale = sign(obj_player.x - x);
+			var _dir = sign(obj_player.x - x);
+            image_xscale = _dir >= 0 ? 1 : -1;
             
             // Check if we're currently in an animation
             if (other.sequence_layer != -1) {
@@ -180,13 +180,7 @@ function GuardianAttackTask(_seqeunce_file, _animation_duration_seconds): BTreeL
                     // Animation duration finished, clean up
                     other.cleanup_sequence(_user);
                     
-                    // Check if we can start another attack
-                    if (other.attack_cooldown <= 0 && distance_to_object(obj_player) <= attack_range) {
-                        other.start_sequence(id, other.sequence_file);
-                        return BTStates.Running;
-                    } else {
-                        return BTStates.Failure; // Failure to allow Chase
-                    }
+                    // After attack ends, always return Failure to allow chase
                 }
                 return BTStates.Running;
             }
@@ -250,7 +244,6 @@ function GuardianChaseTask(_move_speed) : BTreeLeaf() constructor {
 
 #region Knockback
 
-// Knockback Task without state dependency
 function GuardianKnockbackTask() : BTreeLeaf() constructor {
     name = "Guardian Knockback Task";
     is_active = false;
@@ -267,24 +260,22 @@ function GuardianKnockbackTask() : BTreeLeaf() constructor {
         with(_user) {
             // If knockback hasn't been triggered, don't process
             if (!other.is_active) {
-                return BTStates.Failure;// Failure to move to Combat
+                return BTStates.Failure;
             }
             
             // Apply knockback velocity with friction
-			vel_x = 0;
+            vel_x = 0;
             x += other.knockback_vel_x;
             other.knockback_vel_x = approach(other.knockback_vel_x, 0, knockback_friction);
             
-            // Check if knockback has ended
+            // Keep running until knockback completely stops
             if (abs(other.knockback_vel_x) < 0.1) {
                 other.is_active = false;
                 other.knockback_vel_x = 0;
-                return BTStates.Failure;// Failure to move to Combat
+                return BTStates.Failure; // Only exit knockback when it's completely done
             }
             
-            // Override normal movement during knockback
-            vel_x = 0;
-            
+            // Stay in knockback state while active
             return BTStates.Running;
         }
     }
@@ -295,6 +286,7 @@ function GuardianKnockbackTask() : BTreeLeaf() constructor {
         knockback_vel_x = lengthdir_x(_speed, _direction);
     }
 }
+
 
 // Knockback Sequence Container
 function GuardianKnockbackSequenceContainer() : BTreeSequence() constructor {
@@ -313,4 +305,105 @@ function GuardianKnockbackSequenceContainer() : BTreeSequence() constructor {
         knockback_task.TriggerKnockback(_direction, _speed);
     }
 }
+#endregion
+
+
+#region Alert sequence
+
+function GuardianCheckLastSeenTask() : BTreeLeaf() constructor {
+    name = "Guardian Check Last Seen Task";
+    
+    static Process = function() {
+        var _user = black_board_ref.user;
+        
+        with(_user) {
+			sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
+            // If we have a last seen position and not currently seeing the player
+            if (last_seen_player_x != noone && !check_player_visibility()) {
+                return BTStates.Success; // Continue with alert sequence
+            }
+            
+            // If we can see the player, fail to go back to combat
+            if (check_player_visibility()) {
+                return BTStates.Failure;
+            }
+            
+            // If no last seen position, fail to go to patrol
+            if (last_seen_player_x == noone) {
+                return BTStates.Failure;
+            }
+        }
+        
+        return BTStates.Failure;
+    }
+}
+
+function GuardianMoveToLastSeenTask(_move_speed) : BTreeLeaf() constructor {
+    name = "Guardian Move To Last Seen Task";
+    move_speed = _move_speed;
+    
+    static Process = function() {
+        var _user = black_board_ref.user;
+        
+        with(_user) {
+            if (last_seen_player_x == noone) return BTStates.Failure;
+            
+            // Check if we reached the last seen position
+            var _dist_to_last_seen = abs(x - last_seen_player_x);
+            if (_dist_to_last_seen <= 10) { // Within 10 pixels threshold
+                vel_x = 0;
+                return BTStates.Success; // Move to search area task
+            }
+            
+            // Move towards last seen position
+            var _dir = sign(last_seen_player_x - x);
+            vel_x = other.move_speed * _dir;
+            image_xscale = _dir;
+            sprite_index = sprites_map[$ CHARACTER_STATE.MOVE];
+            
+            return BTStates.Running;
+        }
+    }
+}
+
+function GuardianSearchAreaTask(_search_radius) : BTreeLeaf() constructor {
+    name = "Guardian Search Area Task";
+    search_radius = _search_radius;
+    search_time = get_room_speed() * 3; // 3 seconds of searching
+    current_search_time = 0;
+    search_direction = 1;
+    
+    static Process = function() {
+        var _user = black_board_ref.user;
+        
+        with(_user) {
+            if (check_player_visibility()) {
+                other.current_search_time = 0;
+                return BTStates.Failure; // Go back to combat if player spotted
+            }
+            
+            other.current_search_time++;
+            
+            // Alternate direction every second
+            if (other.current_search_time % get_room_speed() == 0) {
+                other.search_direction *= -1;
+            }
+            
+            // Move back and forth in search area
+            vel_x = other.search_direction * (move_speed * 0.5);
+            image_xscale = other.search_direction >= 0 ? 1 : -1;
+            sprite_index = sprites_map[$ CHARACTER_STATE.MOVE];
+            
+            // If search time is up, clear last seen position and return to patrol
+            if (other.current_search_time >= other.search_time) {
+                other.current_search_time = 0;
+                last_seen_player_x = noone;
+                return BTStates.Success;
+            }
+            
+            return BTStates.Running;
+        }
+    }
+}
+
 #endregion

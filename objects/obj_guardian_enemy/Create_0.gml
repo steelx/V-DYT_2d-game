@@ -139,19 +139,24 @@ state = noone;
 bt_root = new BTreeRoot(id);
 
 // Create root selector
-var _selector_root = new BTreeSelector();
+var _selector_root = new BTreeSelector("root");
 
-var _combat_selector = new BTreeSelector();
+var _combat_selector = new BTreeSelector("combat_selector");
+var _attack_sequence = new BTreeSequence("attack_sequence");
+var _chase_sequence = new BTreeSequence("chase_sequence");
+
+var _alert_sequence = new BTreeSequence("_alert_sequence");
+var _check_last_seen = new GuardianCheckLastSeenTask();
+var _move_to_last_seen = new GuardianMoveToLastSeenTask(move_speed);
+var _search_area = new GuardianSearchAreaTask(120);
+
 var _detect_player = new GuardianDetectPlayerTask(visible_range);
-var _attack_sequence = new BTreeSequence();
-var _chase_sequence = new BTreeSequence();
-
 var _chase_player_task = new GuardianChaseTask(move_speed);
 var _attack_range_task = new GuardianCheckAttackRangeTask(attack_range);
 _attack_player_task = new GuardianAttackTask(seq_guardian_attack, 1);
 
 // Patrol Sequence
-var _patrol_sequence = new BTreeSequence();
+var _patrol_sequence = new BTreeSequence("patrol_sequence");
 var _idle_task = new GuardianIdleTask();
 var _patrol_task = new GuardianPatrolTask(move_speed);
 
@@ -166,11 +171,15 @@ bt_root.ChildAdd(_selector_root);
 _combat_selector.ChildAdd(_detect_player);
 _combat_selector.ChildAdd(_attack_sequence);
 _combat_selector.ChildAdd(_chase_sequence);
+//_combat_selector.ChildAdd(_alert_sequence);
 
 _attack_sequence.ChildAdd(_attack_range_task);
 _attack_sequence.ChildAdd(_attack_player_task);
 _chase_sequence.ChildAdd(_chase_player_task);
 
+_alert_sequence.ChildAdd(_check_last_seen);
+_alert_sequence.ChildAdd(_move_to_last_seen);
+_alert_sequence.ChildAdd(_search_area);
 
 // Patrol sequence
 _patrol_sequence.ChildAdd(_idle_task);
@@ -184,6 +193,7 @@ _selector_root.ChildAdd(_patrol_sequence);
 
 // Initialize the tree
 bt_root.Init();
+
 #endregion
 
 
