@@ -141,12 +141,12 @@ bt_root = new BTreeRoot(id);
 // Create root selector
 var _selector_root = new BTreeSelector();
 
-// Combat Sequence & selector (for attack OR chase)
-var _combat_sequence = new BTreeSequence();
 var _combat_selector = new BTreeSelector();
 var _detect_player = new GuardianDetectPlayerTask(visible_range);
-var _chase_player_task = new GuardianChaseTask(move_speed);
 var _attack_sequence = new BTreeSequence();
+var _chase_sequence = new BTreeSequence();
+
+var _chase_player_task = new GuardianChaseTask(move_speed);
 var _attack_range_task = new GuardianCheckAttackRangeTask(attack_range);
 _attack_player_task = new GuardianAttackTask(seq_guardian_attack, 1);
 
@@ -163,14 +163,13 @@ knockback_sequence = new GuardianKnockbackSequenceContainer();
 bt_root.ChildAdd(_selector_root);
 
 // Combat sequence
-_combat_sequence.ChildAdd(_detect_player);
-_combat_sequence.ChildAdd(_combat_selector);
-
+_combat_selector.ChildAdd(_detect_player);
 _combat_selector.ChildAdd(_attack_sequence);
-_combat_selector.ChildAdd(_chase_player_task);
+_combat_selector.ChildAdd(_chase_sequence);
 
 _attack_sequence.ChildAdd(_attack_range_task);
 _attack_sequence.ChildAdd(_attack_player_task);
+_chase_sequence.ChildAdd(_chase_player_task);
 
 
 // Patrol sequence
@@ -179,7 +178,7 @@ _patrol_sequence.ChildAdd(_patrol_task);
 
 // Add main sequences to root selector
 _selector_root.ChildAdd(knockback_sequence);
-_selector_root.ChildAdd(_combat_sequence);
+_selector_root.ChildAdd(_combat_selector);
 _selector_root.ChildAdd(_patrol_sequence);
 
 

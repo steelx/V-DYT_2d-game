@@ -167,6 +167,9 @@ function GuardianAttackTask(_seqeunce_file, _animation_duration_seconds): BTreeL
             if (other.attack_cooldown > 0) {
                 other.attack_cooldown--;
             }
+			
+			// face player
+            image_xscale = sign(obj_player.x - x);
             
             // Check if we're currently in an animation
             if (other.sequence_layer != -1) {
@@ -189,9 +192,6 @@ function GuardianAttackTask(_seqeunce_file, _animation_duration_seconds): BTreeL
             }
             // No active animation, check if we can start a new attack
             if (other.attack_cooldown <= 0) {
-                // face player
-                image_xscale = sign(obj_player.x - x);
-                
                 // Start attack sequence
                 other.start_sequence(id, other.sequence_file);
                 return BTStates.Running;
