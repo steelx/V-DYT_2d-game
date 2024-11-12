@@ -181,6 +181,7 @@ function GuardianAttackTask(_seqeunce_file, _animation_duration_seconds): BTreeL
                     other.cleanup_sequence(_user);
                     
                     // After attack ends, always return Failure to allow chase
+                    return BTStates.Failure;
                 }
                 return BTStates.Running;
             }
