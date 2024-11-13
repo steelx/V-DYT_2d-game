@@ -108,7 +108,7 @@ function move_to_attack_position(_player_x, _attack_object_x, _attack_object_wid
     image_xscale = _direction_to_player;
     
     // Return true if we moved, false otherwise
-    return abs(_distance_to_move) > 0;
+    return abs(_distance_to_move) < 0;
 }
 
 /// @function enemy_move_to(pos_x, move_speed)

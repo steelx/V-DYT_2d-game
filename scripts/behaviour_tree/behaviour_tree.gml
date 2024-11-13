@@ -50,6 +50,10 @@ function BTreeNode() constructor{
         return noone;
     }
 	
+	Draw = function() {
+		draw_self();
+	}
+	
 	static NodeProcess = function(_node){
 		
 		if(_node.visited == false){ // Initial configure

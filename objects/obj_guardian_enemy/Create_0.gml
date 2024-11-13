@@ -147,9 +147,8 @@ var _selector_root = new BTreeSelector("root");
 var _combat_selector = new BTreeSelector("combat_selector");
 var _attack_sequence = new BTreeSequence("attack_sequence");
 var _chase_sequence = new BTreeSequence("chase_sequence");
-//var _detect_sequence = new BTreeSequence("detect_sequence");
-
 var _alert_sequence = new BTreeSequence("_alert_sequence");
+
 var _check_last_seen = new GuardianCheckLastSeenTask();
 var _move_to_last_seen = new GuardianMoveToLastSeenTask(move_speed);
 var _search_area = new GuardianSearchAreaTask(120);
@@ -173,14 +172,16 @@ knockback_sequence = new GuardianKnockbackSequenceContainer();
 bt_root.ChildAdd(_selector_root);
 
 // Combat sequence
-_combat_selector.ChildAdd(_detect_player);
 _combat_selector.ChildAdd(_attack_sequence);
 _combat_selector.ChildAdd(_chase_sequence);
 _combat_selector.ChildAdd(_alert_sequence);
 
-
+_attack_sequence.ChildAdd(_detect_player);
 _attack_sequence.ChildAdd(_attack_range_task);
+_attack_sequence.ChildAdd(_moveto_attack_position_task);
 _attack_sequence.ChildAdd(_attack_player_task);
+
+_chase_sequence.ChildAdd(_detect_player);
 _chase_sequence.ChildAdd(_chase_player_task);
 
 _alert_sequence.ChildAdd(_check_last_seen);

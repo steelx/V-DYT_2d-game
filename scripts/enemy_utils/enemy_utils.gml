@@ -62,15 +62,15 @@ function draw_visibility_ray(_visible_range, _attack_range) {
 }
 
 /// @desc: make sure obj_enemy_parent has `search_path_points` variable!
-function generate_search_path() {
+function generate_search_path(_patrol_width, _search_point_spacing) {
     ds_list_clear(search_path_points);
     
     // Generate points in a zigzag pattern
-    var _points = ceil(patrol_width / search_point_spacing);
-    var _start_x = x - patrol_width/2;
+    var _points = ceil(_patrol_width / _search_point_spacing);
+    var _start_x = x - _patrol_width/2;
     
     for (var i = 0; i <= _points; i++) {
-        var _point_x = _start_x + (i * search_point_spacing);
+        var _point_x = _start_x + (i * _search_point_spacing);
         ds_list_add(search_path_points, _point_x);
     }
 }
