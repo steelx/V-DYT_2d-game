@@ -44,13 +44,6 @@ function transition_to_state(_new_state) {
 
 #endregion
 
-function check_player_visibility() {
-    var _player_above = instance_exists(obj_player) && obj_player.y < y - sprite_height/2;
-	var _is_visible = is_player_visible(visible_range);
-	if (_is_visible) last_seen_player_x = obj_player.x;
-    return !_player_above && _is_visible;
-}
-
 function check_player_attackable() {
     var _player_above = instance_exists(obj_player) && obj_player.y < y - sprite_height/2;
     return !_player_above && can_attack && is_player_in_attack_range(attack_range);

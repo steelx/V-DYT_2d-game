@@ -70,16 +70,11 @@ function BTreeNode() constructor{
 		return _status
 	}
 	
-	static DrawGUI = function(_world_x, _world_y) {
-        //var _gui_x = room_x_to_gui(_world_x);
-		//var _gui_y = room_y_to_gui(_world_y);
-		var _gui_x = _world_x;
-		var _gui_y = _world_y;
-        
+	static DrawGUI = function(_gui_x, _gui_y) {
         var _color = c_white;
         switch(status) {
             case BTStates.Running: _color = c_yellow; break;
-            case BTStates.Success: _color = c_lime; break;
+            case BTStates.Success: _color = c_green; break;
             case BTStates.Failure: _color = c_red; break;
             case BTStates.Off: _color = c_gray; break;
         }
@@ -90,7 +85,7 @@ function BTreeNode() constructor{
         
         // Draw status above object
         draw_text(_gui_x, _gui_y - 10, name);
-		if (black_board_ref != noone && black_board_ref.running_node != noone) {
+		if (black_board_ref != noone and black_board_ref.running_node != noone) {
 			if variable_struct_exists(black_board_ref.running_node, "selector_name") {
 				draw_text(_gui_x, _gui_y - 25, "Running: " + black_board_ref.running_node.selector_name);
 			} else if variable_struct_exists(black_board_ref.running_node, "sequence_name") {
@@ -163,12 +158,12 @@ function BTreeRoot(inst_id): BTreeNode() constructor{
 	}
 	
 	/// @override
-    static DrawGUI = function(x = 10, y = 10) {
+    static DrawGUI = function(_x = 10, _y = 10, _draw_at_feets = true) {
         // Draw root status
         var _color = c_white;
         switch(status) {
             case BTStates.Running: _color = c_yellow; break;
-            case BTStates.Success: _color = c_lime; break;
+            case BTStates.Success: _color = c_green; break;
             case BTStates.Failure: _color = c_red; break;
             case BTStates.Off: _color = c_gray; break;
         }
@@ -176,20 +171,27 @@ function BTreeRoot(inst_id): BTreeNode() constructor{
         draw_set_color(_color);
         draw_set_halign(fa_left);
         draw_set_valign(fa_top);
-        draw_text(x, y, "BT Status: " + name);
+        draw_text(_x, _y, "BT Status: " + name);
+		
+		var _scaler = _draw_at_feets ? 1 : -1;
+		var _margin = 20 * _scaler;
         
         // Draw running node if exists
         if(black_board.running_node != noone) {
-            draw_text(x, y + 20, "Active Node: " + black_board.running_node.name);
+			_y += _margin;
+            draw_text(_x, _y, "Active Node: " + black_board.running_node.name);
             
+			_y += _margin;
             // If running node has sequence/selector name, show it
             var _running_node = black_board.running_node;
             if(variable_struct_exists(_running_node, "sequence_name")) {
-                draw_text(x, y + 40, "Sequence: " + _running_node.sequence_name);
+                draw_text(_x, _y, $"Sequence: {_running_node.sequence_name}");
             }
             else if(variable_struct_exists(_running_node, "selector_name")) {
-                draw_text(x, y + 40, "Selector: " + _running_node.selector_name);
-            }
+                draw_text(_x, _y, $"Selector: {_running_node.selector_name}");
+            } else {
+	            draw_text(_x, _y, $"Node!: {black_board_ref.running_node.name}");
+	        }
         }
         
         draw_set_color(c_white);

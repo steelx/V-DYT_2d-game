@@ -61,6 +61,7 @@ function draw_visibility_ray(_visible_range, _attack_range) {
     draw_set_alpha(1);
 }
 
+/// @desc: make sure obj_enemy_parent has `search_path_points` variable!
 function generate_search_path() {
     ds_list_clear(search_path_points);
     

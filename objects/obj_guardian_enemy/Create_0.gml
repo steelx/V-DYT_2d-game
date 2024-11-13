@@ -147,6 +147,7 @@ var _selector_root = new BTreeSelector("root");
 var _combat_selector = new BTreeSelector("combat_selector");
 var _attack_sequence = new BTreeSequence("attack_sequence");
 var _chase_sequence = new BTreeSequence("chase_sequence");
+//var _detect_sequence = new BTreeSequence("detect_sequence");
 
 var _alert_sequence = new BTreeSequence("_alert_sequence");
 var _check_last_seen = new GuardianCheckLastSeenTask();
@@ -156,6 +157,7 @@ var _search_area = new GuardianSearchAreaTask(120);
 var _detect_player = new GuardianDetectPlayerTask(visible_range);
 var _chase_player_task = new GuardianChaseTask(move_speed);
 var _attack_range_task = new GuardianCheckAttackRangeTask(attack_range);
+var _moveto_attack_position_task = new GuardianMovetoAttackPositionTask();
 _attack_player_task = new GuardianAttackTask(seq_guardian_attack, 1);
 
 // Patrol Sequence
@@ -175,6 +177,7 @@ _combat_selector.ChildAdd(_detect_player);
 _combat_selector.ChildAdd(_attack_sequence);
 _combat_selector.ChildAdd(_chase_sequence);
 _combat_selector.ChildAdd(_alert_sequence);
+
 
 _attack_sequence.ChildAdd(_attack_range_task);
 _attack_sequence.ChildAdd(_attack_player_task);
