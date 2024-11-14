@@ -6,25 +6,21 @@ function GuardianIdleTask() : BTreeLeaf() constructor {
 	idle_timer = 0;
 	
 	static Init = function() {
-        show_debug_message($"Init: {name} - {date_current_datetime()}");
 		idle_timer = 0;
         status = BTStates.Running;
     }
     
     static Process = function() {
+		show_debug_message($"Init: {name} - {date_current_datetime()}");
+		if !instance_exists(obj_player) return BTStates.Success;
 		idle_timer++;
         var _user = black_board_ref.user;
         _user.vel_x = 0;
         _user.sprite_index = _user.sprites_map[$ CHARACTER_STATE.IDLE];
 		
 		with(_user) {
-			if (last_seen_player_x != noone) {
-				image_xscale = sign(last_seen_player_x - x);
-				show_debug_message($"last seen! exiting {other.name} {date_current_datetime()}");
-				return BTStates.Failure; // Exit Patrol Sequence
-			}
-			var _player_above = obj_player.y < y - sprite_height/2;
-			var _is_visible = player_within_range(visible_range);
+			var _player_above = obj_player.y < (y - sprite_height/2);
+			var _is_visible = player_within_range(visible_range/2);
 			if (_is_visible and !_player_above) {
 	            return BTStates.Failure; // Exit Patrol Sequence
 	        }
@@ -48,7 +44,6 @@ function GuardianPatrolTask(_move_speed, _patrol_width = 96, _point_spacing = 8)
 	patrol_timer = 0;
 	
 	static Init = function() {
-		show_debug_message($"Init: {name} - {date_current_datetime()}");
         patrol_timer = 0;
         var _user = black_board_ref.user;
         with(_user) {
@@ -58,6 +53,7 @@ function GuardianPatrolTask(_move_speed, _patrol_width = 96, _point_spacing = 8)
     }
     
     static Process = function() {
+		show_debug_message($"Init: {name} - {date_current_datetime()}");
 		patrol_timer++;
         var _user = black_board_ref.user;
         with(_user) {
@@ -148,8 +144,8 @@ function GuardianDetectPlayerTask() : BTreeLeaf() constructor {
         var _user = black_board_ref.user;
         with(_user) {
 			vel_x = 0;
-			sprite_index = spr_guardian_idle;
-            var _player_above = obj_player.y < y - sprite_height/2;
+			sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
+			var _player_above = obj_player.y < y - sprite_height/2;
 			var _is_visible = player_within_range(visible_range);
 			
 			if (_is_visible and !_player_above) {
@@ -163,52 +159,54 @@ function GuardianDetectPlayerTask() : BTreeLeaf() constructor {
     }
 }
 
-function GuardianMovetoAttackPositionTask(_ideal_distance = 32) : BTreeLeaf() constructor {
+function GuardianMovetoAttackPositionTask(_ideal_distance = 40) : BTreeLeaf() constructor {
     name = "Guardian Move to Attack Position Task";
     ideal_attack_distance = _ideal_distance;
-    position_threshold = 8; // Tolerance range for positioning
+    position_threshold = 10; // Tolerance range for positioning
+    stored_target_x = noone; // Store the initial target position
     
     static Process = function() {
         var _user = black_board_ref.user;
         
         with(_user) {
-            var _player = instance_nearest(x, y, obj_player);
-            if (!instance_exists(_player)) return BTStates.Failure;
+            if (!instance_exists(obj_player)) return BTStates.Failure;
             
-            var _distance_to_player = point_distance(x, y, _player.x, y);
-            var _direction_to_player = sign(_player.x - x);
+            // Store the target position only when we start moving
+            if (other.stored_target_x == noone) {
+                other.stored_target_x = last_seen_player_x;
+            }
+            
+            var _distance_to_target = point_distance(x, y, other.stored_target_x, y);
+            var _direction_to_target = sign(other.stored_target_x - x);
             
             // Set facing direction regardless of movement
-            image_xscale = _direction_to_player;
+            image_xscale = _direction_to_target;
             
-            // Check if we're already in a good position
-            if (abs(_distance_to_player - other.ideal_attack_distance) <= other.position_threshold) {
+            // Check if we've reached the desired position
+            if (abs(_distance_to_target - other.ideal_attack_distance) <= other.position_threshold) {
                 vel_x = 0;
                 sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
-                return BTStates.Success;
+                other.stored_target_x = noone; // Reset stored position
+                return BTStates.Success; // Return Success to allow immediate attack
             }
             
-            // Determine if we need to move away or closer
-            if (_distance_to_player < other.ideal_attack_distance) {
+            // Determine movement direction
+            if (_distance_to_target < other.ideal_attack_distance) {
                 // Too close, move away
-                vel_x = -move_speed * _direction_to_player;
+                vel_x = -move_speed * _direction_to_target;
             } else {
                 // Too far, move closer
-                vel_x = move_speed * _direction_to_player;
+                vel_x = move_speed * _direction_to_target;
             }
-            
-            // Only show moving animation if actually moving
-            if (abs(vel_x) > 0) {
-                sprite_index = sprites_map[$ CHARACTER_STATE.MOVE];
-            } else {
-                sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
-            }
-            
+			
             return BTStates.Running;
         }
     }
+    
+    static OnTerminate = function() {
+        stored_target_x = noone; // Reset stored position when task terminates
+    }
 }
-
 
 function GuardianCheckAttackRangeTask(_attack_range = 40): BTreeLeaf() constructor {
 	name = "Guardian Attack Range Task";
@@ -219,12 +217,12 @@ function GuardianCheckAttackRangeTask(_attack_range = 40): BTreeLeaf() construct
         if (!instance_exists(obj_player)) return BTStates.Failure;
 		
 		with(_user) {
+			var _player_above = obj_player.y < y - sprite_height/2;
 			var _dist = distance_to_object(obj_player);
-            if (_dist <= other.attack_range) {
+            if (_dist <= other.attack_range and !_player_above) {
 				return BTStates.Success;// Success means next in Sequence i.e. Attack
 			}
-			
-			
+
 			return BTStates.Failure;
 		}
 	}
@@ -313,15 +311,14 @@ function GuardianAttackTask(_seqeunce_file, _animation_duration_seconds): BTreeL
                 }
                 return BTStates.Running;
             }
-            // No active animation, check if we can start a new attack
-            if (other.attack_cooldown <= 0) {
-                // Start attack sequence
+            
+			if (other.attack_cooldown <= 0) {
                 other.start_sequence(id, other.sequence_file);
                 return BTStates.Running;
             }
-            
-             // Failure, exit the Sequence -> next Chase Sequence
-            return BTStates.Failure;
+			
+			last_seen_player_x = obj_player.x;
+            return BTStates.Success;// Now go to Move to attack position
         }
     }
     
@@ -360,7 +357,7 @@ function GuardianChaseTask(_move_speed) : BTreeLeaf() constructor {
             }
             
             // Continue chase
-			last_seen_player_x = obj_player.xprevious;
+			last_seen_player_x = obj_player.x;
             sprite_index = sprites_map[$ CHARACTER_STATE.CHASE];
             vel_x = other.chase_speed * sign(obj_player.x - x);
             image_xscale = sign(vel_x);
@@ -443,25 +440,13 @@ function GuardianCheckLastSeenTask() : BTreeLeaf() constructor {
     name = "Guardian Check Last Seen Task";
     
     static Process = function() {
+		if (!instance_exists(obj_player)) return BTStates.Failure;
         var _user = black_board_ref.user;
         
         with(_user) {
 			sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
-            // If we have a last seen position and not currently seeing the player
-            if (last_seen_player_x != noone && !player_within_range(visible_range)) {
-                return BTStates.Success; // Continue with alert sequence
-            }
-            
-            // If we can see the player, fail to go back to combat
-            var _player_above = obj_player.y < y - sprite_height/2;
-			var _is_visible = player_within_range(visible_range);
-			if (_is_visible and !_player_above) {
-                return BTStates.Failure;
-            }
-            
-            // If no last seen position, fail to go to patrol
-            if (last_seen_player_x == noone) {
-                return BTStates.Failure;
+            if (last_seen_player_x != noone) {
+				return BTStates.Success;
             }
         }
         
@@ -469,27 +454,25 @@ function GuardianCheckLastSeenTask() : BTreeLeaf() constructor {
     }
 }
 
-function GuardianMoveToLastSeenTask(_move_speed) : BTreeLeaf() constructor {
+function GuardianMoveToLastSeenTask() : BTreeLeaf() constructor {
     name = "Guardian Move To Last Seen Task";
-    move_speed = _move_speed;
     
     static Process = function() {
+		show_debug_message($"Init: {name} - {date_current_datetime()}");
+		if (!instance_exists(obj_player)) return BTStates.Failure;
         var _user = black_board_ref.user;
-        
+
         with(_user) {
-            if (last_seen_player_x == noone) return BTStates.Failure;
-            
             // Check if we reached the last seen position
             var _dist_to_last_seen = abs(x - last_seen_player_x);
-            if (_dist_to_last_seen <= 10) { // Within 10 pixels threshold
+            if (_dist_to_last_seen <= global.tile_size) { // Within 16 pixels threshold
                 vel_x = 0;
                 return BTStates.Success; // Move to search area task
             }
             
             // Move towards last seen position
             var _dir = sign(last_seen_player_x - x);
-            vel_x = other.move_speed * _dir;
-            image_xscale = _dir;
+            vel_x = move_speed * _dir;
             sprite_index = sprites_map[$ CHARACTER_STATE.MOVE];
             
             return BTStates.Running;
@@ -505,17 +488,20 @@ function GuardianSearchAreaTask(_search_radius) : BTreeLeaf() constructor {
     search_direction = 1;
     
     static Process = function() {
+		show_debug_message($"Init: {name} - {date_current_datetime()}");
         var _user = black_board_ref.user;
         
         with(_user) {
 			last_seen_player_x = noone;
 			var _player_above = obj_player.y < y - sprite_height/2;
 			var _is_visible = player_within_range(visible_range);
+            // If we have a last seen position and player not in range
             if (_is_visible and !_player_above) {
                 other.current_search_time = 0;
                 return BTStates.Failure; // Go back to combat if player spotted
             }
             
+			// not visible, continue search
             other.current_search_time++;
             
             // Alternate direction every second
@@ -524,8 +510,8 @@ function GuardianSearchAreaTask(_search_radius) : BTreeLeaf() constructor {
             }
             
             // Move back and forth in search area
-            vel_x = other.search_direction * (move_speed * 0.5);
-            image_xscale = other.search_direction >= 0 ? 1 : -1;
+            vel_x = other.search_direction * move_speed;
+            image_xscale = other.search_direction;
             sprite_index = sprites_map[$ CHARACTER_STATE.MOVE];
             
             // If search time is up, clear last seen position and return to patrol

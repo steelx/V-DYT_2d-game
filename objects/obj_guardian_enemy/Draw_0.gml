@@ -8,4 +8,4 @@ event_inherited();
 
 bt_root.Draw();
 
-draw_visibility_ray(visible_range, attack_range);
+//draw_visibility_ray(visible_range, attack_range);

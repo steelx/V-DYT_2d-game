@@ -103,40 +103,7 @@ apply_knockback = function(_hit_direction, _knockback_speed = 2) {
     }
 };
 #endregion
-/*
-Behaviour tree :: State Flow =>
-// Tree Structure:
-Root
-└── Selector (Root)
-    ├── Sequence (Combat)            // Combat (if attack and chase Fail) Failiure -> goes to Patrol
-    │   ├── DetectPlayer            // Must succeed to continue combat
-    │   └── Selector (Combat Actions) // Try Attack OR Chase
-    │       ├── Attack              // Try first
-    │       └── Chase               // Fallback if attack fails
-    └── Sequence (Patrol)           // Patrol Failiure -> goes to Combat
-        ├── Idle                    // Must succeed to continue patrol
-        └── Patrol                  // Next patrol action
 
-// Example flow:
-1. DetectPlayer returns Failure
-   -> Combat Sequence fails
-   -> Root Selector tries Patrol Sequence
-
-2. DetectPlayer returns Success
-   -> Combat Sequence continues to Attack
-   -> If Attack returns Failure
-      -> Combat Actions Selector tries Chase
-   -> If both Attack AND Chase fail
-      -> Combat Sequence fails
-      -> Root Selector tries Patrol Sequence
-
-3. DetectPlayer returns Success
-   -> Combat Sequence continues to Attack
-   -> If Attack returns Running
-      -> Stay in Attack
-   -> Combat Sequence stays Running
-   -> Root Selector stays on Combat
-*/
 #region Behaviour_tree
 state = noone;
 bt_root = new BTreeRoot(id);
@@ -150,13 +117,13 @@ var _chase_sequence = new BTreeSequence("chase_sequence");
 var _alert_sequence = new BTreeSequence("_alert_sequence");
 
 var _check_last_seen = new GuardianCheckLastSeenTask();
-var _move_to_last_seen = new GuardianMoveToLastSeenTask(move_speed);
+var _move_to_last_seen = new GuardianMoveToLastSeenTask();
 var _search_area = new GuardianSearchAreaTask(120);
 
-var _detect_player = new GuardianDetectPlayerTask(visible_range);
+var _detect_player = new GuardianDetectPlayerTask();
 var _chase_player_task = new GuardianChaseTask(move_speed);
 var _attack_range_task = new GuardianCheckAttackRangeTask(attack_range);
-var _moveto_attack_position_task = new GuardianMovetoAttackPositionTask();
+var _moveto_attack_position_task = new GuardianMovetoAttackPositionTask(attack_range);
 _attack_player_task = new GuardianAttackTask(seq_guardian_attack, 1);
 
 // Patrol Sequence
@@ -174,12 +141,11 @@ bt_root.ChildAdd(_selector_root);
 // Combat sequence
 _combat_selector.ChildAdd(_attack_sequence);
 _combat_selector.ChildAdd(_chase_sequence);
-_combat_selector.ChildAdd(_alert_sequence);
 
 _attack_sequence.ChildAdd(_detect_player);
 _attack_sequence.ChildAdd(_attack_range_task);
-_attack_sequence.ChildAdd(_moveto_attack_position_task);
 _attack_sequence.ChildAdd(_attack_player_task);
+_attack_sequence.ChildAdd(_moveto_attack_position_task);
 
 _chase_sequence.ChildAdd(_detect_player);
 _chase_sequence.ChildAdd(_chase_player_task);
@@ -195,6 +161,7 @@ _patrol_sequence.ChildAdd(_patrol_task);
 // Add main sequences to root selector
 _selector_root.ChildAdd(knockback_sequence);
 _selector_root.ChildAdd(_combat_selector);
+_selector_root.ChildAdd(_alert_sequence);
 _selector_root.ChildAdd(_patrol_sequence);
 
 
