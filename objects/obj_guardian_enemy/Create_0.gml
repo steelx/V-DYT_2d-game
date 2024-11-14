@@ -6,7 +6,7 @@ event_inherited();
 surface_width = window_get_width();  // Match viewport width
 surface_height = window_get_height(); // Match viewport height
 gui_surface = surface_create(surface_width, surface_height);
-max_hp = 20;
+max_hp = 10;
 hp = max_hp;
 damage = 2;
 visible_range = 120;// how far enemy can see
@@ -81,19 +81,9 @@ check_animation = function () {
 #endregion
 
 #region Knockback
-knockback_friction = 0.5; // Adjust as needed
 
 // Store reference to knockback sequence for access from collisions
 knockback_sequence = noone;
-
-// Utility function to smoothly approach a value
-approach = function(_current, _target, _amount) {
-    if (_current < _target) {
-        return min(_current + _amount, _target);
-    } else {
-        return max(_current - _amount, _target);
-    }
-};
 
 // Function to trigger knockback from collision
 apply_knockback = function(_hit_direction, _knockback_speed = 2) {
@@ -123,8 +113,7 @@ var _search_area = new GuardianSearchAreaTask(120);
 var _detect_player = new GuardianDetectPlayerTask();
 var _chase_player_task = new GuardianChaseTask(move_speed);
 var _attack_range_task = new GuardianCheckAttackRangeTask(attack_range);
-var _moveto_attack_position_task = new GuardianMovetoAttackPositionTask(attack_range);
-_attack_player_task = new GuardianAttackTask(seq_guardian_attack, 1);
+_attack_player_task = new GuardianAttackTask(seq_guardian_attack, 1.5);
 
 // Patrol Sequence
 var _patrol_sequence = new BTreeSequence("patrol_sequence");
@@ -145,7 +134,6 @@ _combat_selector.ChildAdd(_chase_sequence);
 _attack_sequence.ChildAdd(_detect_player);
 _attack_sequence.ChildAdd(_attack_range_task);
 _attack_sequence.ChildAdd(_attack_player_task);
-_attack_sequence.ChildAdd(_moveto_attack_position_task);
 
 _chase_sequence.ChildAdd(_detect_player);
 _chase_sequence.ChildAdd(_chase_player_task);

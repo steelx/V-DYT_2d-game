@@ -44,6 +44,17 @@ function is_jump_key_held() {
     return keyboard_check(vk_up);
 }
 
+knockback_vel_x = 0;
+knockback_friction = 0.5;
+
+apply_knockback = function(_hit_direction, _knockback_speed = 2) {
+	knockback_vel_x = lengthdir_x(_knockback_speed, _hit_direction);
+	state = CHARACTER_STATE.KNOCKBACK;
+	image_index = 0;
+	no_hurt_frames = get_room_speed() * 2; // 2 second of invincibility
+	audio_play_sound(snd_life_lost_01, 0, 0);
+};
+
 // Attack / Super Attack
 attack_key_held_timer = 0;
 attack_fuel_max = 100;

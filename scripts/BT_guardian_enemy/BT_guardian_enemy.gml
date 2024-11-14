@@ -11,7 +11,6 @@ function GuardianIdleTask() : BTreeLeaf() constructor {
     }
     
     static Process = function() {
-		show_debug_message($"Init: {name} - {date_current_datetime()}");
 		if !instance_exists(obj_player) return BTStates.Success;
 		idle_timer++;
         var _user = black_board_ref.user;
@@ -53,7 +52,7 @@ function GuardianPatrolTask(_move_speed, _patrol_width = 96, _point_spacing = 8)
     }
     
     static Process = function() {
-		show_debug_message($"Init: {name} - {date_current_datetime()}");
+		if !instance_exists(obj_player) return BTStates.Success;// Idle
 		patrol_timer++;
         var _user = black_board_ref.user;
         with(_user) {
@@ -233,7 +232,7 @@ Attack Task is inside a Sequence (Combat Sequence),
 and in a Sequence, if ANY child fails, the entire sequence fails (hence it would go to Patrol)
 thats why if we need to go go Chase we need to return Success if player is not in attack range.
 */
-function GuardianAttackTask(_seqeunce_file, _animation_duration_seconds): BTreeLeaf() constructor {
+function GuardianAttackTask(_seqeunce_file, _animation_duration_seconds = 1.5): BTreeLeaf() constructor {
     name = "Guardian Attack Task";
     
     // Animation management properties
@@ -244,7 +243,7 @@ function GuardianAttackTask(_seqeunce_file, _animation_duration_seconds): BTreeL
     animation_duration = get_room_speed() * _animation_duration_seconds;
 	
 	attack_cooldown = 0;
-	attack_cooldown_duration = get_room_speed() * 2; // 2 seconds between attacks
+	attack_cooldown_duration = get_room_speed() * 1.5;
     
     static start_sequence = function(_user, _sequence) {
         sequence_layer = layer_create(_user.depth - 1);
@@ -374,6 +373,7 @@ function GuardianKnockbackTask() : BTreeLeaf() constructor {
     name = "Guardian Knockback Task";
     is_active = false;
     knockback_vel_x = 0;
+	knockback_friction = 0.5; // Adjust as needed
     
     static Start = function() {
         is_active = false;
@@ -392,7 +392,7 @@ function GuardianKnockbackTask() : BTreeLeaf() constructor {
             // Apply knockback velocity with friction
             vel_x = 0;
             x += other.knockback_vel_x;
-            other.knockback_vel_x = approach(other.knockback_vel_x, 0, knockback_friction);
+            other.knockback_vel_x = approach(other.knockback_vel_x, 0, other.knockback_friction);
             
             // Keep running until knockback completely stops
             if (abs(other.knockback_vel_x) < 0.1) {
@@ -458,7 +458,6 @@ function GuardianMoveToLastSeenTask() : BTreeLeaf() constructor {
     name = "Guardian Move To Last Seen Task";
     
     static Process = function() {
-		show_debug_message($"Init: {name} - {date_current_datetime()}");
 		if (!instance_exists(obj_player)) return BTStates.Failure;
         var _user = black_board_ref.user;
 
@@ -488,7 +487,6 @@ function GuardianSearchAreaTask(_search_radius) : BTreeLeaf() constructor {
     search_direction = 1;
     
     static Process = function() {
-		show_debug_message($"Init: {name} - {date_current_datetime()}");
         var _user = black_board_ref.user;
         
         with(_user) {

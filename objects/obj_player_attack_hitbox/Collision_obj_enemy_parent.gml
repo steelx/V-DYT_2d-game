@@ -21,6 +21,7 @@ with (other) {
 		var _knockback_x = lengthdir_x(_knockback_speed, _knockback_direction);
 		var _knockback_y = lengthdir_y(_knockback_speed, _knockback_direction);
 		vel_x = _knockback_x;
+		show_debug_message($"player hit {_knockback_x}");
 		vel_y = 0;
 
 		// Set the enemy to a knockback state

@@ -13,7 +13,6 @@ switch(state) {
         vel_x = 0;
         break;
     case CHARACTER_STATE.MOVE:
-        apply_horizontal_movement();
         if (grounded) {
             state = (vel_x != 0) ? CHARACTER_STATE.MOVE : CHARACTER_STATE.IDLE;
         }
@@ -27,8 +26,6 @@ switch(state) {
         break;
         
     case CHARACTER_STATE.JETPACK_JUMP:
-        // Allow horizontal movement during jetpack jump
-        apply_horizontal_movement();
         
         if (!is_jump_key_held() || jetpack_fuel <= 0) {
             sprite_index = spr_player_fall;
@@ -43,14 +40,21 @@ switch(state) {
         break;
         
     case CHARACTER_STATE.KNOCKBACK:
+		sprite_index = spr_archer_death;
         // Knockback state behavior
-        // The character is unable to control movement in this state
-        // Knockback velocity is applied in the collision event and stopped in Alarm 0
-        vel_x = 0;
-        vel_y = 0;
-        if is_animation_end() {
-            state = CHARACTER_STATE.IDLE;
-            break;
+        // Slow down knockback
+		show_debug_message($"knockback received {knockback_vel_x}");
+		sprite_index = spr_player_hurt;
+		vel_x = 0;
+        x += knockback_vel_x;
+        knockback_vel_x = approach(knockback_vel_x, 0, knockback_friction);
+        
+        // Check if knockback is finished
+        if (abs(knockback_vel_x) < 0.1) {
+            knockback_vel_x = 0;
+			///transition_to_idle(); TODO: setup sprites_map for player
+			state = CHARACTER_STATE.IDLE;
+			sprite_index = spr_player_idle;
         }
         break;
         
@@ -72,9 +76,11 @@ switch(state) {
         }
         break;
 }
-    
+
 // Apply vertical movement
+apply_horizontal_movement();
 apply_verticle_movement();
+
     
 /// Regenerate jetpack fuel when grounded
 /// (in future add fuel collectible items and remove this code)

@@ -35,5 +35,5 @@
     "path":"sprites/spr_guardian_hitbox/spr_guardian_hitbox.yy",
   },
   "spriteMaskId":null,
-  "visible":false,
+  "visible":true,
 }
