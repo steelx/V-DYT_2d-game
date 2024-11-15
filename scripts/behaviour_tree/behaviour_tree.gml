@@ -15,7 +15,7 @@ enum BTStates {
 }
 
 ///@abstract
-function BTreeNode() constructor{
+function BTreeNode() constructor {
     name = "BT_TREE_NODE_BASE";     
     status = BTStates.Running;      
     visited = false;                

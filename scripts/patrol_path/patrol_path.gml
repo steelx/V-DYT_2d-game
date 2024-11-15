@@ -56,7 +56,7 @@ function PatrolPath() constructor {
         }
     }
     
-    static DrawPoints = function(_y_pos, _radius = 1) {
+    static DrawPoints = function(_y_pos, _radius = 0.5) {
         var _size = ds_list_size(points);
         
         for(var i = 0; i < _size; i++) {
@@ -64,7 +64,7 @@ function PatrolPath() constructor {
             
             if (i == current_index) {
                 draw_set_color(c_red);
-                draw_circle(_point, _y_pos, _radius + 2, false);
+                draw_circle(_point, _y_pos, _radius + 0.25, false);
             } else if (i <= return_zone_end) {
                 draw_set_color(c_orange);
                 draw_circle(_point, _y_pos, _radius, false);

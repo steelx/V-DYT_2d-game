@@ -1,135 +1,4 @@
 /// @description Guardian Enemy Behavior Tree Tasks
-#region Patrol sequence
-function GuardianIdleTask() : BTreeLeaf() constructor {
-    name = "Guardian Idle Task";
-	idle_timeout = get_room_speed() * 2;
-	idle_timer = 0;
-	
-	static Init = function() {
-		idle_timer = 0;
-        status = BTStates.Running;
-    }
-    
-    static Process = function() {
-		if !instance_exists(obj_player) return BTStates.Success;
-		idle_timer++;
-        var _user = black_board_ref.user;
-        _user.vel_x = 0;
-        _user.sprite_index = _user.sprites_map[$ CHARACTER_STATE.IDLE];
-		
-		with(_user) {
-			var _player_above = obj_player.y < (y - sprite_height/2);
-			var _is_visible = player_within_range(visible_range/2);
-			if (_is_visible and !_player_above) {
-	            return BTStates.Failure; // Exit Patrol Sequence
-	        }
-		}
-
-        return BTStates.Success;
-    }
-}
-
-function GuardianPatrolTask(_move_speed, _patrol_width = 96, _point_spacing = 8) : BTreeLeaf() constructor {
-    name = "Guardian Patrol Task";
-    patrol_speed = _move_speed;
-    current_point_index = 0;
-    waypoint_radius = 2;
-    waypoint_color = c_yellow;
-    path_color = c_lime;
-    patrol_width = _patrol_width;
-    search_point_spacing = _point_spacing;
-	
-	patrol_timeout = get_room_speed() * 3;
-	patrol_timer = 0;
-	
-	static Init = function() {
-        patrol_timer = 0;
-        var _user = black_board_ref.user;
-        with(_user) {
-            generate_search_path(other.patrol_width, other.search_point_spacing);
-        }
-		status = BTStates.Running;
-    }
-    
-    static Process = function() {
-		if !instance_exists(obj_player) return BTStates.Success;// Idle
-		patrol_timer++;
-        var _user = black_board_ref.user;
-        with(_user) {
-            // First check if player is detected
-            var _player_above = obj_player.y < y - sprite_height/2;
-            var _is_visible = player_within_range(visible_range);
-            
-            if (_is_visible and !_player_above) {
-                return BTStates.Failure; // Exit patrol to allow combat sequence
-            }
-            
-            // Get current target point
-            var _target_point_x = ds_list_find_value(search_path_points, other.current_point_index);
-            var _distance_to_point = point_distance(x, y, _target_point_x, y);
-            
-            // If close enough to current point, move to next point
-            if (_distance_to_point < 5) {
-                other.current_point_index++;
-                if (other.current_point_index >= ds_list_size(search_path_points)) {
-                    other.current_point_index = 0; // Loop back to start
-                }
-            }
-            
-			// Move towards the current point
-			var _move_direction = sign(_target_point_x - x);
-	        vel_x = other.patrol_speed * _move_direction;
-            image_xscale = _move_direction;
-            sprite_index = sprites_map[$ CHARACTER_STATE.MOVE];
-            return BTStates.Success;
-        }
-    }
-    
-    static DrawWaypoints = function(_instance_id) {
-        with(_instance_id) {
-            // Draw connecting lines between points
-            draw_set_color(other.path_color);
-            draw_set_alpha(0.5);
-            
-            var _size = ds_list_size(search_path_points);
-            for(var i = 0; i < _size - 1; i++) {
-                var _point1 = ds_list_find_value(search_path_points, i);
-                var _point2 = ds_list_find_value(search_path_points, i + 1);
-                draw_line_colour(_point1, y, _point2, y, c_red, c_green);
-            }
-            
-            // Draw waypoints
-            draw_set_color(other.waypoint_color);
-            draw_set_alpha(1);
-            
-            for(var i = 0; i < _size; i++) {
-                var _point = ds_list_find_value(search_path_points, i);
-                
-                // Current target point is bigger and different color
-                if (i == other.current_point_index) {
-                    draw_set_color(c_red);
-                    draw_circle(_point, y, other.waypoint_radius + 2, false);
-                    draw_set_color(other.waypoint_color);
-                } else {
-                    draw_circle(_point, y, other.waypoint_radius, false);
-                }
-            }
-            
-            // Reset draw properties
-            draw_set_alpha(1);
-            draw_set_color(c_white);
-        }
-    }
-	
-	/// @override
-    static Draw = function(_instance_id) {
-        DrawWaypoints(_instance_id);
-    }
-}
-
-
-
-#endregion
 
 #region Combat Selector (Atleast 1 must Success)
 
@@ -142,11 +11,8 @@ function GuardianDetectPlayerTask() : BTreeLeaf() constructor {
         var _user = black_board_ref.user;
         with(_user) {
 			vel_x = 0;
-			sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
-			var _player_above = obj_player.y < y - sprite_height/2;
-			var _is_visible = player_within_range(visible_range);
-			
-			if (_is_visible and !_player_above) {
+			sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];			
+			if (is_player_visible(visible_range)) {
 				image_xscale = sign(obj_player.x - x);
                 // Should return Success if player is detected to continue combat sequence
                 return BTStates.Success;
@@ -200,9 +66,13 @@ function GuardianMovetoAttackPositionTask(_ideal_distance = 40) : BTreeLeaf() co
             return BTStates.Running;
         }
     }
-    
+
     static OnTerminate = function() {
         stored_target_x = noone; // Reset stored position when task terminates
+    }
+	
+	static Clean = function() {
+        OnTerminate();
     }
 }
 

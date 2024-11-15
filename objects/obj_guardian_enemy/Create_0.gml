@@ -111,12 +111,12 @@ var _search_area = new GuardianSearchAreaTask(120);
 var _detect_player = new DetectPlayerTask(spr_guardian_idle);
 var _chase_player_task = new GuardianChaseTask(move_speed);
 var _attack_range_task = new GuardianCheckAttackRangeTask(attack_range);
-_attack_player_task = new GuardianAttackTask(seq_guardian_attack, 1.5);
+var _attack_player_task = new GuardianAttackTask(seq_guardian_attack, 1.5);
 
 // Patrol Sequence
 var _patrol_sequence = new BTreeSequence("patrol_sequence");
-var _idle_task = new GuardianIdleTask();
-var _patrol_task = new GuardianPatrolTask(move_speed, 120, 16);
+var _idle_task = new IdleTask(1);
+var _patrol_task = new PatrolTask(move_speed*0.8, 120, 1);
 
 // Knockback Sequence
 knockback_sequence = new GuardianKnockbackSequenceContainer();

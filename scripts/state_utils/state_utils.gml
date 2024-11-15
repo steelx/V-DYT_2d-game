@@ -13,18 +13,8 @@ function transition_to_alert() {
 
 function transition_to_idle() {
     transition_to_state(CHARACTER_STATE.IDLE);
-    reset_roam_count();
 }
 
-
-// Add in Draw event if needed
-function draw_debug_info() {
-	draw_set_color(c_white);
-    draw_text(x-16, y - 40, $"xscale: {image_xscale}");
-    draw_text(x, y - 60, "State: " + obj_game._states[state]);
-    draw_text(x, y - 80, "Roam Count: " + string(roam_count));
-    draw_text(x, y - 100, "Vel X: " + string(vel_x));
-}
 
 /// obj enemy parent specific
 function get_last_state() {
@@ -43,11 +33,6 @@ function transition_to_state(_new_state) {
 }
 
 #endregion
-
-function check_player_attackable() {
-    var _player_above = instance_exists(obj_player) && obj_player.y < y - sprite_height/2;
-    return !_player_above && can_attack && is_player_in_attack_range(attack_range);
-}
 
 // since now we have seen player, we also have last player x positio info
 function perform_attack_sequence(_alarm_index = 4, _alarm_attack_seq = 3) {

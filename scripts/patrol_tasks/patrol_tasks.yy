@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"patrol_tasks",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"patrol_tasks",
+  "parent":{
+    "name":"behaviour_tree",
+    "path":"folders/Scripts/behaviour_tree.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -15,11 +15,6 @@ attack_range = 40;
 defeated_object = obj_guardian_defeated;
 move_speed = 1;
 
-idle_timer = get_room_speed() * 2;
-can_move = false;//sets to true at Alarm 1
-alarm[1] = idle_timer;
-
-
 // Default sprite mapping
 sprites_map[$ CHARACTER_STATE.IDLE] = spr_little_ninja_idle;
 sprites_map[$ CHARACTER_STATE.MOVE] = spr_little_ninja_walk;
@@ -92,9 +87,12 @@ bt_root = new BTreeRoot(id);
 var _selector_root = new BTreeSelector("root");
 
 var _patrol_sequence = new BTreeSequence("patrol_sequence");
+var _attack_sequence = new BTreeSequence("attack_sequence");
 
-var _idle_task = new LittleNinjaIdleTask();
-var _patrol_move_task = new LittleNinjaPatrolTask(0.8);
+var _idle_task = new IdleTask(1);
+var _patrol_move_task = new PatrolTask(move_speed*0.8, 96, 1);
+
+var _detect_player = new DetectPlayerTask(spr_little_ninja_idle);
 
 // Build the tree:
 bt_root.ChildAdd(_selector_root);
@@ -102,8 +100,10 @@ bt_root.ChildAdd(_selector_root);
 _patrol_sequence.ChildAdd(_idle_task);
 _patrol_sequence.ChildAdd(_patrol_move_task);
 
+_attack_sequence.ChildAdd(_detect_player);
 
 _selector_root.ChildAdd(_patrol_sequence);
+_selector_root.ChildAdd(_attack_sequence);
 
 // Initialize the tree
 bt_root.Init();
