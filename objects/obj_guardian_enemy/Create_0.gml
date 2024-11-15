@@ -3,9 +3,7 @@
 
 // Inherit the parent event
 event_inherited();
-surface_width = window_get_width();  // Match viewport width
-surface_height = window_get_height(); // Match viewport height
-gui_surface = surface_create(surface_width, surface_height);
+
 max_hp = 10;
 hp = max_hp;
 damage = 2;
@@ -110,7 +108,7 @@ var _check_last_seen = new GuardianCheckLastSeenTask();
 var _move_to_last_seen = new GuardianMoveToLastSeenTask();
 var _search_area = new GuardianSearchAreaTask(120);
 
-var _detect_player = new GuardianDetectPlayerTask();
+var _detect_player = new DetectPlayerTask(spr_guardian_idle);
 var _chase_player_task = new GuardianChaseTask(move_speed);
 var _attack_range_task = new GuardianCheckAttackRangeTask(attack_range);
 _attack_player_task = new GuardianAttackTask(seq_guardian_attack, 1.5);
@@ -118,7 +116,7 @@ _attack_player_task = new GuardianAttackTask(seq_guardian_attack, 1.5);
 // Patrol Sequence
 var _patrol_sequence = new BTreeSequence("patrol_sequence");
 var _idle_task = new GuardianIdleTask();
-var _patrol_task = new GuardianPatrolTask(move_speed, 120);
+var _patrol_task = new GuardianPatrolTask(move_speed, 120, 16);
 
 // Knockback Sequence
 knockback_sequence = new GuardianKnockbackSequenceContainer();

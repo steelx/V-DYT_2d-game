@@ -74,3 +74,17 @@ function generate_search_path(_patrol_width, _search_point_spacing) {
         ds_list_add(search_path_points, _point_x);
     }
 }
+
+
+function player_detected() {
+    var _player_above = obj_player.y < y - sprite_height/2;
+    var _is_visible = player_within_range(visible_range);
+    return (_is_visible && !_player_above);
+}
+
+function move_to_point(_target_x, _speed) {
+    var _direction = sign(_target_x - x);
+    vel_x = _speed * _direction;
+    image_xscale = _direction;
+    sprite_index = sprites_map[$ CHARACTER_STATE.MOVE];
+}

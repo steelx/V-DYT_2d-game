@@ -6,6 +6,6 @@ if !enabled {
 // Inherit the parent event
 event_inherited();
 
-bt_root.Draw();
+bt_root.Draw(id);
 
 //draw_visibility_ray(visible_range, attack_range);

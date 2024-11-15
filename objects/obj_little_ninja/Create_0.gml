@@ -1,26 +1,24 @@
+/// @description obj_little_ninja Create event
+// inherits enemy parent, and also able to spawn attack sequence
 event_inherited();
 
-// This is the object that replaces the enemy once it is defeated.
 defeated_object = obj_enemy1_defeated;
 max_hp = 1;
 hp = max_hp;
 
-/// @description obj_guardian_enemy
-// inherits enemy parent, and also able to spawn attack sequence
-
-// Inherit the parent event
-event_inherited();
-surface_width = window_get_width();  // Match viewport width
-surface_height = window_get_height(); // Match viewport height
-gui_surface = surface_create(surface_width, surface_height);
 max_hp = 10;
 hp = max_hp;
 damage = 2;
-visible_range = 120;// how far enemy can see
+visible_range = 60;// how far enemy can see
 attack_range = 40;
 
 defeated_object = obj_guardian_defeated;
 move_speed = 1;
+
+idle_timer = get_room_speed() * 2;
+can_move = false;//sets to true at Alarm 1
+alarm[1] = idle_timer;
+
 
 // Default sprite mapping
 sprites_map[$ CHARACTER_STATE.IDLE] = spr_little_ninja_idle;
@@ -93,9 +91,19 @@ bt_root = new BTreeRoot(id);
 // Create root selector
 var _selector_root = new BTreeSelector("root");
 
+var _patrol_sequence = new BTreeSequence("patrol_sequence");
+
+var _idle_task = new LittleNinjaIdleTask();
+var _patrol_move_task = new LittleNinjaPatrolTask(0.8);
 
 // Build the tree:
 bt_root.ChildAdd(_selector_root);
+
+_patrol_sequence.ChildAdd(_idle_task);
+_patrol_sequence.ChildAdd(_patrol_move_task);
+
+
+_selector_root.ChildAdd(_patrol_sequence);
 
 // Initialize the tree
 bt_root.Init();

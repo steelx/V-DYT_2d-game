@@ -50,10 +50,6 @@ function BTreeNode() constructor{
         return noone;
     }
 	
-	Draw = function() {
-		draw_self();
-	}
-	
 	static NodeProcess = function(_node){
 		
 		if(_node.visited == false){ // Initial configure
@@ -73,6 +69,16 @@ function BTreeNode() constructor{
 		
 		return _status
 	}
+	
+	static Draw = function(_instance_id) {
+        // Base Draw method that can be overridden
+        // Call Draw on all children
+        var _i = 0;
+        repeat(children_arr_len) {
+            children[_i].Draw(_instance_id);
+            ++_i;
+        }
+    }
 	
 	static DrawGUI = function(_gui_x, _gui_y) {
         var _color = c_white;
@@ -113,7 +119,14 @@ function BTreeNode() constructor{
 function BTreeComposite() : BTreeNode() constructor{}
 
 ///@abstract
-function BTreeLeaf() : BTreeNode() constructor{}
+function BTreeLeaf() : BTreeNode() constructor{
+	/// @override 
+    static Draw = function(_instance_id){
+        // Base leaf Draw method
+        // This can be overridden by specific task implementations
+        // For example, GuardianPatrolTask would override this to call DrawWaypoints
+    }
+}
 
 ///@abstract
 function BTreeDecorator() : BTreeNode() constructor{
@@ -131,7 +144,7 @@ function BTreeRoot(inst_id): BTreeNode() constructor{
 	array_push(children, noone);    
 	
 	black_board = {  
-			user : inst_id,           
+		user : inst_id,           
 	    root_reference : other,     
 	    running_node: noone,        
 	};
@@ -160,6 +173,20 @@ function BTreeRoot(inst_id): BTreeNode() constructor{
 		children[0] = child_node;
 		children_arr_len = 1;
 	}
+	
+	/// @override 
+    static Draw = function(_instance_id){
+        // Draw children (which will cascade through the tree)
+        if(children[0] != noone){
+            children[0].Draw();
+        }
+        
+        // If there's a running node with its own Draw method, call it
+        if(black_board.running_node != noone && 
+           variable_struct_exists(black_board.running_node, "Draw")){
+            black_board.running_node.Draw(_instance_id);
+        }
+    }
 	
 	/// @override
     static DrawGUI = function(_x = 10, _y = 10, _draw_at_feets = true) {
@@ -222,6 +249,16 @@ function BTreeSequence(_sequence_name = "") : BTreeComposite() constructor{
         
         return BTStates.Success;
     }
+	
+	/// @override 
+    static Draw = function(_instance_id){
+        // Draw all children in the sequence
+        var _i = 0;
+        repeat(children_arr_len){
+            children[_i].Draw();
+            ++_i;
+        }
+    }
 }
 
 function BTreeSelector(_selector_name = "") : BTreeComposite() constructor{
@@ -243,7 +280,17 @@ function BTreeSelector(_selector_name = "") : BTreeComposite() constructor{
         }
         
         return BTStates.Failure;
-    }     
+    }  
+	
+	/// @override 
+    static Draw = function(_instance_id){
+        // Draw all children in the selector
+        var _i = 0;
+        repeat(children_arr_len){
+            children[_i].Draw();
+            ++_i;
+        }
+    }
 }
 
 function BTreeInverter() : BTreeDecorator() constructor{

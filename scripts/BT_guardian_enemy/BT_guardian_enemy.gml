@@ -84,15 +84,9 @@ function GuardianPatrolTask(_move_speed, _patrol_width = 96, _point_spacing = 8)
             return BTStates.Success;
         }
     }
-	
-	Draw = function() {
-		// Draw waypoints and path
-        DrawWaypoints();
-	}
     
-    static DrawWaypoints = function() {
-        var _user = black_board_ref.user;
-        with(_user) {
+    static DrawWaypoints = function(_instance_id) {
+        with(_instance_id) {
             // Draw connecting lines between points
             draw_set_color(other.path_color);
             draw_set_alpha(0.5);
@@ -125,6 +119,11 @@ function GuardianPatrolTask(_move_speed, _patrol_width = 96, _point_spacing = 8)
             draw_set_alpha(1);
             draw_set_color(c_white);
         }
+    }
+	
+	/// @override
+    static Draw = function(_instance_id) {
+        DrawWaypoints(_instance_id);
     }
 }
 
