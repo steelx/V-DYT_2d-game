@@ -13,7 +13,7 @@ visible_range = 120;// how far enemy can see
 attack_range = 40;
 
 defeated_object = obj_guardian_defeated;
-move_speed = 1.0;
+move_speed = 0.8;
 
 // Default sprite mapping
 sprites_map[$ CHARACTER_STATE.IDLE] = spr_guardian_idle;

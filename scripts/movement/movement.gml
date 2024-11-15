@@ -5,7 +5,7 @@ function apply_verticle_movement() {
     var _remaining_move = vel_y;
     
     while (abs(_remaining_move) >= 0.1) {
-        var _step = min(1, abs(_remaining_move)) * _move_dir_y;
+        var _step = min(abs(_remaining_move), move_speed) * _move_dir_y;
         var _collision_found = check_collision(0, _step);
         
         if (!_collision_found) {
@@ -19,14 +19,16 @@ function apply_verticle_movement() {
 }
 
 function apply_horizontal_movement() {
-    var _move_count = abs(vel_x);
+    var _remaining_move = vel_x;
     var _move_dir = sign(vel_x);
-    // The section below handles pixel-perfect collision checking.
-    // It does collision checking twice, first on the X axis, and then on the Y axis.
-    repeat (_move_count) {
-        var _collision_found = check_collision(_move_dir, 0);
+    
+    while (abs(_remaining_move) >= 0.1) {
+        var _step = min(abs(_remaining_move), move_speed) * _move_dir;
+        var _collision_found = check_collision(_step, 0);
+        
         if (!_collision_found) {
-            x += _move_dir;
+            x += _step;
+            _remaining_move -= _step;
         } else {
             vel_x = 0;
             break;
