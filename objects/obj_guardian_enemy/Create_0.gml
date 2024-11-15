@@ -78,20 +78,6 @@ check_animation = function () {
 };
 #endregion
 
-#region Knockback
-
-// Store reference to knockback sequence for access from collisions
-knockback_sequence = noone;
-
-// Function to trigger knockback from collision
-apply_knockback = function(_hit_direction, _knockback_speed = 2) {
-    // Trigger knockback through behavior tree
-    if (knockback_sequence != noone) {
-        knockback_sequence.TriggerKnockback(_hit_direction, _knockback_speed);
-    }
-};
-#endregion
-
 #region Behaviour_tree
 state = noone;
 bt_root = new BTreeRoot(id);
@@ -119,11 +105,13 @@ var _idle_task = new IdleTask(1);
 var _patrol_task = new PatrolTask(move_speed*0.8, 120, 1);
 
 // Knockback Sequence
-knockback_sequence = new GuardianKnockbackSequenceContainer();
+var _knockback_sequence = new BTreeSequence("knockback_sequence");
 
 
 // Build the tree:
 bt_root.ChildAdd(_selector_root);
+
+_knockback_sequence.ChildAdd(new KnockbackTask());
 
 // Combat sequence
 _combat_selector.ChildAdd(_attack_sequence);
@@ -145,7 +133,7 @@ _patrol_sequence.ChildAdd(_idle_task);
 _patrol_sequence.ChildAdd(_patrol_task);
 
 // Add main sequences to root selector
-_selector_root.ChildAdd(knockback_sequence);
+_selector_root.ChildAdd(_knockback_sequence);
 _selector_root.ChildAdd(_combat_selector);
 _selector_root.ChildAdd(_alert_sequence);
 _selector_root.ChildAdd(_patrol_sequence);

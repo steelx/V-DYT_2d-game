@@ -228,6 +228,7 @@
     {"id":{"name":"enemy","path":"scripts/enemy/enemy.yy",},},
     {"id":{"name":"game_start","path":"scripts/game_start/game_start.yy",},},
     {"id":{"name":"guardian_moment","path":"scripts/guardian_moment/guardian_moment.yy",},},
+    {"id":{"name":"knockback_task","path":"scripts/knockback_task/knockback_task.yy",},},
     {"id":{"name":"macros","path":"scripts/macros/macros.yy",},},
     {"id":{"name":"movement","path":"scripts/movement/movement.yy",},},
     {"id":{"name":"on_screen","path":"scripts/on_screen/on_screen.yy",},},

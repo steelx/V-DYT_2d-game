@@ -2,27 +2,6 @@
 
 #region Combat Selector (Atleast 1 must Success)
 
-function GuardianDetectPlayerTask() : BTreeLeaf() constructor {
-    name = "Guardian Detect Player Task";
-    
-    static Process = function() {
-        if (!instance_exists(obj_player)) return BTStates.Failure;
-
-        var _user = black_board_ref.user;
-        with(_user) {
-			vel_x = 0;
-			sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];			
-			if (is_player_visible(visible_range)) {
-				image_xscale = sign(obj_player.x - x);
-                // Should return Success if player is detected to continue combat sequence
-                return BTStates.Success;
-            }
-        }
-        // Return Failure if player not detected, allowing tree to try patrol sequence
-		return BTStates.Failure;
-    }
-}
-
 function GuardianMovetoAttackPositionTask(_ideal_distance = 40) : BTreeLeaf() constructor {
     name = "Guardian Move to Attack Position Task";
     ideal_attack_distance = _ideal_distance;
@@ -281,26 +260,6 @@ function GuardianKnockbackTask() : BTreeLeaf() constructor {
         knockback_vel_x = lengthdir_x(_speed, _direction);
     }
 }
-
-
-// Knockback Sequence Container
-function GuardianKnockbackSequenceContainer() : BTreeSequence() constructor {
-    name = "Guardian Knockback Sequence";
-    
-    // Create child tasks
-    knockback_task = new GuardianKnockbackTask();
-    //knockback_succeeder = new BTreeSucceeder();
-    
-    // Add children in sequence
-    ChildAdd(knockback_task);
-    //ChildAdd(knockback_succeeder);
-    
-    // Expose method to trigger knockback
-    static TriggerKnockback = function(_direction, _speed) {
-        knockback_task.TriggerKnockback(_direction, _speed);
-    }
-}
-#endregion
 
 
 #region Alert sequence
