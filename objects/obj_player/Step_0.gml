@@ -40,10 +40,8 @@ switch(state) {
         break;
         
     case CHARACTER_STATE.KNOCKBACK:
-		sprite_index = spr_archer_death;
         // Knockback state behavior
         // Slow down knockback
-		show_debug_message($"knockback received {knockback_vel_x}");
 		sprite_index = spr_player_hurt;
 		vel_x = 0;
         x += knockback_vel_x;

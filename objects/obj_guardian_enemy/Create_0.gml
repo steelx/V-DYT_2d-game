@@ -13,7 +13,7 @@ visible_range = 120;// how far enemy can see
 attack_range = 40;
 
 defeated_object = obj_guardian_defeated;
-move_speed = 1.5;
+move_speed = 1.0;
 
 // Default sprite mapping
 sprites_map[$ CHARACTER_STATE.IDLE] = spr_guardian_idle;
@@ -118,7 +118,7 @@ _attack_player_task = new GuardianAttackTask(seq_guardian_attack, 1.5);
 // Patrol Sequence
 var _patrol_sequence = new BTreeSequence("patrol_sequence");
 var _idle_task = new GuardianIdleTask();
-var _patrol_task = new GuardianPatrolTask(move_speed);
+var _patrol_task = new GuardianPatrolTask(move_speed, 120);
 
 // Knockback Sequence
 knockback_sequence = new GuardianKnockbackSequenceContainer();
