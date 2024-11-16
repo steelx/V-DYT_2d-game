@@ -1,4 +1,5 @@
 /// @description obj_little_ninja Step event
+if (variable_instance_exists(id, "enabled") and !enabled) exit;//used for attack seq spawner
 if (should_pause_object()) exit;    
 
 bt_root.Process();

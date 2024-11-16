@@ -21,7 +21,6 @@ sprites_map[$ CHARACTER_STATE.SEARCH] = spr_guardian_walk;
 sprites_map[$ CHARACTER_STATE.ALERT] = spr_guardian_idle;
 sprites_map[$ CHARACTER_STATE.ATTACK] = spr_guardian_idle;
 
-last_seen_player_x = noone;
 
 #region Behaviour_tree
 state = noone;
