@@ -20,7 +20,7 @@ sprites_map[$ CHARACTER_STATE.IDLE] = spr_little_ninja_idle;
 sprites_map[$ CHARACTER_STATE.MOVE] = spr_little_ninja_walk;
 sprites_map[$ CHARACTER_STATE.CHASE] = spr_little_ninja_walk;
 sprites_map[$ CHARACTER_STATE.SEARCH] = spr_little_ninja_walk;
-sprites_map[$ CHARACTER_STATE.ALERT] = spr_little_ninja_idle;
+sprites_map[$ CHARACTER_STATE.ALERT] = spr_little_ninja_alert;
 sprites_map[$ CHARACTER_STATE.ATTACK] = spr_little_ninja_idle;
 
 
@@ -35,21 +35,18 @@ var _knockback_sequence = new BTreeSequence("knockback_sequence");
 var _patrol_sequence = new BTreeSequence("patrol_sequence");
 var _attack_sequence = new BTreeSequence("attack_sequence");
 
-var _idle_task = new IdleTask(1);
-var _patrol_move_task = new PatrolTask(move_speed*0.8, 96, 1);
-
-var _detect_player = new DetectPlayerTask(spr_little_ninja_idle);
+var _detect_player = new DetectPlayerTask(sprites_map[$ CHARACTER_STATE.ALERT]);
 
 // Build the tree:
 bt_root.ChildAdd(_selector_root);
 
 _knockback_sequence.ChildAdd(new KnockbackTask());
 
-_patrol_sequence.ChildAdd(_idle_task);
-_patrol_sequence.ChildAdd(_patrol_move_task);
+_patrol_sequence.ChildAdd(new IdleTask(1));
+_patrol_sequence.ChildAdd(new PatrolTask(move_speed*0.8, 96, 1));
 
 _attack_sequence.ChildAdd(_detect_player);
-_attack_sequence.ChildAdd(new AttackSeqSpawnerTask(seq_ninja_attack, 2, 0.5));
+_attack_sequence.ChildAdd(new AttackSeqSpawnerTask(seq_ninja_attack, 2, 1));
 
 _selector_root.ChildAdd(_knockback_sequence);
 _selector_root.ChildAdd(_patrol_sequence);

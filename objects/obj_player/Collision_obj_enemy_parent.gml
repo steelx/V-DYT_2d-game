@@ -6,7 +6,8 @@
 
 // _allowed_to_walkpast_enemies who are generally enemies with weapons, and player can move close to them to attack
 var _allowed_to_walkpast_enemies = [obj_guardian_enemy, obj_archer];
-if array_contains(_allowed_to_walkpast_enemies, other.object_index) exit;
+var _not_allowed_to_jump_on_head = [obj_guardian_enemy, obj_archer, obj_little_ninja];
+
 
 if (state == CHARACTER_STATE.JUMP || state == CHARACTER_STATE.JETPACK_JUMP || vel_y < 0) {
     // This checks if the bottom point of the player's collision mask was above the enemy mask's top
@@ -14,8 +15,8 @@ if (state == CHARACTER_STATE.JUMP || state == CHARACTER_STATE.JETPACK_JUMP || ve
     // If this is true, it proves that the player is falling on top of the enemy from above, as it was
     // previously above it.
     // We get the bottom position for the previous frame by subtracting this frame's Y velocity from it.
-    if ((bbox_bottom - vel_y) < (other.bbox_top - other.vel_y))
-    {
+    if ((bbox_bottom - vel_y) < (other.bbox_top - other.vel_y)) {
+		if array_contains(_not_allowed_to_jump_on_head, other.object_index) exit;
         if (other.object_index == obj_slime_enemy && other.state == CHARACTER_STATE.ATTACK) {
             // Player jumped on an attacking slime, hurts itself and not the slime
             if (no_hurt_frames == 0) {
@@ -58,7 +59,7 @@ if (state == CHARACTER_STATE.JUMP || state == CHARACTER_STATE.JETPACK_JUMP || ve
         exit;
     }
 }
-
+if array_contains(_allowed_to_walkpast_enemies, other.object_index) exit;
 // This checks if the player is invincible, by checking if no_hurt_frames is greater than 0.
 if (no_hurt_frames > 0)
 {

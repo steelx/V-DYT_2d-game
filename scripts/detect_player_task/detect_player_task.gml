@@ -1,4 +1,4 @@
-function DetectPlayerTask(_detect_sprite = spr_player_idle) : BTreeLeaf() constructor {
+function DetectPlayerTask(_detect_sprite = sprites_map[$ CHARACTER_STATE.IDLE]) : BTreeLeaf() constructor {
     name = "Detect Player Task";
 	sprite = _detect_sprite;
     
