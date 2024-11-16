@@ -21,62 +21,7 @@ sprites_map[$ CHARACTER_STATE.SEARCH] = spr_guardian_walk;
 sprites_map[$ CHARACTER_STATE.ALERT] = spr_guardian_idle;
 sprites_map[$ CHARACTER_STATE.ATTACK] = spr_guardian_idle;
 
-enable_smart = true;
-
-// attack timer
-can_attack = false;
-attack_delay = get_room_speed() * 2;
-alarm[4] = attack_delay;
 last_seen_player_x = noone;
-
-// Roam behaviour
-move_chance = 1;
-move_chance = 0.5;
-
-
-#region Attack Sequence
-// disable guardian enemy when attack sequence is running
-// we hide this object when enabled is false
-enabled = true;
-
-enable_self = function () {
-	enabled = true;
-	image_alpha = 1;
-	state = CHARACTER_STATE.IDLE;
-	image_index = spr_guardian_idle;
-	alarm_set(1, 1);
-};
-
-disable_self = function () {
-	enabled = false;
-	alarm[2] = 1;
-	vel_x = 0;
-	vel_y = 0;
-};
-
-// Playing & Managing the Attack Animation
-active_attack_sequence = noone;
-
-start_animation = function (_sequence) {
-	active_attack_sequence = instance_create_layer(x, y, "Instances", obj_sequence_spawner);
-    with (active_attack_sequence) {
-		sequence = _sequence;
-		spawner = other.id;
-		start_sequence();
-	}
-	disable_self();
-	return active_attack_sequence;
-};
-
-check_animation = function () {
-    if (instance_exists(active_attack_sequence)) {
-        if (active_attack_sequence.check_sequence()) {
-            active_attack_sequence = noone;
-            enable_self();
-        }
-    }
-};
-#endregion
 
 #region Behaviour_tree
 state = noone;
@@ -96,8 +41,7 @@ var _search_area = new GuardianSearchAreaTask(120);
 
 var _detect_player = new DetectPlayerTask(spr_guardian_idle);
 var _chase_player_task = new GuardianChaseTask(move_speed);
-var _attack_range_task = new GuardianCheckAttackRangeTask(attack_range);
-var _attack_player_task = new GuardianAttackTask(seq_guardian_attack, 1.5);
+var _attack_player_task = new AttackSeqSpawnerTask(seq_guardian_attack, 2, 1.5);
 
 // Patrol Sequence
 var _patrol_sequence = new BTreeSequence("patrol_sequence");
@@ -118,7 +62,7 @@ _combat_selector.ChildAdd(_attack_sequence);
 _combat_selector.ChildAdd(_chase_sequence);
 
 _attack_sequence.ChildAdd(_detect_player);
-_attack_sequence.ChildAdd(_attack_range_task);
+_attack_sequence.ChildAdd(new CheckAttackRangeTask(attack_range));
 _attack_sequence.ChildAdd(_attack_player_task);
 
 _chase_sequence.ChildAdd(_detect_player);

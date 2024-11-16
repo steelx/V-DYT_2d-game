@@ -1,4 +1,6 @@
 /// @description obj_guardian_enemy Step event
+//if (variable_instance_exists(id, "check_animation")) check_animation();//used for attack seq spawner
+if (variable_instance_exists(id, "enabled") and !enabled) exit;//used for attack seq spawner
 
 if (should_pause_object()) exit;    
 

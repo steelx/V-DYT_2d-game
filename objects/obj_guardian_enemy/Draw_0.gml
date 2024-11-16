@@ -1,8 +1,5 @@
 /// @description obj_guardian_enemy Draw event
-if !enabled {
-	// if attack sequence is running hide this object
-	exit;
-}
+if (variable_instance_exists(id, "enabled") and !enabled) exit;
 // Inherit the parent event
 event_inherited();
 
