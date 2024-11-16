@@ -27,7 +27,7 @@ start_sequence = function() {
 }
 
 // Check if the sequence is finished and handle cleanup
-check_sequence = function() {
+check_spawner_sequence = function() {
     if (active_sequence != noone && layer_sequence_is_finished(active_sequence)) {
         cleanup_sequence();
         return true;
@@ -49,7 +49,9 @@ cleanup_sequence = function() {
     // Re-enable the spawner if it still exists
     if (instance_exists(spawner)) {
         with (spawner) {
-            enable_self();
+            if variable_instance_exists(id, "enable_self") {
+				enable_self(id);
+			}
         }
     }
     

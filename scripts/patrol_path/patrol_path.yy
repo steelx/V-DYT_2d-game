@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"patrol_path",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"patrol_path",
+  "parent":{
+    "name":"enemies",
+    "path":"folders/Scripts/enemies.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"detect_player_task",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"detect_player_task",
+  "parent":{
+    "name":"behaviour_tree",
+    "path":"folders/Scripts/behaviour_tree.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -27,22 +27,6 @@ function is_player_in_attack_range(_attack_range = 16) {
     return player_within_range(_attack_range);
 }
 
-/// @function is_player_visible_direction(range, direction)
-/// @param {real} _range The range to check for player visibility
-/// @param {real} _direction The direction to check (-1 for left, 1 for right)
-function is_player_visible_direction(_range, _direction) {
-    if (!instance_exists(obj_player)) return false;
-    
-    var _player_x = obj_player.x;
-    var _player_y = obj_player.y;
-    
-    // Check if player is within the vertical range
-    if (abs(_player_y - y) > sprite_height/2) return false;
-    
-    // Check if player is within the horizontal range and in the correct direction
-    var _distance = _player_x - x;
-    return (sign(_distance) == _direction) && (abs(_distance) <= _range);
-}
 
 function draw_visibility_ray(_visible_range, _attack_range) {
     draw_set_alpha(0.2);
@@ -73,4 +57,18 @@ function generate_search_path(_patrol_width, _search_point_spacing) {
         var _point_x = _start_x + (i * _search_point_spacing);
         ds_list_add(search_path_points, _point_x);
     }
+}
+
+
+function player_detected() {
+    var _player_above = obj_player.y < y - sprite_height/2;
+    var _is_visible = player_within_range(visible_range);
+    return (_is_visible && !_player_above);
+}
+
+function move_to_point(_target_x, _speed) {
+    var _direction = sign(_target_x - x);
+    vel_x = _speed * _direction;
+    image_xscale = _direction;
+    sprite_index = sprites_map[$ CHARACTER_STATE.MOVE];
 }

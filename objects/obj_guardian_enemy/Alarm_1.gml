@@ -1,5 +1,8 @@
 /// @description Alarm 1 Roam/Walk behaviour
 // play walk start sound
+can_move = true;
+alarm[1] = idle_timer;
+
 var _audible_distance = 300;
 var _player_distance = distance_to_object(obj_player);
 if _player_distance < _audible_distance {
