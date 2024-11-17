@@ -51,7 +51,7 @@ _combat_selector.ChildAdd(_chase_sequence);
 
 _attack_sequence.ChildAdd(_detect_player);
 _attack_sequence.ChildAdd(new CheckAttackRangeTask(attack_range));
-_attack_sequence.ChildAdd(new AttackSeqSpawnerTask(seq_guardian_attack, 2, 1.5));
+_attack_sequence.ChildAdd(new AttackSeqSpawnerTask(seq_guardian_attack, 2, 4, 1.5));
 
 _chase_sequence.ChildAdd(_detect_player);
 _chase_sequence.ChildAdd(new GuardianChaseTask(move_speed));

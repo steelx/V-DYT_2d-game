@@ -215,6 +215,7 @@
     {"id":{"name":"cutscenes","path":"scripts/cutscenes/cutscenes.yy",},},
     {"id":{"name":"detect_player_task","path":"scripts/detect_player_task/detect_player_task.yy",},},
     {"id":{"name":"dialog_macro","path":"scripts/dialog_macro/dialog_macro.yy",},},
+    {"id":{"name":"dodge_task","path":"scripts/dodge_task/dodge_task.yy",},},
     {"id":{"name":"draw_health_bar","path":"scripts/draw_health_bar/draw_health_bar.yy",},},
     {"id":{"name":"draw_player_health","path":"scripts/draw_player_health/draw_player_health.yy",},},
     {"id":{"name":"draw_rectangle_hex","path":"scripts/draw_rectangle_hex/draw_rectangle_hex.yy",},},
