@@ -11,24 +11,12 @@ function AttackSeqSpawnerTask(_seqeunce_file, _image_alpha_alarm = 2, _attack_de
     sequence_file = _seqeunce_file;
 	image_alpha_alarm = _image_alpha_alarm;
 	
-	/// called inside enemy process,
-	/// this will check if animation is over then enable true which would allow the Step event
-	_check_animation = function (_user) {
-	    with(_user) {
-			if (instance_exists(sequence_spawner_id)) {
-				if (sequence_spawner_id.check_spawner_sequence()) {
-				    sequence_spawner_id = noone;
-				    enable_self(id);
-				}
-			}
-		}
-	};
-	
 	_enable_self = function (_user) {
 		with(_user) {
 			enabled = true;
 			image_index = sprites_map[$ CHARACTER_STATE.IDLE];
 			image_alpha = 1;
+			no_hurt_frames = 0;
 		}
 	};
 	
@@ -44,7 +32,6 @@ function AttackSeqSpawnerTask(_seqeunce_file, _image_alpha_alarm = 2, _attack_de
 	
 	static Init = function() {
 		var _user = black_board_ref.user;
-		show_debug_message($"AttackSeqSpawnerTask _user {_user.object_index == obj_guardian_enemy}");
 		if !variable_instance_exists(_user, "enabled") {
 			variable_instance_set(_user, "enabled", true);
 		}
@@ -52,11 +39,10 @@ function AttackSeqSpawnerTask(_seqeunce_file, _image_alpha_alarm = 2, _attack_de
 			variable_instance_set(_user, "sequence_spawner_id", noone);
 		}
 		if !variable_instance_exists(_user, "enable_self") {
+			// "enable_self" gets called from obj_sequence_spawner cleanup_sequence function
 			variable_instance_set(_user, "enable_self", _enable_self);
 		}
-		if !variable_instance_exists(_user, "check_animation") {
-			variable_instance_set(_user, "check_animation", _check_animation);
-		}
+
 		if !variable_instance_exists(_user, "disable_self") {
 			variable_instance_set(_user, "disable_self", _disable_self);
 		}
@@ -100,14 +86,4 @@ function AttackSeqSpawnerTask(_seqeunce_file, _image_alpha_alarm = 2, _attack_de
 			if (variable_instance_exists(id, "enabled") and !enabled) exit;
 		}
 	}
-    
-    static Clean = function() {
-        // Clean up if task is terminated while animation is running
-        var _user = black_board_ref.user;
-		if instance_exists(_user) {
-			with(_user) {
-				check_animation(id);
-			}
-		}
-    }
 }

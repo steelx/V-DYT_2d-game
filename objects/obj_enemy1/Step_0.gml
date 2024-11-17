@@ -11,9 +11,6 @@ switch(state) {
         vel_x = 0;
         break;
     case CHARACTER_STATE.MOVE:
-        // Move state behavior
-        apply_horizontal_movement();
-        
         // Transition back to MOVE or IDLE state once in the air
         state = (vel_x != 0) ? CHARACTER_STATE.MOVE : CHARACTER_STATE.IDLE;
         break;
@@ -32,5 +29,6 @@ switch(state) {
         // Knockback velocity is applied in the collision event and stopped in Alarm 0
         break;
 }
-    
+
+apply_horizontal_movement();
 apply_verticle_movement();

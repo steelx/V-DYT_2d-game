@@ -12,8 +12,8 @@
   "duration":1.245465,
   "name":"alert_zornath",
   "parent":{
-    "name":"Alerts, Chimes, Jingles",
-    "path":"folders/Sounds/Alerts, Chimes, Jingles.yy",
+    "name":"Enemy",
+    "path":"folders/Sounds/SFX/Enemy.yy",
   },
   "preload":true,
   "resourceType":"GMSound",

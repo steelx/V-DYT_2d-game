@@ -12,8 +12,8 @@
   "duration":202.03102,
   "name":"Sci_Fi_3_Loop",
   "parent":{
-    "name":"BGM",
-    "path":"folders/Sounds/BGM.yy",
+    "name":"Music",
+    "path":"folders/Sounds/Music.yy",
   },
   "preload":false,
   "resourceType":"GMSound",

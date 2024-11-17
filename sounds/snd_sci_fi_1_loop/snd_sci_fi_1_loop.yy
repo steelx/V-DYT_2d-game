@@ -12,8 +12,8 @@
   "duration":180.03592,
   "name":"snd_sci_fi_1_loop",
   "parent":{
-    "name":"BGM",
-    "path":"folders/Sounds/BGM.yy",
+    "name":"Music",
+    "path":"folders/Sounds/Music.yy",
   },
   "preload":false,
   "resourceType":"GMSound",

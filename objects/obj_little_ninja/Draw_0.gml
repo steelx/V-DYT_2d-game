@@ -1,5 +1,4 @@
 /// @description obj_little_ninja Draw event
-
 // Inherit the parent event
 event_inherited();
 

@@ -6,13 +6,13 @@ defeated_object = obj_enemy1_defeated;
 max_hp = 1;
 hp = max_hp;
 
-max_hp = 10;
+max_hp = 5;
 hp = max_hp;
-damage = 2;
-visible_range = 60;// how far enemy can see
-attack_range = 40;
+damage = 1;
+visible_range = 64;// how far enemy can see
+attack_range = 42;
 
-defeated_object = obj_guardian_defeated;
+defeated_object = obj_enemy1_defeated;
 move_speed = 1;
 
 // Default sprite mapping
@@ -46,7 +46,8 @@ _patrol_sequence.ChildAdd(new IdleTask(1));
 _patrol_sequence.ChildAdd(new PatrolTask(move_speed*0.8, 96, 1));
 
 _attack_sequence.ChildAdd(_detect_player);
-_attack_sequence.ChildAdd(new AttackSeqSpawnerTask(seq_ninja_attack, 2, 1));
+_attack_sequence.ChildAdd(new CheckAttackRangeTask(attack_range));
+_attack_sequence.ChildAdd(new AttackSeqSpawnerTask(seq_ninja_attack, 2, 1.5));
 
 _selector_root.ChildAdd(_knockback_sequence);
 _selector_root.ChildAdd(_patrol_sequence);

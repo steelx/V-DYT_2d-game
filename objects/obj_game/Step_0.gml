@@ -14,7 +14,7 @@ if (global.game_state == GAME_STATES.PAUSED and global.show_game_menu) {
     var _move = keyboard_check_pressed(vk_down) - keyboard_check_pressed(vk_up);
     
     if (_move != 0) {
-        audio_play_sound(electro_low_bleep, 10, false);
+        audio_play_sound(snd_button_press_01, 10, false);
         menu_index += _move;
         
         // Wrap around menu
@@ -29,7 +29,7 @@ if (global.game_state == GAME_STATES.PAUSED and global.show_game_menu) {
     
     // Select Menu on Enter key press
     if (keyboard_check_pressed(vk_enter) or gamepad_button_check_pressed(0, gp_face2)) {
-        audio_play_sound(blip_stab_bleep, 10, false);  // Play menu selection sound
+        audio_play_sound(alert_abyssal, 10, false);  // Play menu selection sound
         switch(menu_options[menu_index]) {
             case "Resume":
                 resume_game();

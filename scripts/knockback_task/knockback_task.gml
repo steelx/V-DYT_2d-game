@@ -5,7 +5,7 @@ function KnockbackTask() : BTreeLeaf() constructor {
     knockback_vel_x = 0;
 	knockback_friction = 0.5; // Adjust as needed
 	
-	apply_knockback = function(_hit_direction, _knockback_speed = 2) {
+	_apply_knockback = function(_hit_direction, _knockback_speed = 2) {
 	    // Trigger knockback through behavior tree
 	    TriggerKnockback(_hit_direction, _knockback_speed);
 	};
@@ -19,7 +19,7 @@ function KnockbackTask() : BTreeLeaf() constructor {
 				variable_instance_set(_user, "knockback_sequence", noone);
 			}
 			if !variable_instance_exists(_user, "apply_knockback") {
-				variable_instance_set(_user, "apply_knockback", other.apply_knockback);
+				variable_instance_set(_user, "apply_knockback", other._apply_knockback);
 			}
 		}
 	}

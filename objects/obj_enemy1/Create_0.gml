@@ -10,3 +10,4 @@ hp = max_hp;
 // This action is present in the enemy parent object as well, but we're running it again in this child object,
 // as its move_speed value has changed.
 vel_x = choose(-move_speed, move_speed);
+state = CHARACTER_STATE.MOVE;

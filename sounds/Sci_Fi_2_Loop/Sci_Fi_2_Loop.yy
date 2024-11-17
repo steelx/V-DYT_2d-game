@@ -12,8 +12,8 @@
   "duration":171.46776,
   "name":"Sci_Fi_2_Loop",
   "parent":{
-    "name":"BGM",
-    "path":"folders/Sounds/BGM.yy",
+    "name":"Music",
+    "path":"folders/Sounds/Music.yy",
   },
   "preload":false,
   "resourceType":"GMSound",

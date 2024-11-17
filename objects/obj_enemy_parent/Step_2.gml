@@ -1,7 +1,8 @@
 /// @description obj_enemy_parent End Step
-
-// Inherit the parent event
+// need character parent for hurt steps
 event_inherited();
+
+if (state == noone) exit;
 
 if variable_instance_exists(id, sprites_map) {
 	sprite_index = sprites_map[$ state];

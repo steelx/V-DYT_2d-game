@@ -3,7 +3,7 @@ function IdleTask(_alarm_idx) : BTreeLeaf() constructor {
 	move_chance = 0.5;
 	randomize();
 	alarm_idx = _alarm_idx;
-	idle_timer = get_room_speed() * choose(2, 3);
+	_idle_timer = get_room_speed() * choose(2, 3);
 	
 	static Init = function() {
 		var _user = black_board_ref.user;
@@ -12,9 +12,9 @@ function IdleTask(_alarm_idx) : BTreeLeaf() constructor {
 				variable_instance_set(_user, "can_move", false);
 			}
 			if !variable_instance_exists(_user, "idle_timer") {
-				variable_instance_set(_user, "idle_timer", other.idle_timer);
+				variable_instance_set(_user, "idle_timer", other._idle_timer);
 			}
-			alarm[other.alarm_idx] = other.idle_timer;
+			alarm[other.alarm_idx] = other._idle_timer;
 		}
         status = BTStates.Running;
     }
@@ -81,7 +81,7 @@ function PatrolTask(_move_speed, _patrol_width, _idle_alarm_idx) : BTreeLeaf() c
 					// run Idle
 					alarm[other.idle_alarm_idx] = idle_timer;
 					can_move = false;
-					return BTStates.Success;
+					return BTStates.Success;// exit the Patrol Sequence
                 } else {
                     if (other.return_triggered) {
                         other.path.MovePrevious();
