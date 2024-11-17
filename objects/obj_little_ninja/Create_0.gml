@@ -45,14 +45,14 @@ _knockback_sequence.ChildAdd(new KnockbackTask());
 
 _dodge_sequence.ChildAdd(_detect_player_task);
 _dodge_sequence.ChildAdd(new CheckAttackRangeTask(attack_range));
-_dodge_sequence.ChildAdd(new DodgeTask(3, 4, 3.0));
+_dodge_sequence.ChildAdd(new DodgeTask(3, 4, 4.0));
 
 _patrol_sequence.ChildAdd(new IdleTask(1));
 _patrol_sequence.ChildAdd(new PatrolTask(move_speed*0.8, 96, 1));
 
 _attack_sequence.ChildAdd(_detect_player_task);
 _attack_sequence.ChildAdd(new CheckAttackRangeTask(attack_range));
-_attack_sequence.ChildAdd(new AttackSeqSpawnerTask(seq_ninja_attack, 2, 4, 1.5));
+_attack_sequence.ChildAdd(new AttackSeqSpawnerTask(seq_ninja_attack, 2, 4, 2));
 
 _selector_root.ChildAdd(_knockback_sequence);
 _selector_root.ChildAdd(_dodge_sequence);

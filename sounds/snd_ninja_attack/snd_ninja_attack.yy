@@ -1,6 +1,6 @@
 {
   "$GMSound":"",
-  "%Name":"snd_enemy_dodge",
+  "%Name":"snd_ninja_attack",
   "audioGroupId":{
     "name":"audiogroup_default",
     "path":"audiogroups/audiogroup_default",
@@ -9,8 +9,8 @@
   "bitRate":128,
   "compression":0,
   "conversionMode":0,
-  "duration":0.953424,
-  "name":"snd_enemy_dodge",
+  "duration":1.341723,
+  "name":"snd_ninja_attack",
   "parent":{
     "name":"Enemy",
     "path":"folders/Sounds/SFX/Enemy.yy",
@@ -19,7 +19,7 @@
   "resourceType":"GMSound",
   "resourceVersion":"2.0",
   "sampleRate":44100,
-  "soundFile":"snd_enemy_dodge.ogg",
+  "soundFile":"snd_ninja_attack.wav",
   "type":0,
   "volume":1.0,
 }

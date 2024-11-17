@@ -38,7 +38,7 @@
   "origin":9,
   "parent":{
     "name":"Slime",
-    "path":"folders/Sprites/Enemy/Slime.yy",
+    "path":"folders/Sounds/SFX/Enemy/Slime.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

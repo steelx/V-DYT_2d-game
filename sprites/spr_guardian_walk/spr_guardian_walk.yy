@@ -54,12 +54,7 @@
             "0":{"$MessageEventKeyframe":"","Events":[
                 "guardian_footstep",
               ],"resourceType":"MessageEventKeyframe","resourceVersion":"2.0",},
-          },"Disabled":false,"id":"31502c5a-661a-4a86-8e08-73f80afc64b1","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<MessageEventKeyframe>","resourceVersion":"2.0","Stretch":false,},
-        {"$Keyframe<MessageEventKeyframe>":"","Channels":{
-            "0":{"$MessageEventKeyframe":"","Events":[
-                "guardian_footstep",
-              ],"resourceType":"MessageEventKeyframe","resourceVersion":"2.0",},
-          },"Disabled":false,"id":"6aaa0b3d-4f46-438f-b584-db26f35f88f5","IsCreationKey":false,"Key":5.0,"Length":1.0,"resourceType":"Keyframe<MessageEventKeyframe>","resourceVersion":"2.0","Stretch":false,},
+          },"Disabled":false,"id":"73e0f737-f6c3-426d-a173-ec6ffb505b19","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<MessageEventKeyframe>","resourceVersion":"2.0","Stretch":false,},
       ],
       "resourceType":"KeyframeStore<MessageEventKeyframe>",
       "resourceVersion":"2.0",

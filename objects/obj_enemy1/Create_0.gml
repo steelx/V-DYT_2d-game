@@ -4,7 +4,7 @@ event_inherited();
 defeated_object = obj_enemy1_defeated;
 max_hp = 1;
 hp = max_hp;
-
+move_speed = 1.25;
 // This applies either move_speed or negative move_speed to the enemy's X velocity. This way the enemy will
 // either move left or right (at random).
 // This action is present in the enemy parent object as well, but we're running it again in this child object,

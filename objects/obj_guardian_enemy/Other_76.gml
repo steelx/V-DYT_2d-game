@@ -6,27 +6,15 @@ var _footstep_sounds = [
 ];
 
 var _message = event_data[? "message"];
-var _max_footstep_distance = 500; // Adjust this value based on your game's scale
+var _max_footstep_distance = 300; // Adjust this value based on your game's scale
 
 switch (_message) {
     case "guardian_footstep":
         // Get distance to player
         var _player = instance_nearest(x, y, obj_player);
         if (_player != noone) {
-            // Use spatial sound for distance-based volume
-            var _sound = _footstep_sounds[irandom(array_length(_footstep_sounds) - 1)];
-            play_spatial_sound(
-                _sound,
-                x,
-                y,
-                _max_footstep_distance
-            );
-            
-            // Play with priority to manage sound count
-            play_priority_sound(
-                _sound,
-                SoundPriority.MOVEMENT
-            );
+            var _dist = distance_to_object(_player);
+            if (_dist < _max_footstep_distance) play_random_footstep(_footstep_sounds);
         }
         break;
 }

@@ -9,7 +9,7 @@ attack_range = 42;
 last_seen_player_x = noone;
 
 // This sets the movement speed for the enemies.
-move_speed = 1.5;
+move_speed = 1.0;
 roam_count_max = get_room_speed();
 roam_count = roam_count_max;
 

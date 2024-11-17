@@ -20,7 +20,7 @@ function IdleTask(_alarm_idx) : BTreeLeaf() constructor {
     }
 	
 	static SetIdleCanMove = function() {
-		can_move = true;
+		can_move = false;
 		alarm[alarm_idx] = idle_timer;
 	}
     
@@ -56,10 +56,13 @@ function PatrolTask(_move_speed, _patrol_width, _idle_alarm_idx) : BTreeLeaf() c
 	
 	static Init = function() {
         var _user = black_board_ref.user;
-		var _start_x = _user.x - patrol_width/2;
+		var _start_x = _user.xstart - patrol_width/2;
         path.GeneratePoints(_start_x, patrol_width, 30);
         return_triggered = false;
         status = BTStates.Running;
+		with(_user) {
+			sprite_index = sprites_map[$ CHARACTER_STATE.MOVE];
+		}
     }
     
     static Process = function() {

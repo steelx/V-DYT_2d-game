@@ -5,16 +5,60 @@ event_inherited();
 
 max_hp = 2;
 hp = max_hp;
-attack_range = 164;
+visible_range = 200;
+attack_range = 160;
+move_speed = 1.5;
 
 defeated_object = obj_archer_defeated;
-move_speed = 2;
-state = CHARACTER_STATE.IDLE;
+state = noone;
 
-move_chance = 0.5;
-roam_counter_init = 120;
-roam_counter = roam_counter_init;
-roam_timer = get_room_speed();
-alarm_set(1, roam_timer);
 
+// Default sprite mapping
+sprites_map[$ CHARACTER_STATE.IDLE] = spr_archer_idle;
+sprites_map[$ CHARACTER_STATE.MOVE] = spr_archer_run;
+sprites_map[$ CHARACTER_STATE.CHASE] = spr_archer_run;
+sprites_map[$ CHARACTER_STATE.SEARCH] = spr_archer_run;
+sprites_map[$ CHARACTER_STATE.ALERT] = spr_archer_idle;
+sprites_map[$ CHARACTER_STATE.ATTACK] = spr_archer_attack;
+
+
+#region Behaviour_tree
+state = noone;
+bt_root = new BTreeRoot(id);
+
+// Create root selector
+var _selector_root = new BTreeSelector("root");
+
+var _knockback_sequence = new BTreeSequence("knockback_sequence");
+var _patrol_sequence = new BTreeSequence("patrol_sequence");
+var _attack_sequence = new BTreeSequence("attack_sequence");
+var _dodge_sequence = new BTreeSequence("dodge_sequence");
+
+var _detect_player_task = new DetectPlayerTask(sprites_map[$ CHARACTER_STATE.ALERT]);
+
+// Build the tree:
+bt_root.ChildAdd(_selector_root);
+
+_knockback_sequence.ChildAdd(new KnockbackTask());
+
+_dodge_sequence.ChildAdd(_detect_player_task);
+_dodge_sequence.ChildAdd(new CheckAttackRangeTask(attack_range));
+_dodge_sequence.ChildAdd(new DodgeTask(3, 4, 4.0));
+
+_patrol_sequence.ChildAdd(new IdleTask(1));
+_patrol_sequence.ChildAdd(new PatrolTask(move_speed*0.8, 96, 1));
+
+_attack_sequence.ChildAdd(_detect_player_task);
+_attack_sequence.ChildAdd(new CheckAttackRangeTask(attack_range));
+_attack_sequence.ChildAdd(new AttackWithAnimationFrameTask(4, 1));
+
+_selector_root.ChildAdd(_knockback_sequence);
+_selector_root.ChildAdd(_dodge_sequence);
+_selector_root.ChildAdd(_patrol_sequence);
+_selector_root.ChildAdd(_attack_sequence);
+
+// Initialize the tree
+bt_root.Init();
+
+#endregion
 

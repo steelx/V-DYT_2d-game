@@ -8,8 +8,8 @@
   "name":"obj_archer_defeated",
   "overriddenProperties":[],
   "parent":{
-    "name":"Enemies",
-    "path":"folders/Objects/Characters/Enemies.yy",
+    "name":"archer",
+    "path":"folders/Objects/Characters/Enemies/archer.yy",
   },
   "parentObjectId":null,
   "persistent":false,
