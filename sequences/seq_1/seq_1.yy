@@ -70,7 +70,7 @@
       ],"traits":0,},
     {"$GMAudioTrack":"","%Name":"snd_attack","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<AudioKeyframe>":"","Keyframes":[
           {"$Keyframe<AudioKeyframe>":"","Channels":{
-              "0":{"$AudioKeyframe":"","Id":{"name":"snd_attack","path":"sounds/snd_attack/snd_attack.yy",},"Mode":0,"resourceType":"AudioKeyframe","resourceVersion":"2.0",},
+              "0":{"$AudioKeyframe":"","Id":{"name":"snd_attack_hit","path":"sounds/snd_attack_hit/snd_attack_hit.yy",},"Mode":0,"resourceType":"AudioKeyframe","resourceVersion":"2.0",},
             },"Disabled":false,"id":"b2c81c95-c961-472d-8885-8c919416b277","IsCreationKey":false,"Key":240.0,"Length":41.0,"resourceType":"Keyframe<AudioKeyframe>","resourceVersion":"2.0","Stretch":false,},
         ],"resourceType":"KeyframeStore<AudioKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"snd_attack","resourceType":"GMAudioTrack","resourceVersion":"2.0","trackColour":4287230536,"tracks":[
         {"$GMRealTrack":"","%Name":"position","builtinName":14,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<RealKeyframe>":"","Keyframes":[
@@ -104,7 +104,7 @@
       ],"traits":0,},
     {"$GMAudioTrack":"","%Name":"snd_attack","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<AudioKeyframe>":"","Keyframes":[
           {"$Keyframe<AudioKeyframe>":"","Channels":{
-              "0":{"$AudioKeyframe":"","Id":{"name":"snd_attack","path":"sounds/snd_attack/snd_attack.yy",},"Mode":0,"resourceType":"AudioKeyframe","resourceVersion":"2.0",},
+              "0":{"$AudioKeyframe":"","Id":{"name":"snd_attack_hit","path":"sounds/snd_attack_hit/snd_attack_hit.yy",},"Mode":0,"resourceType":"AudioKeyframe","resourceVersion":"2.0",},
             },"Disabled":false,"id":"3b9971fb-5d6d-4849-a0ad-965078f644cc","IsCreationKey":false,"Key":55.0,"Length":39.0,"resourceType":"Keyframe<AudioKeyframe>","resourceVersion":"2.0","Stretch":false,},
         ],"resourceType":"KeyframeStore<AudioKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"snd_attack","resourceType":"GMAudioTrack","resourceVersion":"2.0","trackColour":4282969330,"tracks":[
         {"$GMRealTrack":"","%Name":"position","builtinName":14,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<RealKeyframe>":"","Keyframes":[

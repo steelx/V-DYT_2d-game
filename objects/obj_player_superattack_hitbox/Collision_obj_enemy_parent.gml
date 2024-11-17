@@ -8,7 +8,7 @@ with (other) {
 	if (hp > 0 and instance_exists(other)) {
 		// Start enemy blinking
 		no_hurt_frames = 60;
-		audio_play_sound(snd_enemy_hit, 1, false);
+		play_priority_sound(snd_attack_hit, SoundPriority.CRITICAL);
 		
 		// Apply knockback to the enemy
 		var _knockback_speed = 6; // Adjust this value as needed

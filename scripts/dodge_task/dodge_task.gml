@@ -48,6 +48,7 @@ function DodgeTask(_dodge_alarm_idx, _attack_alarm_idx, _dodge_delay = 3) : BTre
                 sprite_index = sprites_map[$ CHARACTER_STATE.MOVE];
                 image_xscale = _dir;
                 alarm[other.dodge_alarm_idx] = other.dodge_delay;
+				play_priority_sound(snd_enemy_dodge, SoundPriority.COMBAT);
             }
             
             // Process ongoing dodge

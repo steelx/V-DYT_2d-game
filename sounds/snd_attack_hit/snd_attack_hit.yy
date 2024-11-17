@@ -1,6 +1,6 @@
 {
   "$GMSound":"",
-  "%Name":"snd_attack",
+  "%Name":"snd_attack_hit",
   "audioGroupId":{
     "name":"audiogroup_default",
     "path":"audiogroups/audiogroup_default",
@@ -10,7 +10,7 @@
   "compression":0,
   "conversionMode":0,
   "duration":1.436719,
-  "name":"snd_attack",
+  "name":"snd_attack_hit",
   "parent":{
     "name":"Player",
     "path":"folders/Sounds/SFX/Player.yy",
@@ -19,7 +19,7 @@
   "resourceType":"GMSound",
   "resourceVersion":"2.0",
   "sampleRate":44100,
-  "soundFile":"snd_attack.mp3",
+  "soundFile":"snd_attack_hit.mp3",
   "type":0,
   "volume":1.0,
 }

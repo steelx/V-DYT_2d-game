@@ -14,18 +14,13 @@ switch (_message) {
        	// it flips based on which direction the player is moving in.
        	_effect.image_xscale = image_xscale;
        
-       	// Choose a random sound to play on footstep
-       	var _sound = choose(snd_footstep_01, snd_footstep_02, snd_footstep_03);
-       
-       	// Play that sound
-        audio_play_sound(_sound, 0, 0);
+       	play_random_footstep();
         break;
     
     case "hero_attack":
         // this event emitted at 3rd frame when animation frame reaches extended sword
         instance_create_layer(x+(image_xscale*8), y, "Player", obj_player_attack_hitbox);
-        var _s1 = audio_play_sound(snd_attack, 1, 0);
-        audio_sound_pitch(_s1, random_range(0.8, 1));
+        play_priority_sound(snd_player_used_attack, SoundPriority.COMBAT);
         break;
     
     case "hero_super_attack":

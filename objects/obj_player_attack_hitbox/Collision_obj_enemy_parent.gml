@@ -7,7 +7,7 @@ with (other) {
 	if hp > 0 {
 		// Start enemy blinking
 		no_hurt_frames = 60; // Blink for 30 frames (adjust as needed)
-		audio_play_sound(snd_enemy_hit, 1, false);
+		play_priority_sound(snd_attack_hit, SoundPriority.CRITICAL);
 		
 		// Apply knockback to the enemy
 		var _knockback_speed = 2; // Adjust this value as needed
@@ -21,7 +21,6 @@ with (other) {
 		var _knockback_x = lengthdir_x(_knockback_speed, _knockback_direction);
 		var _knockback_y = lengthdir_y(_knockback_speed, _knockback_direction);
 		vel_x = _knockback_x;
-		show_debug_message($"player hit {_knockback_x}");
 		vel_y = 0;
 
 		// Set the enemy to a knockback state

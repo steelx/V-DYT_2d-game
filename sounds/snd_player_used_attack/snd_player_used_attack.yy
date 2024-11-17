@@ -1,6 +1,6 @@
 {
   "$GMSound":"",
-  "%Name":"snd_slime_attack",
+  "%Name":"snd_player_used_attack",
   "audioGroupId":{
     "name":"audiogroup_default",
     "path":"audiogroups/audiogroup_default",
@@ -9,17 +9,17 @@
   "bitRate":128,
   "compression":0,
   "conversionMode":0,
-  "duration":0.5,
-  "name":"snd_slime_attack",
+  "duration":0.796552,
+  "name":"snd_player_used_attack",
   "parent":{
-    "name":"Enemy",
-    "path":"folders/Sounds/SFX/Enemy.yy",
+    "name":"Player",
+    "path":"folders/Sounds/SFX/Player.yy",
   },
   "preload":false,
   "resourceType":"GMSound",
   "resourceVersion":"2.0",
   "sampleRate":44100,
-  "soundFile":"snd_slime_attack.ogg",
+  "soundFile":"snd_player_used_attack.wav",
   "type":0,
   "volume":1.0,
 }
