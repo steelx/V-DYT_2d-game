@@ -13,7 +13,7 @@
   "name":"snd_amb_cave_01",
   "parent":{
     "name":"Ambient",
-    "path":"folders/Sounds/SFX/Ambient.yy",
+    "path":"folders/Sounds/SFX/Enemy/Ambient.yy",
   },
   "preload":false,
   "resourceType":"GMSound",

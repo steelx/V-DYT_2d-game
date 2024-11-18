@@ -76,6 +76,7 @@ function ArcherAttackTask(_attack_anim_frame, _attack_alarm_idx, _attack_delay_s
 			
             // If we've reached the attack frame, spawn the arrow
             if (image_index >= other.attack_frame && current_attack_frame != image_index) {
+				play_priority_sound(spr_arrow_shot, SoundPriority.COMBAT);
                 current_attack_frame = image_index;
 				image_index = 0;
                 alarm[other.attack_delay_alarm_idx] = other.attack_cooldown_duration;
