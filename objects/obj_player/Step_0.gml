@@ -26,12 +26,10 @@ switch(state) {
         break;
         
     case CHARACTER_STATE.JETPACK_JUMP:
-        
         if (!is_jump_key_held() || jetpack_fuel <= 0) {
             sprite_index = spr_player_fall;
         } else {
             jetpack_fuel -= jetpack_fuel_consumption_rate;
-			obj_camera.zoom_level = 0.8;
     
             // Hover behavior
             var _target_y = jetpack_max_height + (sin(current_time * jetpack_hover_speed) * jetpack_hover_amplitude);
@@ -83,7 +81,6 @@ apply_verticle_movement();
 /// Regenerate jetpack fuel when grounded
 /// (in future add fuel collectible items and remove this code)
 if (grounded && jetpack_fuel < jetpack_max_fuel) {
-	obj_camera.zoom_level = 1;
     jetpack_fuel += jetpack_fuel_regeneration_rate;
     jetpack_fuel = min(jetpack_fuel, jetpack_max_fuel);
 }

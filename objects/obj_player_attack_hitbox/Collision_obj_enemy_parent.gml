@@ -3,11 +3,11 @@ if (other.no_hurt_frames > 0) exit;
 
 with (other) {
 	create_blood_splash();
+	play_priority_sound(snd_attack_hit, SoundPriority.CRITICAL);
 	hp--;
 	if hp > 0 {
 		// Start enemy blinking
 		no_hurt_frames = 60; // Blink for 30 frames (adjust as needed)
-		play_priority_sound(snd_attack_hit, SoundPriority.CRITICAL);
 		
 		// Apply knockback to the enemy
 		var _knockback_speed = 2; // Adjust this value as needed

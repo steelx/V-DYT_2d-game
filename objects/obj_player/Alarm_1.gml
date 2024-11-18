@@ -23,6 +23,8 @@ if (is_jump_key_held()) {
             image_index = 0;
             image_speed = 1;
 			move_speed += move_speed*0.3;// increase speed during jetpack move
+			apply_zoom_motion_fx(60, 0.8, true); // Added true to maintain zoom
+			set_camera_vertical_ratio(true); // Switch to reverse ratio (30:70)
         }
     }
     
@@ -47,5 +49,7 @@ if (is_jump_key_held()) {
         sprite_index = spr_player_fall;
         image_index = 0;
         image_speed = 1;
+		reset_camera_zoom(); // Reset zoom when jetpack mode ends
+		set_camera_vertical_ratio(false);
     }
 }
