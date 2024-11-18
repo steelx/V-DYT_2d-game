@@ -1,9 +1,10 @@
-function IdleTask(_alarm_idx) : BTreeLeaf() constructor {
+function IdleTask(_alarm_idx, _ignore_player_in_air = false) : BTreeLeaf() constructor {
     name = "Idle Task";
 	move_chance = 0.5;
 	randomize();
 	alarm_idx = _alarm_idx;
 	_idle_timer = get_room_speed() * choose(2, 3);
+	ignore_player_in_air = _ignore_player_in_air;
 	
 	static Init = function() {
 		var _user = black_board_ref.user;
@@ -31,7 +32,7 @@ function IdleTask(_alarm_idx) : BTreeLeaf() constructor {
         with(_user) {
 			vel_x = 0;
 			sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
-			if (player_detected()) {
+			if (player_detected(other.ignore_player_in_air)) {
 				image_xscale = sign(obj_player.x - x);
                 // Failure; if player is detected to continue Combat sequence
                 return BTStates.Failure;
@@ -46,13 +47,14 @@ function IdleTask(_alarm_idx) : BTreeLeaf() constructor {
     }
 }
 
-function PatrolTask(_move_speed, _patrol_width, _idle_alarm_idx) : BTreeLeaf() constructor {
+function PatrolTask(_move_speed, _patrol_width, _idle_alarm_idx, _ignore_player_in_air = false) : BTreeLeaf() constructor {
     name = "Patrol Task";
     patrol_speed = _move_speed;
     patrol_width = _patrol_width;
     path = new PatrolPath();
     return_triggered = false;
 	idle_alarm_idx = _idle_alarm_idx;
+	ignore_player_in_air = _ignore_player_in_air;
 	
 	static Init = function() {
         var _user = black_board_ref.user;
@@ -71,7 +73,7 @@ function PatrolTask(_move_speed, _patrol_width, _idle_alarm_idx) : BTreeLeaf() c
         var _user = black_board_ref.user;
         with(_user) {
             // Check player detection
-            if (player_detected()) return BTStates.Failure;
+            if (player_detected(other.ignore_player_in_air)) return BTStates.Failure;
 
             var _target_x = other.path.GetCurrentPoint();
             var _distance = abs(x - _target_x);

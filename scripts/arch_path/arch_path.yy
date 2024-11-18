@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"Collisions",
+  "%Name":"arch_path",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"Collisions",
+  "name":"arch_path",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"enemies",
+    "path":"folders/Scripts/enemies.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

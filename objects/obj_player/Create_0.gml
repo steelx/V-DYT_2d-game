@@ -3,7 +3,7 @@ event_inherited();
 image_xscale *= 1.2;
 image_yscale *= 1.2;
 
-max_hp = 55;
+max_hp = 5;
 hp = max_hp;
 previous_hp = hp; // To track health changes
 hp_gain_animation_active = false;// to run HP gain animation
@@ -60,7 +60,7 @@ attack_key_held_timer = 0;
 attack_fuel_max = 100;
 attack_fuel = attack_fuel_max;
 attack_fuel_consumption_rate = 100; // Consume points per super attack
-attack_fuel_regeneration_rate = 0.1; // Regenerate 1 point per frame when not attacking
+attack_fuel_regeneration_rate = 0.5; // Regenerate 1 point per frame when not attacking
 
 function is_attack_key_held() {
     return keyboard_check(vk_space);

@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"attack_task",
+  "%Name":"bt_archer",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"attack_task",
+  "name":"bt_archer",
   "parent":{
-    "name":"behaviour_tree",
-    "path":"folders/Scripts/behaviour_tree.yy",
+    "name":"archer",
+    "path":"folders/Objects/Characters/Enemies/archer.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -60,9 +60,10 @@ function generate_search_path(_patrol_width, _search_point_spacing) {
 }
 
 
-function player_detected() {
+function player_detected(_ignore_player_in_air = false) {
     var _player_above = obj_player.y < y - sprite_height/2;
     var _is_visible = player_within_range(visible_range);
+	if (_ignore_player_in_air) return _is_visible;
     return (_is_visible && !_player_above);
 }
 
