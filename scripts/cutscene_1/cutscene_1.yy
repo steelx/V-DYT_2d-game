@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"cutscene_1",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"cutscene_1",
+  "parent":{
+    "name":"seq_objects",
+    "path":"folders/Sequences/seq_objects.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

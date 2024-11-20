@@ -216,6 +216,7 @@
     {"id":{"name":"bt_little_ninja","path":"scripts/bt_little_ninja/bt_little_ninja.yy",},},
     {"id":{"name":"check_attack_range_task","path":"scripts/check_attack_range_task/check_attack_range_task.yy",},},
     {"id":{"name":"color_palette_macro","path":"scripts/color_palette_macro/color_palette_macro.yy",},},
+    {"id":{"name":"cutscene_1","path":"scripts/cutscene_1/cutscene_1.yy",},},
     {"id":{"name":"cutscenes","path":"scripts/cutscenes/cutscenes.yy",},},
     {"id":{"name":"detect_player_task","path":"scripts/detect_player_task/detect_player_task.yy",},},
     {"id":{"name":"dialog_macro","path":"scripts/dialog_macro/dialog_macro.yy",},},
