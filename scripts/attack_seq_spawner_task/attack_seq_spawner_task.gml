@@ -134,6 +134,10 @@ function AttackSeqSpawnerTask(_seqeunce_file, _image_alpha_alarm_idx, _attack_al
 		if !variable_instance_exists(_user, "disable_self") {
 			variable_instance_set(_user, "disable_self", _disable_self);
 		}
+		if !variable_instance_exists(_user, "attack_delay_alarm_idx") {
+			// get reset from player super attack hitbox so enemy cant attack instantly
+			variable_instance_set(_user, "attack_delay_alarm_idx", attack_delay_alarm_idx);
+		}
 	}
     
     static Process = function() {

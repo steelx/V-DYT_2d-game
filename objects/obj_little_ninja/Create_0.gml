@@ -3,16 +3,12 @@
 event_inherited();
 
 defeated_object = obj_enemy1_defeated;
-max_hp = 1;
+max_hp = 3;
 hp = max_hp;
 
-max_hp = 2;
-hp = max_hp;
 damage = 1;
 visible_range = 64;// how far enemy can see
 attack_range = 48;
-
-defeated_object = obj_enemy1_defeated;
 move_speed = 1;
 
 // Default sprite mapping

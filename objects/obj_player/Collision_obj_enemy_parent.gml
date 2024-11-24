@@ -5,7 +5,7 @@
 // This condition checks if the player's vertical velocity is greater than 0, meaning it's falling down.
 
 // _allowed_to_walkpast_enemies who are generally enemies with weapons, and player can move close to them to attack
-var _allowed_to_walkpast_enemies = [obj_guardian_enemy, obj_archer];
+var _allowed_to_walkpast_enemies = [obj_guardian_enemy, obj_archer, obj_little_ninja];
 var _not_allowed_to_jump_on_head = [obj_guardian_enemy, obj_archer, obj_little_ninja];
 
 

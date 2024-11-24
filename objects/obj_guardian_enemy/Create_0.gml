@@ -8,7 +8,7 @@ max_hp = 10;
 hp = max_hp;
 damage = 2;
 visible_range = 120;// how far enemy can see
-attack_range = 40;
+attack_range = 48;
 
 defeated_object = obj_guardian_defeated;
 move_speed = 0.8;

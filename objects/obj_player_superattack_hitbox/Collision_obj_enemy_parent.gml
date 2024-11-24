@@ -3,29 +3,17 @@ if (other.no_hurt_frames > 0) exit;
 
 // Reduce enemy's HP
 with (other) {
-	create_blood_splash();
 	hp--;
+	create_blood_splash();
 	apply_zoom_motion_fx(30, 1.5);
 	play_priority_sound(snd_attack_hit, SoundPriority.CRITICAL);
 	if (hp > 0 and instance_exists(other)) {
-		// Start enemy blinking
-		no_hurt_frames = 60;
-		// Apply knockback to the enemy
-		var _knockback_speed = 6; // Adjust this value as needed
-		var _knockback_direction = point_direction(obj_player.x, obj_player.y, x, y);
+		var _no_attack_frames = 30;
+		apply_knockback_to_enemy(6, _no_attack_frames);
 		
-		if variable_instance_exists(id, "apply_knockback") {
-			apply_knockback(_knockback_direction, _knockback_speed);
-			exit;
+		//if enemy has attack alarm task
+		if (variable_instance_exists(id, "attack_delay_alarm_idx")) {
+			alarm[attack_delay_alarm_idx] = _no_attack_frames;
 		}
-		
-		var _knockback_x = lengthdir_x(_knockback_speed, _knockback_direction);
-		var _knockback_y = lengthdir_y(_knockback_speed, _knockback_direction);
-		vel_x = _knockback_x;
-		vel_y = 0;
-
-		// Set the enemy to a knockback state
-		state = CHARACTER_STATE.KNOCKBACK;
-		knockback_active = true;
 	}
 }
