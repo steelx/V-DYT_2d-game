@@ -42,8 +42,8 @@ switch(state) {
         // Slow down knockback
 		sprite_index = spr_player_hurt;
 		vel_x = 0;
-        x += knockback_vel_x;
-        knockback_vel_x = approach(knockback_vel_x, 0, knockback_friction);
+		// Apply knockback movement with collision checking
+		knockback_vel_x = apply_knockback_movement(knockback_vel_x);
         
         // Check if knockback is finished
         if (abs(knockback_vel_x) < 0.1) {

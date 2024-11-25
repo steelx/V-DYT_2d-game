@@ -1,4 +1,4 @@
-/// @description guardian hitbox collision with obj_player
+/// @description guardian enemy hitbox collision with obj_player
 // other is obj_player
 with (other) {
 	// Check if the player is invincible

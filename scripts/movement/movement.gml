@@ -103,3 +103,29 @@ function is_on_ground() {
 function is_moving_upwards() {
     return (vel_y < 0);
 }
+
+/**
+ * Applies knockback force while respecting collisions
+ * @param {real} _direction Direction in degrees
+ * @param {real} _speed Knockback speed
+ */
+function apply_knockback_movement(_vel_x) {
+    var _remaining_move = _vel_x;
+    var _move_dir = sign(_vel_x);
+    
+    while (abs(_remaining_move) >= 0.1) {
+        var _step = min(abs(_remaining_move), move_speed) * _move_dir;
+        var _collision_found = check_collision(_step, 0);
+        
+        if (!_collision_found) {
+            x += _step;
+            _remaining_move -= _step;
+        } else {
+            // Stop knockback if we hit a wall
+            return 0;
+        }
+    }
+    
+    // Return the remaining velocity after movement
+    return _vel_x * 0.8; // Apply some dampening when hitting walls
+}
