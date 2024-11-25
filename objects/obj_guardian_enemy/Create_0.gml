@@ -54,12 +54,12 @@ _attack_sequence.ChildAdd(new CheckAttackRangeTask(attack_range));
 _attack_sequence.ChildAdd(new AttackSeqSpawnerTask(seq_guardian_attack, 2, 4, 1.5));
 
 _chase_sequence.ChildAdd(_detect_player);
-_chase_sequence.ChildAdd(new GuardianChaseTask(move_speed));
+_chase_sequence.ChildAdd(new ChaseTask(move_speed));
 
 // Alert sequence
-_alert_sequence.ChildAdd(new GuardianCheckLastSeenTask());
-_alert_sequence.ChildAdd(new GuardianMoveToLastSeenTask());
-_alert_sequence.ChildAdd(new GuardianSearchAreaTask(120));
+_alert_sequence.ChildAdd(new CheckLastSeenTask());
+_alert_sequence.ChildAdd(new MoveToLastSeenTask());
+_alert_sequence.ChildAdd(new SearchAreaTask(120));
 
 // Patrol sequence
 _patrol_sequence.ChildAdd(new IdleTask(1));

@@ -8,8 +8,8 @@
   "name":"obj_dialog_1",
   "overriddenProperties":[],
   "parent":{
-    "name":"HUD",
-    "path":"folders/Objects/HUD.yy",
+    "name":"dialogues",
+    "path":"folders/Objects/dialogues.yy",
   },
   "parentObjectId":{
     "name":"obj_dialog_parent",

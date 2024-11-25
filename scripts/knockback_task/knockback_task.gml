@@ -34,7 +34,6 @@ function KnockbackTask() : BTreeLeaf() constructor {
             
             // Apply knockback velocity with friction
             vel_x = 0;
-			image_xscale *= 0.8;
             x += other.knockback_vel_x;
             other.knockback_vel_x = approach(other.knockback_vel_x, 0, other.knockback_friction);
 			image_speed = 0;
@@ -44,7 +43,6 @@ function KnockbackTask() : BTreeLeaf() constructor {
                 other.is_active = false;
                 other.knockback_vel_x = 0;
 				image_speed = 1;
-				image_xscale = 1;
                 return BTStates.Failure; // Only exit knockback when it's completely done
             }
             

@@ -41,22 +41,24 @@ function add_screenshake(_seconds, _shake_amount = -1) {
 /// @param {Real} width The desired window width
 /// @param {Real} height The desired window height
 function resize_window(_width, _height) {
-    var _aspect_ratio = _base_w / _base_h;
-    var _new_aspect_ratio = _width / _height;
+    with(obj_camera) {
+		var _aspect_ratio = _base_w / _base_h;
+	    var _new_aspect_ratio = _width / _height;
     
-    if (_new_aspect_ratio >= _aspect_ratio) {
-        var _new_w = _height * _aspect_ratio;
-        var _new_h = _height;
-    } else {
-        var _new_w = _width;
-        var _new_h = _width / _aspect_ratio;
-    }
+	    if (_new_aspect_ratio >= _aspect_ratio) {
+	        var _new_w = _height * _aspect_ratio;
+	        var _new_h = _height;
+	    } else {
+	        var _new_w = _width;
+	        var _new_h = _width / _aspect_ratio;
+	    }
     
-    window_set_size(_new_w, _new_h);
-    surface_resize(application_surface, _new_w, _new_h);
-    display_set_gui_size(_new_w, _new_h);
+	    window_set_size(_new_w, _new_h);
+	    surface_resize(application_surface, _new_w, _new_h);
+	    display_set_gui_size(_new_w, _new_h);
     
-    window_center();
+	    window_center();
+	}
 }
 
 /// @function set_camera_vertical_ratio
