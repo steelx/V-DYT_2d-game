@@ -17,14 +17,8 @@ defeated_object = obj_player_defeated;
 jump_speed = 7;
 move_speed_init = 1.2;
 move_speed = move_speed_init;
+air_move_speed = 1.8;
 
-// Bounce Shader variables
-trail_intensity = 0;
-trail_color = make_color_rgb(255, 200, 0); // A golden color for the trail
-use_trail_shader = false;
-trail_positions = ds_list_create();
-trail_count = 10; // Number of trail instances
-in_launch_arc = false;// used in arc movement inside launchpad
 
 // red border shader
 red_border_intensity = 0;

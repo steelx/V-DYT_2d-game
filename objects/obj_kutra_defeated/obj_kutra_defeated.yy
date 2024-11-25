@@ -1,15 +1,15 @@
 {
   "$GMObject":"",
-  "%Name":"obj_dog_defeated",
+  "%Name":"obj_kutra_defeated",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":7,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_dog_defeated",
+  "name":"obj_kutra_defeated",
   "overriddenProperties":[],
   "parent":{
-    "name":"Enemies",
-    "path":"folders/Objects/Characters/Enemies.yy",
+    "name":"kutra",
+    "path":"folders/Objects/Characters/Enemies/kutra.yy",
   },
   "parentObjectId":null,
   "persistent":false,
@@ -30,8 +30,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_enemy1_defeated",
-    "path":"sprites/spr_enemy1_defeated/spr_enemy1_defeated.yy",
+    "name":"spr_dog_death",
+    "path":"sprites/spr_dog_death/spr_dog_death.yy",
   },
   "spriteMaskId":null,
   "visible":true,

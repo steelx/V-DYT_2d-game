@@ -22,7 +22,7 @@ if (is_jump_key_held()) {
             sprite_index = spr_player_jet_jump;
             image_index = 0;
             image_speed = 1;
-			move_speed += move_speed*0.3;// increase speed during jetpack move
+			move_speed = air_move_speed;// increase speed during jetpack move
 			apply_zoom_motion_fx(60, 0.8, true); // Added true to maintain zoom
 			set_camera_vertical_ratio(true); // Switch to reverse ratio (30:70)
         }
@@ -46,6 +46,7 @@ if (is_jump_key_held()) {
     // Jump key was released
     if (state == CHARACTER_STATE.JETPACK_JUMP && !grounded) {
         state = CHARACTER_STATE.JUMP;
+		move_speed = move_speed_init;
         sprite_index = spr_player_fall;
         image_index = 0;
         image_speed = 1;

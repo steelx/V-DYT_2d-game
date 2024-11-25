@@ -2,7 +2,7 @@
 // inherits enemy parent, and also able to spawn attack sequence
 event_inherited();
 
-defeated_object = obj_enemy1_defeated;
+defeated_object = obj_kutra_defeated;
 max_hp = 2;
 hp = max_hp;
 
@@ -43,14 +43,14 @@ _knockback_sequence.ChildAdd(new KnockbackTask());
 
 _dodge_sequence.ChildAdd(_detect_player_task);
 _dodge_sequence.ChildAdd(new CheckAttackRangeTask(attack_range));
-_dodge_sequence.ChildAdd(new DodgeTask(3, 4, 3.0));
+_dodge_sequence.ChildAdd(new DodgeTask(3, 4, 3.2));
 
 _patrol_sequence.ChildAdd(new IdleTask(1));
 _patrol_sequence.ChildAdd(new PatrolTask(move_speed*0.5, 96, 1));
 
 _attack_sequence.ChildAdd(_detect_player_task);
 _attack_sequence.ChildAdd(new CheckAttackRangeTask(attack_range));
-_attack_sequence.ChildAdd(new AttackSeqSpawnerTask(seq_kutra_attack, 2, 4, 2.5));
+_attack_sequence.ChildAdd(new AttackSeqSpawnerTask(seq_kutra_attack, 2, 4, 3.0));
 
 _chase_sequence.ChildAdd(_detect_player_task);
 _chase_sequence.ChildAdd(new ChaseTask(move_speed));
