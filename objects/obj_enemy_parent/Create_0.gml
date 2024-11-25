@@ -43,7 +43,7 @@ search_count = search_count_init;
 search_direction = image_xscale;
 search_target_x = x;
 
-last_seen_player_x = 0;
+last_seen_player_x = noone;
 
 search_path_points = ds_list_create();
 current_path_point = 0;

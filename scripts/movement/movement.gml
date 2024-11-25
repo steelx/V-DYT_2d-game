@@ -129,3 +129,54 @@ function apply_knockback_movement(_vel_x) {
     // Return the remaining velocity after movement
     return _vel_x * 0.8; // Apply some dampening when hitting walls
 }
+// used at move to last seen to check if object can reach the x position
+function can_reach_position(_target_x) {
+    // Check if there's a direct path to the target
+    var _step_size = 16; // Adjust this value based on your game's scale
+    var _start_x = x;
+    var _direction = sign(_target_x - _start_x);
+    var _current_x = _start_x;
+    
+    while (abs(_target_x - _current_x) > _step_size) {
+        // Check for wall collision
+        if (check_collision(_step_size * _direction, 0)) {
+            return false;
+        }
+        _current_x += _step_size * _direction;
+    }
+    
+    // Check final step
+    return !check_collision(_target_x - _current_x, 0);
+}
+
+function can_jump_over(_look_ahead_dist = 32) {
+    var _user_height = sprite_height;
+    var _direction = image_xscale;
+    
+    // Check if there's a wall ahead
+    if (!check_collision(_look_ahead_dist * _direction, 0)) {
+        return false; // No need to jump if there's no obstacle
+    }
+    
+    // Check if there's space above (for jump arc)
+    if (check_collision(0, -_user_height)) {
+        return false; // Can't jump if there's a ceiling
+    }
+    
+    // Check if the landing spot is clear
+    var _landing_check_dist = _look_ahead_dist * 1.5; // Look a bit further for landing
+    if (!check_collision(_landing_check_dist * _direction, -_user_height/2) && 
+        check_collision(_landing_check_dist * _direction, _user_height)) {
+        return true; // Found a valid landing spot
+    }
+    
+    return false;
+}
+
+function perform_jump(_jump_force) {
+    if (is_on_ground()) {
+        vel_y = -_jump_force;
+        return true;
+    }
+    return false;
+}

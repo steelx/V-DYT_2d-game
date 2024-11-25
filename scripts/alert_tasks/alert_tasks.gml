@@ -3,7 +3,7 @@ function CheckLastSeenTask() : BTreeLeaf() constructor {
 	
 	static Init = function() {
 		var _user = black_board_ref.user;
-		if (variable_instance_exists(_user, "last_seen_player_x")) {
+		if (!variable_instance_exists(_user, "last_seen_player_x")) {
 			variable_instance_set(_user, "last_seen_player_x", noone);
 		}
 	}
@@ -15,6 +15,7 @@ function CheckLastSeenTask() : BTreeLeaf() constructor {
         with(_user) {
 			vel_x = 0;
 			sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
+			
             if (last_seen_player_x != noone) {
 				return BTStates.Success;
             }
@@ -32,6 +33,13 @@ function MoveToLastSeenTask() : BTreeLeaf() constructor {
         var _user = black_board_ref.user;
 
         with(_user) {
+			// Check if we can actually reach the last seen position
+            if (!can_reach_position(last_seen_player_x)) {
+                // If we can't reach it, clear the last seen position and fail the task
+                last_seen_player_x = noone;
+                vel_x = 0;
+                return BTStates.Failure;
+            }
             // Check if we reached the last seen position
             var _dist_to_last_seen = abs(x - last_seen_player_x);
             if (_dist_to_last_seen <= global.tile_size) { // Within 16 pixels threshold
