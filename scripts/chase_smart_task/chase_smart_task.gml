@@ -7,33 +7,44 @@ function ChaseSmartTask(_move_speed, _jump_force, _jump_height) : BTreeLeaf() co
     ray_count = 5; // Number of rays to cast
     ray_angle_spread = 45; // Angle spread for the rays (in degrees)
     obstacle_ahead_threshold = 32; // Threshold to detect obstacle ahead
+    instance_ref = noone; // Reference to the enemy instance
 
     static Init = function() {
         var _user = black_board_ref.user;
-		with(_user) {
-			if !variable_instance_exists(id, "last_seen_player_x") {
-				variable_instance_set(id, "last_seen_player_x", noone);
-			}
-		}
+        with(_user) {
+            if (!variable_instance_exists(id, "last_seen_player_x")) {
+                variable_instance_set(id, "last_seen_player_x", noone);
+            }
+        }
+        instance_ref = _user; // Assign the enemy instance
     }
 
     static Process = function() {
-		var _user = black_board_ref.user;
+        var _user = black_board_ref.user;
         if (!instance_exists(obj_player)) {
             return BTStates.Failure;
         }
 
         with(_user) {
             var _dist = distance_to_object(obj_player);
-
+            // Check attack range first to prevent flickering
+            if (_dist <= attack_range) {
+                vel_x = 0;
+                sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
+                return BTStates.Success;
+            }
+            
             if (_dist > visible_range) {
                 vel_x = 0;
                 return BTStates.Failure;
             }
-
-            if (_dist <= attack_range) {
+			
+			// Check if player is above on a high platform
+            var _player_height_diff = obj_player.y - y;
+            if (_player_height_diff < other.jump_height && abs(obj_player.x - x) < sprite_width) {
                 vel_x = 0;
-                return BTStates.Success;
+                last_seen_player_x = obj_player.x;
+                return BTStates.Failure; // This will trigger the alert sequence
             }
 
             // Determine direction to player
@@ -52,8 +63,12 @@ function ChaseSmartTask(_move_speed, _jump_force, _jump_height) : BTreeLeaf() co
 
                 for (var i = 0; i < other.ray_count; i++) {
                     var _angle = (-other.ray_angle_spread / 2) + (i * (other.ray_angle_spread / (other.ray_count - 1)));
-                    var _ray_x = x + (cos(degtorad(_angle)) * other.ray_length);
-                    var _ray_y = y + (sin(degtorad(_angle)) * other.ray_length);
+                    var _ray_length = other.ray_length;
+
+                    // Adjust start point based on image_xscale
+                    var _start_x = x + (image_xscale > 0 ? bbox_right : bbox_left);
+                    var _ray_x = _start_x + (cos(degtorad(_angle)) * _ray_length);
+                    var _ray_y = y + (sin(degtorad(_angle)) * _ray_length);
 
                     var _land_x = 0;
                     var _land_y = 0;
@@ -61,7 +76,7 @@ function ChaseSmartTask(_move_speed, _jump_force, _jump_height) : BTreeLeaf() co
                     var _steps = 10;
                     var _found = false;
                     for (var j = 0; j <= _steps; j++) {
-                        var _check_x = lerp(x, _ray_x, j / _steps);
+                        var _check_x = lerp(_start_x, _ray_x, j / _steps);
                         var _check_y = lerp(y, _ray_y, j / _steps);
 
                         if (check_collision(_check_x - x, _check_y - y)) {
@@ -97,8 +112,7 @@ function ChaseSmartTask(_move_speed, _jump_force, _jump_height) : BTreeLeaf() co
                 }
             } else {
                 // Move horizontally towards player if no obstacle ahead
-                //vel_x = approach(vel_x, other.chase_speed * _move_dir, 0.5);
-				vel_x = other.chase_speed * _move_dir;
+                vel_x = other.chase_speed * _move_dir;
                 image_xscale = _move_dir;
                 sprite_index = sprites_map[$ CHARACTER_STATE.CHASE];
             }
@@ -110,19 +124,44 @@ function ChaseSmartTask(_move_speed, _jump_force, _jump_height) : BTreeLeaf() co
     }
 
     static Draw = function(_inst_id) {
-        if (instance_exists(_inst_id)) {
-            with(_inst_id) {
-                draw_set_color(c_blue);
-
-                for (var i = 0; i < other.ray_count; i++) {
-                    var _angle = (-other.ray_angle_spread / 2) + (i * (other.ray_angle_spread / (other.ray_count - 1)));
-                    var _ray_x = x + (cos(degtorad(_angle)) * other.ray_length);
-                    var _ray_y = y + (sin(degtorad(_angle)) * other.ray_length);
-
-                    draw_line(x, y, _ray_x, _ray_y);
+        if (!instance_exists(_inst_id)) return;
+        
+        with(_inst_id) {
+            var _start_x = x + (image_xscale > 0 ? bbox_right : bbox_left);
+            
+            // Draw ray casts
+            for (var i = 0; i < other.ray_count; i++) {
+                var _angle = (-other.ray_angle_spread / 2) + (i * (other.ray_angle_spread / (other.ray_count - 1)));
+                var _ray_length = other.ray_length;
+                var _ray_x = _start_x + (cos(degtorad(_angle)) * _ray_length);
+                var _ray_y = y + (sin(degtorad(_angle)) * _ray_length);
+                
+                var _steps = 10;
+                var _found = false;
+                var _end_x = _ray_x;
+                var _end_y = _ray_y;
+                
+                // Check for collision along the ray
+                for (var j = 0; j <= _steps; j++) {
+                    var _check_x = lerp(_start_x, _ray_x, j / _steps);
+                    var _check_y = lerp(y, _ray_y, j / _steps);
+                    if (check_collision(_check_x - x, _check_y - y)) {
+                        _found = true;
+                        _end_x = _check_x;
+                        _end_y = _check_y;
+                        break;
+                    }
                 }
-
-                draw_set_color(c_white);
+                
+                // Draw the ray
+                draw_set_alpha(0.5);
+                draw_line_color(
+                    _start_x, y,
+                    _end_x, _end_y,
+                    _found ? c_red : c_green,
+                    _found ? c_red : c_green
+                );
+                draw_set_alpha(1);
             }
         }
     }
@@ -133,13 +172,13 @@ function ChaseSmartTask(_move_speed, _jump_force, _jump_height) : BTreeLeaf() co
 
     static check_obstacle_ahead = function(_id, _move_dir, _obstacle_ahead_threshold) {
         with(_id) {
-			for (var i = 1; i <= _obstacle_ahead_threshold; i++) {
-		        var _check_x = x + _move_dir * i;
-		        if (check_collision(_check_x - x, 0)) {
-		            return true;
-		        }
-		    }
-		}
+            for (var i = 1; i <= _obstacle_ahead_threshold; i++) {
+                var _check_x = x + _move_dir * i;
+                if (check_collision(_check_x - x, 0)) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 }

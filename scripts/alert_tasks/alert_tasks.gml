@@ -88,7 +88,7 @@ function SearchAreaTask(_search_radius, _search_secs = 3.0) : BTreeLeaf() constr
             }
             
             // Move back and forth in search area
-            vel_x = other.search_direction * move_speed;
+            vel_x = other.search_direction * (move_speed*0.5);
             image_xscale = other.search_direction;
             sprite_index = sprites_map[$ CHARACTER_STATE.MOVE];
             

@@ -9,7 +9,7 @@ visible_range = 220;// how far enemy can see
 attack_range = 48;
 
 defeated_object = obj_kutra_defeated;
-move_speed = 1.5;
+move_speed = 1.25;
 
 // Default sprite mapping
 sprites_map[$ CHARACTER_STATE.IDLE] = spr_dog_idle;
@@ -39,7 +39,7 @@ var _alert_sequence = new BTreeSequence("_alert_sequence");
 var _patrol_sequence = new BTreeSequence("patrol_sequence");
 
 // Resued tasks
-var _detect_player_task = new DetectPlayerTask(sprites_map[$ CHARACTER_STATE.ALERT], true);
+var _detect_player_task = new DetectPlayerTask(sprites_map[$ CHARACTER_STATE.ALERT]);
 
 
 // Build the tree:
@@ -70,6 +70,7 @@ _alert_sequence.ChildAdd(new SearchAreaTask(96));
 
 // Patrol sequence
 _patrol_sequence.ChildAdd(new IdleTask(1));
+_patrol_sequence.ChildAdd(new ReturnToOriginTask(move_speed*0.5, 6, 64));
 _patrol_sequence.ChildAdd(new PatrolTask(move_speed*0.5, 96, 1));
 
 _selector_root.ChildAdd(_knockback_sequence);
