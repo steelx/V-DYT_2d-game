@@ -65,7 +65,7 @@ function AttackSeqSpawnerTask(_seqeunce_file, _image_alpha_alarm_idx, _attack_al
 			}
 			
             // check attack cooldown
-            if (alarm[other.attack_delay_alarm_idx] > 0) {
+            if (alarm[other.attack_delay_alarm_idx] > 0 and is_on_ground()) {
                 return BTStates.Failure;
             }
 			

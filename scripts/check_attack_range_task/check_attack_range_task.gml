@@ -10,10 +10,10 @@ function CheckAttackRangeTask(_attack_range = 40, _ignore_player_in_air = false)
 		with(_user) {
 			var _player_above = obj_player.y < y - sprite_height/2;
 			var _dist = distance_to_object(obj_player);
-			if (other.ignore_player_in_air and _dist <= other.attack_range) {
+			if (other.ignore_player_in_air and _dist < other.attack_range) {
 				// can see player in air too
 				return BTStates.Success;
-			} else if (_dist <= other.attack_range and !_player_above) {
+			} else if (_dist < other.attack_range and !_player_above) {
 				return BTStates.Success;// Success means next in Sequence i.e. Attack
 			}
 

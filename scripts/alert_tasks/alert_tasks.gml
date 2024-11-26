@@ -17,6 +17,7 @@ function CheckLastSeenTask() : BTreeLeaf() constructor {
 			sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
 			
             if (last_seen_player_x != noone) {
+				image_xscale = sign(x - last_seen_player_x) >= 0 ? 1 : -1;
 				return BTStates.Success;
             }
         }

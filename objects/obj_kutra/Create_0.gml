@@ -5,11 +5,11 @@ event_inherited();
 max_hp = 2;
 hp = max_hp;
 damage = 1;
-visible_range = 120;// how far enemy can see
+visible_range = 220;// how far enemy can see
 attack_range = 48;
 
 defeated_object = obj_kutra_defeated;
-move_speed = 1.2;
+move_speed = 1.5;
 
 // Default sprite mapping
 sprites_map[$ CHARACTER_STATE.IDLE] = spr_dog_idle;
@@ -34,11 +34,12 @@ var _combat_selector = new BTreeSelector("combat_selector");
 var _dodge_sequence = new BTreeSequence("dodge_sequence");
 var _attack_sequence = new BTreeSequence("attack_sequence");
 var _chase_sequence = new BTreeSequence("chase_sequence");
+var _jump_sequence = new BTreeSequence("jump_sequence");
 var _alert_sequence = new BTreeSequence("_alert_sequence");
 var _patrol_sequence = new BTreeSequence("patrol_sequence");
 
 // Resued tasks
-var _detect_player_task = new DetectPlayerTask(sprites_map[$ CHARACTER_STATE.ALERT]);
+var _detect_player_task = new DetectPlayerTask(sprites_map[$ CHARACTER_STATE.ALERT], true);
 
 
 // Build the tree:
@@ -49,6 +50,7 @@ _knockback_sequence.ChildAdd(new KnockbackTask());
 // Combat sequence
 _combat_selector.ChildAdd(_attack_sequence);
 _combat_selector.ChildAdd(_chase_sequence);
+//_combat_selector.ChildAdd(_jump_sequence);
 
 _dodge_sequence.ChildAdd(_detect_player_task);
 _dodge_sequence.ChildAdd(new CheckAttackRangeTask(attack_range));
@@ -59,8 +61,7 @@ _attack_sequence.ChildAdd(new CheckAttackRangeTask(attack_range));
 _attack_sequence.ChildAdd(new AttackSeqSpawnerTask(seq_kutra_attack, 2, 4, 3.0));
 
 _chase_sequence.ChildAdd(_detect_player_task);
-_chase_sequence.ChildAdd(new ChaseTask(move_speed));
-_chase_sequence.ChildAdd(new JumpChaseTask(move_speed, 10));
+_chase_sequence.ChildAdd(new ChaseSmartTask(move_speed, 6, 64));
 
 // Alert Seqeunce
 _alert_sequence.ChildAdd(new CheckLastSeenTask());
