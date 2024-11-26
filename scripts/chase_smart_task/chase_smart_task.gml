@@ -1,10 +1,3 @@
-/*
-The ChaseSmartTask will:
-
-Determine the direction to the player.
-Cast rays to check for potential landing points for jumping.
-Decide whether to jump or move horizontally based on the ray casting results.
-*/
 function ChaseSmartTask(_move_speed, _jump_force, _jump_height) : BTreeLeaf() constructor {
     name = "Chase Smart Task";
     chase_speed = _move_speed;
@@ -13,9 +6,10 @@ function ChaseSmartTask(_move_speed, _jump_force, _jump_height) : BTreeLeaf() co
     ray_length = 100; // Length of the ray to cast ahead
     ray_count = 5; // Number of rays to cast
     ray_angle_spread = 45; // Angle spread for the rays (in degrees)
+    obstacle_ahead_threshold = 32; // Threshold to detect obstacle ahead
 
     static Init = function() {
-		var _user = black_board_ref.user;
+        var _user = black_board_ref.user;
 		with(_user) {
 			if !variable_instance_exists(id, "last_seen_player_x") {
 				variable_instance_set(id, "last_seen_player_x", noone);
@@ -25,7 +19,7 @@ function ChaseSmartTask(_move_speed, _jump_force, _jump_height) : BTreeLeaf() co
 
     static Process = function() {
 		var _user = black_board_ref.user;
-        if (!instance_exists(_user) || !instance_exists(obj_player)) {
+        if (!instance_exists(obj_player)) {
             return BTStates.Failure;
         }
 
@@ -47,53 +41,64 @@ function ChaseSmartTask(_move_speed, _jump_force, _jump_height) : BTreeLeaf() co
             var _player_y = obj_player.y;
             var _move_dir = sign(_player_x - x);
 
-            // Ray casting to check for jump opportunities
-            var _has_jump_opportunity = false;
-            var _jump_target_x = x;
-            var _jump_target_y = y;
+            // Check for obstacle ahead
+            var _obstacle_ahead = other.check_obstacle_ahead(id, _move_dir, other.obstacle_ahead_threshold);
 
-            for (var i = 0; i < other.ray_count; i++) {
-                var _angle = (-other.ray_angle_spread / 2) + (i * (other.ray_angle_spread / (other.ray_count - 1)));
-                var _ray_x = x + (cos(degtorad(_angle)) * other.ray_length);
-                var _ray_y = y + (sin(degtorad(_angle)) * other.ray_length);
+            if (_obstacle_ahead) {
+                // Ray casting to check for jump opportunities
+                var _has_jump_opportunity = false;
+                var _jump_target_x = x;
+                var _jump_target_y = y;
 
-                var _land_x = 0;
-                var _land_y = 0;
+                for (var i = 0; i < other.ray_count; i++) {
+                    var _angle = (-other.ray_angle_spread / 2) + (i * (other.ray_angle_spread / (other.ray_count - 1)));
+                    var _ray_x = x + (cos(degtorad(_angle)) * other.ray_length);
+                    var _ray_y = y + (sin(degtorad(_angle)) * other.ray_length);
 
-                var _steps = 10;
-                var _found = false;
-                for (var j = 0; j <= _steps; j++) {
-                    var _check_x = lerp(x, _ray_x, j / _steps);
-                    var _check_y = lerp(y, _ray_y, j / _steps);
+                    var _land_x = 0;
+                    var _land_y = 0;
 
-                    if (check_collision(_check_x - x, _check_y - y)) {
-                        _found = true;
-                        _land_x = _check_x;
-                        _land_y = _check_y;
-                        break;
+                    var _steps = 10;
+                    var _found = false;
+                    for (var j = 0; j <= _steps; j++) {
+                        var _check_x = lerp(x, _ray_x, j / _steps);
+                        var _check_y = lerp(y, _ray_y, j / _steps);
+
+                        if (check_collision(_check_x - x, _check_y - y)) {
+                            _found = true;
+                            _land_x = _check_x;
+                            _land_y = _check_y;
+                            break;
+                        }
+                    }
+
+                    if (_found) {
+                        var _height_diff = _land_y - y;
+                        if (_height_diff <= other.jump_height && _height_diff > 0) {
+                            _has_jump_opportunity = true;
+                            _jump_target_x = _land_x;
+                            _jump_target_y = _land_y;
+                            break;
+                        }
                     }
                 }
 
-                if (_found) {
-                    var _height_diff = _land_y - y;
-                    if (_height_diff <= other.jump_height && _height_diff > 0) {
-                        _has_jump_opportunity = true;
-                        _jump_target_x = _land_x;
-                        _jump_target_y = _land_y;
-                        break;
-                    }
+                // Perform jump if possible
+                if (_has_jump_opportunity) {
+                    vel_y = -other.jump_force;
+                    vel_x = approach(vel_x, other.chase_speed * _move_dir, 0.5);
+                    image_xscale = _move_dir;
+                    sprite_index = sprites_map[$ CHARACTER_STATE.JUMP];
+                } else {
+                    // Move horizontally towards player if no jump opportunity
+                    vel_x = other.chase_speed * _move_dir;
+                    image_xscale = _move_dir;
+                    sprite_index = sprites_map[$ CHARACTER_STATE.CHASE];
                 }
-            }
-
-            // Perform jump if possible
-            if (_has_jump_opportunity) {
-                vel_y = -other.jump_force;
-                vel_x = approach(vel_x, other.chase_speed * _move_dir, 0.5);
-                image_xscale = _move_dir;
-                sprite_index = sprites_map[$ CHARACTER_STATE.JUMP];
             } else {
-                // Move horizontally towards player
-                vel_x = approach(vel_x, other.chase_speed * _move_dir, 0.5);
+                // Move horizontally towards player if no obstacle ahead
+                //vel_x = approach(vel_x, other.chase_speed * _move_dir, 0.5);
+				vel_x = other.chase_speed * _move_dir;
                 image_xscale = _move_dir;
                 sprite_index = sprites_map[$ CHARACTER_STATE.CHASE];
             }
@@ -124,5 +129,17 @@ function ChaseSmartTask(_move_speed, _jump_force, _jump_height) : BTreeLeaf() co
 
     static Clean = function() {
         // Cleanup code if needed
+    }
+
+    static check_obstacle_ahead = function(_id, _move_dir, _obstacle_ahead_threshold) {
+        with(_id) {
+			for (var i = 1; i <= _obstacle_ahead_threshold; i++) {
+		        var _check_x = x + _move_dir * i;
+		        if (check_collision(_check_x - x, 0)) {
+		            return true;
+		        }
+		    }
+		}
+        return false;
     }
 }
