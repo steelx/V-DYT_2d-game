@@ -121,16 +121,16 @@ function PatrolTask(_move_speed, _patrol_width, _idle_alarm_idx, _ignore_player_
     }
 }
 
-function ReturnToOriginTask(_move_speed, _jump_force, _jump_height, _ignore_player_in_air = false) : BTreeLeaf() constructor {
+function ReturnToHomeTask(_move_speed, _jump_force, _jump_height, _ignore_player_in_air = false) : BTreeLeaf() constructor {
     name = "Return To Origin Task";
     move_speed = _move_speed;
     jump_force = _jump_force;
     jump_height = _jump_height;
     ignore_player_in_air = _ignore_player_in_air;
-    ray_length = 100;
+    ray_length = 64;
     ray_count = 5;
     ray_angle_spread = 45;
-    obstacle_ahead_threshold = 32;
+    obstacle_ahead_threshold = 42;
 
     static Process = function() {
         var _user = black_board_ref.user;
@@ -168,18 +168,68 @@ function ReturnToOriginTask(_move_speed, _jump_force, _jump_height, _ignore_play
             sprite_index = sprites_map[$ CHARACTER_STATE.MOVE];
 
             // Check for obstacle ahead
-            var _obstacle_ahead = false;
-            for (var i = 1; i <= other.obstacle_ahead_threshold; i++) {
-                var _check_x = x + _move_dir * i;
-                if (check_collision(_check_x - x, 0)) {
-                    _obstacle_ahead = true;
-                    break;
-                }
-            }
+            var _obstacle_ahead = other.check_obstacle_ahead(id, _move_dir, other.obstacle_ahead_threshold);
 
-            if (_obstacle_ahead && is_on_ground()) {
-                vel_y = -other.jump_force;
-                sprite_index = sprites_map[$ CHARACTER_STATE.JUMP];
+            if (_obstacle_ahead) {
+                // Ray casting to check for jump opportunities
+                var _has_jump_opportunity = false;
+                var _jump_target_x = x;
+                var _jump_target_y = y;
+
+                for (var i = 0; i < other.ray_count; i++) {
+                    var _angle = (-other.ray_angle_spread / 2) + (i * (other.ray_angle_spread / (other.ray_count - 1)));
+                    var _ray_length = other.ray_length;
+
+                    // Adjust start point based on image_xscale
+                    var _start_x = x + (image_xscale > 0 ? bbox_right : bbox_left);
+                    var _ray_x = _start_x + (cos(degtorad(_angle)) * _ray_length);
+                    var _ray_y = y + (sin(degtorad(_angle)) * _ray_length);
+
+                    var _land_x = 0;
+                    var _land_y = 0;
+
+                    var _steps = 10;
+                    var _found = false;
+                    for (var j = 0; j <= _steps; j++) {
+                        var _check_x = lerp(_start_x, _ray_x, j / _steps);
+                        var _check_y = lerp(y, _ray_y, j / _steps);
+
+                        if (check_collision(_check_x - x, _check_y - y)) {
+                            _found = true;
+                            _land_x = _check_x;
+                            _land_y = _check_y;
+                            break;
+                        }
+                    }
+
+                    if (_found) {
+                        var _height_diff = _land_y - y;
+                        if (_height_diff <= other.jump_height && _height_diff > 0) {
+                            _has_jump_opportunity = true;
+                            _jump_target_x = _land_x;
+                            _jump_target_y = _land_y;
+                            break;
+                        }
+                    }
+                }
+
+                // Perform jump if possible
+                if (_has_jump_opportunity) {
+                    vel_y = -other.jump_force;
+                    vel_x = approach(vel_x, other.move_speed * _move_dir, 0.5);
+                    image_xscale = _move_dir;
+                    sprite_index = sprites_map[$ CHARACTER_STATE.JUMP];
+                } else {
+                    // Move horizontally towards player if no jump opportunity
+                    vel_x = other.move_speed * _move_dir;
+                    image_xscale = _move_dir;
+                    sprite_index = sprites_map[$ CHARACTER_STATE.MOVE];
+                }
+            } else {
+                // Move horizontally towards player if no obstacle ahead
+                vel_x = other.move_speed * _move_dir;
+                image_xscale = _move_dir;
+                sprite_index = sprites_map[$ CHARACTER_STATE.MOVE];
             }
         }
         
@@ -194,5 +244,17 @@ function ReturnToOriginTask(_move_speed, _jump_force, _jump_height, _ignore_play
             draw_line(x, y, xstart, y);
             draw_set_color(c_white);
         }
+    }
+	
+	static check_obstacle_ahead = function(_id, _move_dir, _obstacle_ahead_threshold) {
+        with(_id) {
+            for (var i = 1; i <= _obstacle_ahead_threshold; i++) {
+                var _check_x = x + _move_dir * i;
+                if (check_collision(_check_x - x, 0)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

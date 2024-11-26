@@ -70,7 +70,7 @@ _alert_sequence.ChildAdd(new SearchAreaTask(96));
 
 // Patrol sequence
 _patrol_sequence.ChildAdd(new IdleTask(1));
-_patrol_sequence.ChildAdd(new ReturnToOriginTask(move_speed*0.5, 6, 64));
+_patrol_sequence.ChildAdd(new ReturnToHomeTask(move_speed*0.5, 8, 70));
 _patrol_sequence.ChildAdd(new PatrolTask(move_speed*0.5, 96, 1));
 
 _selector_root.ChildAdd(_knockback_sequence);
