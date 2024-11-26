@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"bt_kutra",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"bt_kutra",
+  "parent":{
+    "name":"kutra",
+    "path":"folders/Objects/Characters/Enemies/kutra.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -23,7 +23,7 @@ function DodgeTask(_dodge_alarm_idx, _attack_alarm_idx, _dodge_delay = 3, _dodge
             // Start new dodge
             if (!other.is_dodging) {
                 // Check dodge conditions
-                if (alarm[other.dodge_alarm_idx] > 0 || alarm[other.attack_alarm_idx] <= 0 || !is_on_ground()) {
+                if (alarm[other.dodge_alarm_idx] > 0 || alarm[other.attack_alarm_idx] <= 0) {
                     return BTStates.Failure;
                 }
                 

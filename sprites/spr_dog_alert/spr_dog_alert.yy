@@ -23,7 +23,7 @@
   ],
   "name":"spr_dog_alert",
   "nineSlice":null,
-  "origin":7,
+  "origin":9,
   "parent":{
     "name":"Guardian_Dog",
     "path":"folders/Sprites/Enemy/Guardian_Dog.yy",
@@ -76,7 +76,7 @@
     "visibleRange":null,
     "volume":1.0,
     "xorigin":16,
-    "yorigin":32,
+    "yorigin":31,
   },
   "swatchColours":null,
   "swfPrecision":0.5,

@@ -148,35 +148,3 @@ function can_reach_position(_target_x) {
     // Check final step
     return !check_collision(_target_x - _current_x, 0);
 }
-
-function can_jump_over(_look_ahead_dist = 32) {
-    var _user_height = sprite_height;
-    var _direction = image_xscale;
-    
-    // Check if there's a wall ahead
-    if (!check_collision(_look_ahead_dist * _direction, 0)) {
-        return false; // No need to jump if there's no obstacle
-    }
-    
-    // Check if there's space above (for jump arc)
-    if (check_collision(0, -_user_height)) {
-        return false; // Can't jump if there's a ceiling
-    }
-    
-    // Check if the landing spot is clear
-    var _landing_check_dist = _look_ahead_dist * 1.5; // Look a bit further for landing
-    if (!check_collision(_landing_check_dist * _direction, -_user_height/2) && 
-        check_collision(_landing_check_dist * _direction, _user_height)) {
-        return true; // Found a valid landing spot
-    }
-    
-    return false;
-}
-
-function perform_jump(_jump_force) {
-    if (is_on_ground()) {
-        vel_y = -_jump_force;
-        return true;
-    }
-    return false;
-}

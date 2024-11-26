@@ -1,7 +1,5 @@
 /// @description obj_guardian_enemy
 // inherits enemy parent, and also able to spawn attack sequence
-
-// Inherit the parent event
 event_inherited();
 
 max_hp = 10;
@@ -28,6 +26,7 @@ bt_root = new BTreeRoot(id);
 
 // Create root selector
 var _selector_root = new BTreeSelector("root");
+
 // Main tier nodes
 var _knockback_sequence = new BTreeSequence("knockback_sequence");
 var _combat_selector = new BTreeSelector("combat_selector");
@@ -38,7 +37,6 @@ var _patrol_sequence = new BTreeSequence("patrol_sequence");
 
 // Resued tasks
 var _detect_player = new DetectPlayerTask(spr_guardian_idle);
-
 
 // Build the tree:
 bt_root.ChildAdd(_selector_root);
