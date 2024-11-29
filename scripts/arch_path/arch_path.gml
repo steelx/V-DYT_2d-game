@@ -1,14 +1,86 @@
 
-function ArchPath() constructor {
+function ArcPath() constructor {
     points = ds_list_create();
     current_index = 0;
+	black_board_ref = noone;
     
+	static ValidateEndPosition = function(_start_x, _start_y, _end_x, _end_y) {
+        var _inst = black_board_ref.user;
+        var _orig_x = _inst.x;
+        var _orig_y = _inst.y;
+        
+        // Function to check if position is valid
+        var _check_position = function(_x, _y, _inst) {
+            with(_inst) {
+                x = _x;
+                y = _y;
+                
+                // Check horizontal clearance only
+                if (check_collision(2, 0) ||    // Right
+                    check_collision(-2, 0)) {   // Left
+                    return false;
+                }
+                
+                // Check for ground below (within reasonable distance)
+                var _found_ground = false;
+                for(var i = 0; i < 32; i++) {
+                    if (check_collision(0, i)) {
+                        _found_ground = true;
+                        break;
+                    }
+                }
+                
+                return _found_ground; // Position is valid if there's ground below
+            }
+        }
+        
+        // Check if end position is valid
+        var _is_valid = _check_position(_end_x, _end_y, _inst);
+        
+        // If not valid, try to find a valid position
+        if (!_is_valid) {
+            var _dir = sign(_end_x - _start_x);
+            var _distance = point_distance(_start_x, _start_y, _end_x, _end_y);
+            
+            // Try decreasing distances until we find a valid spot
+            while (_distance > 16) {
+                _distance -= 8;
+                var _new_end_x = _start_x + (_distance * _dir);
+                
+                if (_check_position(_new_end_x, _end_y, _inst)) {
+                    _end_x = _new_end_x;
+                    _is_valid = true;
+                    break;
+                }
+            }
+        }
+        
+        // Restore original position
+        _inst.x = _orig_x;
+        _inst.y = _orig_y;
+        
+        // Return validated end position or undefined if no valid position found
+        if (_is_valid) {
+            return { x: _end_x, y: _end_y };
+        }
+        return undefined;
+    }
+	
     static GenerateArc = function(_start_x, _start_y, _end_x, _end_y, _height, _points = 15) {
         ds_list_clear(points);
         
+        // Validate end position
+        var _valid_end = ValidateEndPosition(_start_x, _start_y, _end_x, _end_y);
+        if (_valid_end == undefined) {
+            return false; // Could not generate valid path
+        }
+        
+        // Use validated end position
+        _end_x = _valid_end.x;
+        _end_y = _valid_end.y;
+        
         // Calculate arc parameters
         var _distance = point_distance(_start_x, _start_y, _end_x, _end_y);
-        var _direction = point_direction(_start_x, _start_y, _end_x, _end_y);
         
         // Generate points along the arc
         for(var i = 0; i < _points; i++) {
@@ -30,9 +102,10 @@ function ArchPath() constructor {
                      2 * _inverse_t * _t * _control_y + 
                      power(_t, 2) * _end_y;
             
-            // Add point as a struct with both x and y
             ds_list_add(points, {x: _px, y: _py});
         }
+        
+        return true;
     }
     
     static GetCurrentPoint = function() {

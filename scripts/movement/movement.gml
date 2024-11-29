@@ -16,6 +16,8 @@ function apply_verticle_movement() {
             break;
         }
     }
+	
+	handle_platform_transition();
 }
 
 function apply_horizontal_movement() {
@@ -32,6 +34,22 @@ function apply_horizontal_movement() {
         } else {
             vel_x = 0;
             break;
+        }
+    }
+}
+
+function handle_platform_transition() {
+    var _inst = instance_place(x, y, obj_collision);
+    if (_inst != noone) {
+        // If we're stuck in a platform
+        if (bbox_bottom > _inst.bbox_top && bbox_top < _inst.bbox_bottom) {
+            // If we're closer to the top, push up
+            if (abs(bbox_bottom - _inst.bbox_top) < abs(bbox_top - _inst.bbox_bottom)) {
+                y = _inst.bbox_top - (bbox_bottom - y) - 1;
+            } else {
+                // If we're closer to bottom, push down
+                y = _inst.bbox_bottom + 1;
+            }
         }
     }
 }

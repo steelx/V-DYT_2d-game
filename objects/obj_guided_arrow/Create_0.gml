@@ -1,5 +1,5 @@
 /// @description obj_guided_arrow Create Event
-path = new ArchPath();
+path = new ArcPath();
 speed = 0;
 damage = 1;
 pierce = false;

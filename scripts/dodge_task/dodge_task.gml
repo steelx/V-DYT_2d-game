@@ -23,32 +23,40 @@ function DodgeTask(_dodge_alarm_idx, _attack_alarm_idx, _dodge_delay = 3, _dodge
             // Start new dodge
             if (!other.is_dodging) {
                 // Check dodge conditions
-                if (alarm[other.dodge_alarm_idx] > 0 || alarm[other.attack_alarm_idx] <= 0) {
-                    return BTStates.Failure;
-                }
-                
-                // Initialize dodge path
-                var _dir = sign(x - obj_player.x);
-                if (_dir == 0) _dir = image_xscale;
-                
-                var _dodge_distance = 64; // Adjust this value as needed
-                var _end_x = x + (_dodge_distance * _dir);
-                
-                // Create and setup arch path
-                other.dodge_path = new ArchPath();
-                other.dodge_path.GenerateArc(
-                    x, y,                  // Start position
-                    _end_x, y,             // End position
-                    other.dodge_height,    // Arc height
-                    15                     // Number of points
-                );
-                
-                // Start dodge
-                other.is_dodging = true;
-                sprite_index = sprites_map[$ CHARACTER_STATE.MOVE];
-                image_xscale = _dir;
-                alarm[other.dodge_alarm_idx] = other.dodge_delay;
-                play_priority_sound(snd_enemy_dodge, SoundPriority.COMBAT);
+			    if (alarm[other.dodge_alarm_idx] > 0 || alarm[other.attack_alarm_idx] <= 0) {
+			        return BTStates.Failure;
+			    }
+    
+			    // Initialize dodge path
+			    var _dir = sign(x - obj_player.x);
+			    if (_dir == 0) _dir = image_xscale;
+    
+			    var _dodge_distance = 64; // Adjust this value as needed
+			    var _end_x = x + (_dodge_distance * _dir);
+    
+			    // Create and setup arch path
+			    other.dodge_path = new ArcPath();
+			    other.dodge_path.black_board_ref = other.black_board_ref; // Set the blackboard reference
+    
+			    // Try to generate the path
+			    if (!other.dodge_path.GenerateArc(
+			        x, y,                  // Start position
+			        _end_x, y,             // End position
+			        other.dodge_height,    // Arc height
+			        15                     // Number of points
+			    )) {
+			        // Path generation failed, clean up and return failure
+			        other.dodge_path.Clean();
+			        other.dodge_path = undefined;
+			        return BTStates.Failure;
+			    }
+    
+			    // Start dodge
+			    other.is_dodging = true;
+			    sprite_index = sprites_map[$ CHARACTER_STATE.MOVE];
+			    image_xscale = _dir;
+			    alarm[other.dodge_alarm_idx] = other.dodge_delay;
+			    play_priority_sound(snd_enemy_dodge, SoundPriority.COMBAT);
             }
             
             // Process ongoing dodge
