@@ -2,105 +2,149 @@
 function ArcPath() constructor {
     points = ds_list_create();
     current_index = 0;
-	black_board_ref = noone;
-    
-	static ValidateEndPosition = function(_start_x, _start_y, _end_x, _end_y) {
-        var _inst = black_board_ref.user;
-        var _orig_x = _inst.x;
-        var _orig_y = _inst.y;
+    _inst = noone;
+	// is_projectile: don't need the ground validation since arrows should be able to travel through the air
+	is_projectile = false;
+	
+	static CheckLineOfSight = function(_start_x, _start_y, _end_x, _end_y) {
+        var _dir = point_direction(_start_x, _start_y, _end_x, _end_y);
+        var _dist = point_distance(_start_x, _start_y, _end_x, _end_y);
+        var _step = 16;
         
-        // Function to check if position is valid
-        var _check_position = function(_x, _y, _inst) {
-            with(_inst) {
-                x = _x;
-                y = _y;
+        with(_inst) {
+            var _curr_dist = 0;
+            while(_curr_dist < _dist) {
+                var _check_x = _start_x + lengthdir_x(_curr_dist, _dir);
+                var _check_y = _start_y + lengthdir_y(_curr_dist, _dir);
                 
-                // Check horizontal clearance only
-                if (check_collision(2, 0) ||    // Right
-                    check_collision(-2, 0)) {   // Left
+                if (collision_line(_start_x, _start_y, _check_x, _check_y, obj_collision, false, true)) {
                     return false;
                 }
                 
-                // Check for ground below (within reasonable distance)
-                var _found_ground = false;
-                for(var i = 0; i < 32; i++) {
-                    if (check_collision(0, i)) {
-                        _found_ground = true;
-                        break;
-                    }
-                }
-                
-                return _found_ground; // Position is valid if there's ground below
+                _curr_dist += _step;
             }
         }
+        return true;
+    }
+    
+    static CalculateProjectileArcHeight = function(_start_x, _start_y, _end_x, _end_y, _base_height) {
+        var _distance = point_distance(_start_x, _start_y, _end_x, _end_y);
+        var _height = _base_height;
         
-        // Check if end position is valid
-        var _is_valid = _check_position(_end_x, _end_y, _inst);
+        if (!CheckLineOfSight(_start_x, _start_y, _end_x, _end_y)) {
+            _height = _distance * 0.6;
+            _height = max(_height, 64);
+        }
         
-        // If not valid, try to find a valid position
-        if (!_is_valid) {
-            var _dir = sign(_end_x - _start_x);
-            var _distance = point_distance(_start_x, _start_y, _end_x, _end_y);
+        return _height;
+    }
+    
+    static IsPositionValid = function(_x, _y, _inst) {
+		// If it's a projectile (like an arrow), we don't need ground validation
+        if (is_projectile) return true;
+
+        with(_inst) {
+            x = _x;
+            y = _y;
             
-            // Try decreasing distances until we find a valid spot
-            while (_distance > 16) {
-                _distance -= 8;
-                var _new_end_x = _start_x + (_distance * _dir);
-                
-                if (_check_position(_new_end_x, _end_y, _inst)) {
-                    _end_x = _new_end_x;
-                    _is_valid = true;
-                    break;
-                }
+            // Check horizontal clearance
+            if (check_collision(2, 0) || check_collision(-2, 0)) {
+                return false;
             }
+            
+            // Check for ground within range
+            return find_ground_below(32);
         }
+    }
+    
+    static FindValidEndPosition = function(_start_x, _start_y, _end_x, _end_y) {
+        var _orig_pos = { x: _inst.x, y: _inst.y };
         
-        // Restore original position
-        _inst.x = _orig_x;
-        _inst.y = _orig_y;
-        
-        // Return validated end position or undefined if no valid position found
-        if (_is_valid) {
+        // First try the original end position
+        if (IsPositionValid(_end_x, _end_y, _inst)) {
+            _inst.x = _orig_pos.x;
+            _inst.y = _orig_pos.y;
             return { x: _end_x, y: _end_y };
         }
+        
+        // If not valid, try finding a closer position
+        var _result = FindClosestValidPosition(_start_x, _end_x, _end_y, _inst);
+        _inst.x = _orig_pos.x;
+        _inst.y = _orig_pos.y;
+        
+        return _result;
+    }
+    
+    static FindClosestValidPosition = function(_start_x, _end_x, _end_y, _inst) {
+        var _dir = sign(_end_x - _start_x);
+        var _distance = abs(_end_x - _start_x);
+        
+        while (_distance > 16) {
+            _distance -= 8;
+            var _test_x = _start_x + (_distance * _dir);
+            
+            if (IsPositionValid(_test_x, _end_y, _inst)) {
+                return { x: _test_x, y: _end_y };
+            }
+        }
+        
         return undefined;
     }
-	
+    
+    static GenerateArcPoints = function(_start_x, _start_y, _end_x, _end_y, _height, _points) {
+        var _distance = point_distance(_start_x, _start_y, _end_x, _end_y);
+        var _control_x = _start_x + (_distance * 0.5);
+        var _control_y = min(_start_y, _end_y) - _height;
+        
+        for(var i = 0; i < _points; i++) {
+            var _t = i / (_points - 1);
+            var _inverse_t = 1 - _t;
+            
+            var _point = CalculateBezierPoint(
+                _start_x, _start_y,
+                _control_x, _control_y,
+                _end_x, _end_y,
+                _t, _inverse_t
+            );
+            
+            ds_list_add(points, _point);
+        }
+    }
+    
+    static CalculateBezierPoint = function(_x1, _y1, _cx, _cy, _x2, _y2, _t, _inv_t) {
+        return {
+            x: power(_inv_t, 2) * _x1 + 2 * _inv_t * _t * _cx + power(_t, 2) * _x2,
+            y: power(_inv_t, 2) * _y1 + 2 * _inv_t * _t * _cy + power(_t, 2) * _y2
+        };
+    }
+    
     static GenerateArc = function(_start_x, _start_y, _end_x, _end_y, _height, _points = 15) {
         ds_list_clear(points);
         
-        // Validate end position
-        var _valid_end = ValidateEndPosition(_start_x, _start_y, _end_x, _end_y);
-        if (_valid_end == undefined) {
-            return false; // Could not generate valid path
-        }
+        var _valid_end = FindValidEndPosition(_start_x, _start_y, _end_x, _end_y);
+        if (_valid_end == undefined) return false;
         
-        // Use validated end position
-        _end_x = _valid_end.x;
-        _end_y = _valid_end.y;
+        var _distance = point_distance(_start_x, _start_y, _valid_end.x, _valid_end.y);
         
-        // Calculate arc parameters
-        var _distance = point_distance(_start_x, _start_y, _end_x, _end_y);
+        // Apply enhanced arcing only for projectiles
+        var _final_height = is_projectile 
+            ? CalculateProjectileArcHeight(_start_x, _start_y, _valid_end.x, _valid_end.y, _height)
+            : _height;
         
-        // Generate points along the arc
+        var _control_x = _start_x + (_distance * 0.5);
+        var _control_y = min(_start_y, _valid_end.y) - _final_height;
+		
         for(var i = 0; i < _points; i++) {
-            var _t = i / (_points - 1);  // Time parameter (0 to 1)
-            
-            // Quadratic bezier curve calculation
+            var _t = i / (_points - 1);
             var _inverse_t = 1 - _t;
             
-            // Control point (apex of the arc)
-            var _control_x = _start_x + (_distance * 0.5);
-            var _control_y = min(_start_y, _end_y) - _height;
-            
-            // Calculate point position
             var _px = power(_inverse_t, 2) * _start_x + 
                      2 * _inverse_t * _t * _control_x + 
-                     power(_t, 2) * _end_x;
+                     power(_t, 2) * _valid_end.x;
                      
             var _py = power(_inverse_t, 2) * _start_y + 
                      2 * _inverse_t * _t * _control_y + 
-                     power(_t, 2) * _end_y;
+                     power(_t, 2) * _valid_end.y;
             
             ds_list_add(points, {x: _px, y: _py});
         }

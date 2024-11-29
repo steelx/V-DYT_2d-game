@@ -36,7 +36,7 @@ function DodgeTask(_dodge_alarm_idx, _attack_alarm_idx, _dodge_delay = 3, _dodge
     
 			    // Create and setup arch path
 			    other.dodge_path = new ArcPath();
-			    other.dodge_path.black_board_ref = other.black_board_ref; // Set the blackboard reference
+			    other.dodge_path._inst = _user; // Set the blackboard reference
     
 			    // Try to generate the path
 			    if (!other.dodge_path.GenerateArc(

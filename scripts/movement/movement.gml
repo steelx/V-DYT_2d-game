@@ -109,6 +109,29 @@ function check_collision(_move_x, _move_y) {
 }
 
 /**
+ * Checks for ground within a specified distance below the instance
+ * @param {real} max_distance Maximum distance to check downward
+ * @returns {boolean} True if ground was found
+ */
+function find_ground_below(_max_distance) {
+    for(var i = 0; i < _max_distance; i++) {
+        if (check_collision(0, i)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * Checks if there's enough horizontal clearance at current position
+ * @param {real} clearance Amount of horizontal space needed
+ * @returns {boolean} True if there's enough clearance
+ */
+function has_horizontal_clearance(_clearance) {
+    return !check_collision(_clearance, 0) && !check_collision(-_clearance, 0);
+}
+
+/**
 * Checks if calling entity is on ground
 * @returns {bool} True if is on ground
 */
