@@ -228,6 +228,7 @@
     {"id":{"name":"chase_smart_task","path":"scripts/chase_smart_task/chase_smart_task.yy",},},
     {"id":{"name":"chase_task","path":"scripts/chase_task/chase_task.yy",},},
     {"id":{"name":"check_attack_range_task","path":"scripts/check_attack_range_task/check_attack_range_task.yy",},},
+    {"id":{"name":"collisions_grid","path":"scripts/collisions_grid/collisions_grid.yy",},},
     {"id":{"name":"color_palette_macro","path":"scripts/color_palette_macro/color_palette_macro.yy",},},
     {"id":{"name":"cutscene_1","path":"scripts/cutscene_1/cutscene_1.yy",},},
     {"id":{"name":"cutscenes","path":"scripts/cutscenes/cutscenes.yy",},},

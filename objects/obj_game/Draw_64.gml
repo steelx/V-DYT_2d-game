@@ -1,5 +1,4 @@
 /// @description obj_game Draw GUI
-
 // Pause menu surface
 if (global.game_state == GAME_STATES.PAUSED && global.show_game_menu) {
     var _surf_w = display_get_gui_width();
