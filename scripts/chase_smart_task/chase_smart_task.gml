@@ -192,23 +192,12 @@ function ChaseSmartTask(_move_speed, _jump_force, _jump_height) : BTreeLeaf() co
     ray_count = 8;
     ray_angle_spread = 80;
     obstacle_ahead_threshold = 32;
-    instance_ref = noone;
-    grid_look_ahead = 4; // How many grid cells to look ahead
-
-    static Init = function() {
-        var _user = black_board_ref.user;
-        with(_user) {
-            if (!variable_instance_exists(id, "last_seen_player_x")) {
-                variable_instance_set(id, "last_seen_player_x", noone);
-            }
-        }
-    }
+    grid_look_ahead = 4;
 
     static Process = function() {
-        // Main chase logic
         var _user = black_board_ref.user;
         if (!instance_exists(obj_player)) return BTStates.Failure;
-
+        
         with(_user) {
             var _dist = distance_to_object(obj_player);
             if (_dist <= attack_range) {
@@ -216,127 +205,96 @@ function ChaseSmartTask(_move_speed, _jump_force, _jump_height) : BTreeLeaf() co
                 sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
                 return BTStates.Success;
             }
-
+            
             if (_dist > visible_range) {
                 vel_x = 0;
                 return BTStates.Failure;
             }
-
+            
+            // Check if player is directly above on a platform
+            var _player_height_diff = obj_player.y - y;
+            var _horizontal_dist = abs(obj_player.x - x);
+            if (_player_height_diff < -other.jump_height && _horizontal_dist < sprite_width) {
+                // Check if there's an obstacle between player and enemy
+                var _obstacle = global.collision_grid.GetObstacleAtPosition(x, obj_player.y);
+                if (_obstacle != noone) {
+                    vel_x = 0;
+                    last_seen_player_x = obj_player.x;
+                    return BTStates.Failure; // Trigger alert sequence instead
+                }
+            }
+            
             var _move_dir = sign(obj_player.x - x);
             var _obstacle_ahead = other.check_obstacle_ahead(id, _move_dir, other.obstacle_ahead_threshold);
-
+            
             if (_obstacle_ahead) {
                 // Try to find a jump path using the grid system
-                if (other.find_jump_path(id, obj_player.x, obj_player.y)) {
+                if (global.collision_grid.CanJumpTo(x, y, obj_player.x, obj_player.y)) {
                     vel_y = -other.jump_force;
                     vel_x = other.chase_speed * _move_dir;
                     sprite_index = sprites_map[$ CHARACTER_STATE.JUMP];
                 } else {
-                    // Fallback to regular movement if no jump path found
-                    vel_x = other.chase_speed * _move_dir;
+                    // Find alternative path or maintain distance
+                    var _min_chase_distance = 32; // Minimum distance to maintain
+                    if (_horizontal_dist < _min_chase_distance) {
+                        vel_x = -other.chase_speed * _move_dir; // Move away slightly
+                    } else {
+                        vel_x = other.chase_speed * _move_dir;
+                    }
                     sprite_index = sprites_map[$ CHARACTER_STATE.CHASE];
                 }
             } else {
                 vel_x = other.chase_speed * _move_dir;
                 sprite_index = sprites_map[$ CHARACTER_STATE.CHASE];
             }
-
+            
             image_xscale = _move_dir;
             last_seen_player_x = obj_player.x;
         }
-
+        
         return BTStates.Running;
     }
-
+    
+    static check_obstacle_ahead = function(_id, _move_dir, _obstacle_ahead_threshold) {
+        with(_id) {
+            // Check immediate obstacles using collision grid
+            var _current_cell_x = x div global.collision_grid.cell_size;
+            var _current_cell_y = y div global.collision_grid.cell_size;
+            
+            // Check a few cells ahead
+            for(var i = 1; i <= other.grid_look_ahead; i++) {
+                var _check_x = x + (_move_dir * i * global.collision_grid.cell_size);
+                var _obstacle = global.collision_grid.GetObstacleAtPosition(_check_x, y);
+                
+                if (_obstacle != noone) {
+                    return true;
+                }
+                
+                // Also check grid for tile-based obstacles
+                if (!global.collision_grid.IsValidMove(_check_x, y)) {
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+    }
+    
     static Draw = function(_inst_id) {
         if (!instance_exists(_inst_id)) return;
         
         with(_inst_id) {
-            var _start_x = x + (image_xscale > 0 ? bbox_right : bbox_left);
+            draw_set_alpha(0.5);
             
-            // Draw ray casts
-            for (var i = 0; i < other.ray_count; i++) {
-                var _angle = (-other.ray_angle_spread / 2) + (i * (other.ray_angle_spread / (other.ray_count - 1)));
-                var _ray_length = other.ray_length;
-                var _ray_x = _start_x + (cos(degtorad(_angle)) * _ray_length);
-                var _ray_y = y + (sin(degtorad(_angle)) * _ray_length);
-                
-                var _steps = 10;
-                var _found = false;
-                var _end_x = _ray_x;
-                var _end_y = _ray_y;
-                
-                // Check for collision along the ray
-                for (var j = 0; j <= _steps; j++) {
-                    var _check_x = lerp(_start_x, _ray_x, j / _steps);
-                    var _check_y = lerp(y, _ray_y, j / _steps);
-                    if (check_collision(_check_x - x, _check_y - y)) {
-                        _found = true;
-                        _end_x = _check_x;
-                        _end_y = _check_y;
-                        break;
-                    }
-                }
-                
-                // Draw the ray
-                draw_set_alpha(0.5);
-                draw_line_color(
-                    _start_x, y,
-                    _end_x, _end_y,
-                    _found ? c_red : c_green,
-                    _found ? c_red : c_green
-                );
-                draw_set_alpha(1);
+            // Draw chase range
+            draw_circle_color(x, y, other.ray_length, c_blue, c_blue, true);
+            
+            // Draw direction to player if visible
+            if (instance_exists(obj_player)) {
+                draw_line_color(x, y, obj_player.x, obj_player.y, c_green, c_green);
             }
+            
+            draw_set_alpha(1);
         }
     }
-
-    static Clean = function() {
-        // Cleanup code if needed
-    }
-
-	static check_obstacle_ahead = function(_id, _move_dir, _obstacle_ahead_threshold) {
-	    with(_id) {
-	        // Check immediate collisions first using existing system
-	        for (var i = 1; i <= _obstacle_ahead_threshold; i++) {
-	            var _check_x = x + _move_dir * i;
-	            if (check_collision(_check_x - x, 0)) {
-	                return true;
-	            }
-	        }
-        
-	        // Grid-based detection for longer range
-	        if (instance_exists(global.collision_grid)) {
-	            var _cell_size = global.collision_grid.cell_size;
-	            var _current_cell_x = x div _cell_size;
-	            var _current_cell_y = y div _cell_size;
-            
-	            for (var i = 1; i <= other.grid_look_ahead; i++) {
-	                var _check_cell_x = _current_cell_x + (_move_dir * i);
-	                if (!global.collision_grid.IsValidMove(_check_cell_x * _cell_size, _current_cell_y * _cell_size)) {
-	                    return true;
-	                }
-	            }
-	        }
-	        return false;
-	    }
-	}
-
-	static find_jump_path = function(_id, _target_x, _target_y) {
-	    //if (global.collision_grid) return false;
-    
-	    with(_id) {
-	        var _start_x = x;
-	        var _start_y = y;
-        
-	        // First check if we need to jump (obstacle ahead)
-	        if (other.check_obstacle_ahead(id, sign(_target_x - x), other.obstacle_ahead_threshold)) {
-	            // Then check if we can make the jump
-	            if (global.collision_grid.CanJumpTo(_start_x, _start_y, _target_x, _target_y)) {
-	                return true;
-	            }
-	        }
-	        return false;
-	    }
-	}
 }
