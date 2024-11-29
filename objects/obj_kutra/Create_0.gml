@@ -5,7 +5,7 @@ event_inherited();
 max_hp = 2;
 hp = max_hp;
 damage = 1;
-visible_range = 220;// how far enemy can see
+visible_range = 120;// how far enemy can see
 attack_range = 48;
 
 defeated_object = obj_kutra_defeated;
@@ -54,7 +54,7 @@ _combat_selector.ChildAdd(_chase_sequence);
 
 _dodge_sequence.ChildAdd(_detect_player_task);
 _dodge_sequence.ChildAdd(new CheckAttackRangeTask(attack_range));
-_dodge_sequence.ChildAdd(new DodgeTask(3, 4, 3.0));
+_dodge_sequence.ChildAdd(new DodgeTask(3, 4, 4.0));
 
 _attack_sequence.ChildAdd(_detect_player_task);
 _attack_sequence.ChildAdd(new CheckAttackRangeTask(attack_range));

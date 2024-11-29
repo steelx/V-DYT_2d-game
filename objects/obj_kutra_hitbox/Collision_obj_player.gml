@@ -7,10 +7,8 @@ with (other) {
 	}
 	// inside WITH 'other' refers to hitbox
 	hp -= 1;
-    if (hp > 0) {
-		// player hurt fx
-		create_pixelated_blood_fx();
-	}
+    // player hurt fx
+	create_pixelated_blood_fx();
 	
 	// Apply knockback to the player
 	var _guardian_enemy = instance_nearest(x, y, obj_kutra);

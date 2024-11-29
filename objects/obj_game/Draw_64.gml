@@ -44,3 +44,15 @@ if (global.game_state == GAME_STATES.PAUSED && global.show_game_menu) {
     clear_text_color();
 }
 
+
+if (slow_mo_active) {
+    // Add a slight darkening effect
+    draw_set_alpha(0.2);
+    draw_set_color(c_black);
+    draw_rectangle(0, 0, display_get_gui_width(), display_get_gui_height(), false);
+    draw_set_alpha(1);
+    
+    // Optional: Draw slow-mo timer
+    draw_set_color(c_white);
+    draw_text(10, 10, "SLOW MOTION: " + string(slow_mo_timer));
+}

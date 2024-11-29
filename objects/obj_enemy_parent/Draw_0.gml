@@ -26,7 +26,7 @@ if instance_exists(obj_player) and distance_to_object(obj_player) < 156 {
     draw_health_bar(
         _bar_x, _bar_y, _bar_width, _bar_height,
         hp, max_hp,
-        "#FFFFFF", "#242434", "#e01f3f"
+        "#333333", "#e01f3f", "#242434"
     );
 }
 

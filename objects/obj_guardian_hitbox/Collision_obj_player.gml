@@ -7,11 +7,10 @@ with (other) {
 	}
 	// inside WITH 'other' refers to hitbox
 	hp -= 1;
-    if (hp > 0) {
-		// player hurt fx
-		create_pixelated_blood_fx();
-		apply_zoom_motion_fx(1.2);
-	}
+    // player hurt fx
+	//create_pixelated_blood_fx();
+	apply_zoom_motion_fx(1.5);
+	obj_game.trigger_slowmotion_fx();
 	
 	// Apply knockback to the player
 	var _guardian_enemy = instance_nearest(x, y, obj_guardian_enemy);

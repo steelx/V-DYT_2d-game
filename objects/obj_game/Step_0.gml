@@ -43,3 +43,27 @@ if (global.game_state == GAME_STATES.PAUSED and global.show_game_menu) {
         }
     }
 }
+
+/// slowmotion
+// Handle slow motion timer
+if (slow_mo_active) {
+    slow_mo_timer--;
+	
+	if (abs(current_fps - slow_mo_speed) > 0.1) { // Only adjust if there's a noticeable difference
+	    current_fps = lerp(current_fps, slow_mo_speed, 1 * delta_time / 100000);
+    
+	    // Clamp and round the FPS to ensure valid values
+	    current_fps = clamp(round(current_fps), 1, 1000); // FPS range: 1 to 1000
+ 
+	    // Set the game speed
+	    game_set_speed(current_fps, gamespeed_fps);
+	}
+    
+    if (slow_mo_timer <= 0) {
+        // Return to normal speed
+        slow_mo_active = false;
+        game_set_speed(normal_game_speed, gamespeed_fps);
+        
+        // Optional: Add visual effects when slow-mo ends
+    }
+}
