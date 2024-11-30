@@ -55,7 +55,7 @@ _attack_sequence.ChildAdd(new CheckAttackRangeTask(attack_range, _can_see_player
 _attack_sequence.ChildAdd(new ArcherAttackTask(4, 4, 2.0));
 
 _selector_root.ChildAdd(_knockback_sequence);
-_selector_root.ChildAdd(_dodge_sequence);
+//_selector_root.ChildAdd(_dodge_sequence); // no dodge as its standing above towers
 _selector_root.ChildAdd(_patrol_sequence);
 _selector_root.ChildAdd(_attack_sequence);
 

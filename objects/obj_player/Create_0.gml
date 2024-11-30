@@ -91,14 +91,14 @@ disable_self = function (_user) {
 	}
 };
 
-spawn_super_attack = function() {
+spawn_super_attack = function(_sequence_file = seq_player_super_attack) {
 	if (alarm[PLAYER_ATTACK_DELAY] > 0) {
 		return;
 	}
 	
 	alarm[PLAYER_ATTACK_DELAY] = get_room_speed() * 1;// start attack delay timer
 	with (instance_create_layer(x, y, "Instances", obj_sequence_spawner)) {
-		sequence = seq_player_super_attack;
+		sequence = _sequence_file;
 		spawner = other;
 		start_sequence();
 	}
