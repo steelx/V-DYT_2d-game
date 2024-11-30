@@ -44,9 +44,8 @@ function player_input() {
             if (keyboard_check(vk_shift)) {
                 if (grounded and attack_fuel >= attack_fuel_consumption_rate) {
 					state = CHARACTER_STATE.SUPER_ATTACK;
-	                sprite_index = sprites_map[$ CHARACTER_STATE.SUPER_ATTACK];
-	                image_index = 0;
 	                attack_fuel -= attack_fuel_consumption_rate;
+					spawn_super_attack();
 				}
             } else {
                 state = CHARACTER_STATE.ATTACK;

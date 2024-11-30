@@ -2,6 +2,7 @@
 if (other.no_hurt_frames > 0) exit;
 
 // Create the hit effect at intersection point
+
 with(instance_create_depth(x, y, -depth, obj_hit_fx)) {
 	sprite_index = spr_electric_hit_2;
 	image_xscale = obj_player.image_xscale;	
@@ -12,8 +13,7 @@ with(instance_create_depth(x, y, -depth, obj_hit_fx)) {
 with (other) {
 	hp--;
 	create_blood_splash();
-	apply_zoom_motion_fx(30, 1.5);
-	play_priority_sound(snd_attack_hit, SoundPriority.CRITICAL);
+
 	if (hp > 0 and instance_exists(other)) {
 		var _no_attack_frames = 30;
 		apply_knockback_to_enemy(6, _no_attack_frames);

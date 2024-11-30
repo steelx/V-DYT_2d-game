@@ -23,12 +23,4 @@ switch (_message) {
         play_priority_sound(snd_player_used_attack, SoundPriority.COMBAT);
         break;
     
-    case "hero_super_attack":
-        // this event emitted at 7th frame when animation frame reaches extended sword
-        with (instance_create_layer(x+(image_xscale*8), y, "Player", obj_player_superattack_hitbox)) {
-            facing = other.image_xscale;
-        }
-        var _s2 = audio_play_sound(snd_super_attack, 1, 0);
-        audio_sound_pitch(_s2, random_range(0.8, 1));
-        break;
 }

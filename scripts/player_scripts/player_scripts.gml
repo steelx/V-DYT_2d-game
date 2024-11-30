@@ -7,7 +7,7 @@ function apply_knockback_to_enemy(_knockback_speed = 2, _no_hurt_frames = 60){
 		
 	if variable_instance_exists(id, "apply_knockback") {
 		apply_knockback(_knockback_direction, _knockback_speed);
-		exit;
+		return;
 	}
 		
 	var _knockback_x = lengthdir_x(_knockback_speed, _knockback_direction);
