@@ -48,14 +48,14 @@ _dodge_sequence.ChildAdd(new CheckAttackRangeTask(64, _can_see_player_in_air));
 _dodge_sequence.ChildAdd(new DodgeTask(3, 4, 3.0, sprites_map[$ CHARACTER_STATE.JUMP]));
 
 _patrol_sequence.ChildAdd(new IdleTask(1, _can_see_player_in_air));
-_patrol_sequence.ChildAdd(new PatrolTask(move_speed*0.8, 96, 1, _can_see_player_in_air));
+_patrol_sequence.ChildAdd(new PatrolTask(move_speed*0.8, 64, 1, _can_see_player_in_air));
 
 _attack_sequence.ChildAdd(_detect_player_task);
 _attack_sequence.ChildAdd(new CheckAttackRangeTask(attack_range, _can_see_player_in_air));
 _attack_sequence.ChildAdd(new ArcherAttackTask(4, 4, 2.0));
 
 _selector_root.ChildAdd(_knockback_sequence);
-//_selector_root.ChildAdd(_dodge_sequence); // no dodge as its standing above towers
+_selector_root.ChildAdd(_dodge_sequence);
 _selector_root.ChildAdd(_patrol_sequence);
 _selector_root.ChildAdd(_attack_sequence);
 

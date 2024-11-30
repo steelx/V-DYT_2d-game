@@ -61,6 +61,7 @@ _alert_sequence.ChildAdd(new MoveToLastSeenTask());
 _alert_sequence.ChildAdd(new SearchAreaTask(120));
 
 // Patrol sequence
+_patrol_sequence.ChildAdd(new ReturnToHomeTask(move_speed, 10, 64));
 _patrol_sequence.ChildAdd(new IdleTask(1));
 _patrol_sequence.ChildAdd(new PatrolTask(move_speed*0.8, 120, 1));
 

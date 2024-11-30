@@ -4,57 +4,107 @@ function PatrolPath() constructor {
     return_zone_end = 5;  // Points 0-5 trigger return
     
 	static GeneratePoints = function(_start_x, _y, _width, _total_points = 15) {
-	    ds_list_clear(points);
-	    var _spacing = _width / (_total_points - 1);
-	    var _cell_size = global.collision_grid.cell_size;
-    
-	    // First find the current platform height
-	    var _platform_y = _y;
-	    for(var i = -32; i < 32; i++) {
-	        if (!global.collision_grid.IsValidMove(_start_x, _y + i)) {
-	            _platform_y = _y + i;
-	            break;
-	        }
-	    }
-    
-	    // Generate points along the same height
-	    for(var i = 0; i < _total_points; i++) {
-	        var _point_x = _start_x + (i * _spacing);
+        ds_list_clear(points);
+        var _cell_size = global.collision_grid.cell_size;
         
-	        // Verify point is on the same platform
-	        var _valid_point = false;
-	        var _check_y = _platform_y;
+        // Find initial platform position
+        var _platform_y = _y;
+        for(var i = -32; i < 32; i++) {
+            if (!global.collision_grid.IsValidMove(_start_x, _y + i)) {
+                _platform_y = _y + i;
+                break;
+            }
+        }
         
-	        // Check if there's ground at this height
-	        if (!global.collision_grid.IsValidMove(_point_x, _check_y)) {
-	            // Verify there's space above for the character
-	            var _has_space = true;
-	            for(var h = 1; h < 32; h++) {
-	                if (!global.collision_grid.IsValidMove(_point_x, _check_y - h)) {
-	                    _has_space = false;
-	                    break;
-	                }
-	            }
+        // Find platform boundaries
+        var _platform_left = _start_x;
+        var _platform_right = _start_x;
+        var _min_clearance = 32; // Minimum vertical clearance needed
+        
+        // Scan left
+        var _check_distance = min(_width / 2, _start_x);
+        for(var i = 0; i <= _check_distance; i += _cell_size) {
+            var _check_x = _start_x - i;
             
-	            if (_has_space) {
-	                _valid_point = true;
-	                ds_list_add(points, {
-	                    x: _point_x,
-	                    y: _check_y - 1 // Position just above the platform
-	                });
-	            }
-	        }
-	    }
-    
-	    // Ensure we have minimum points
-	    if (ds_list_size(points) < 2) {
-	        ds_list_add(points, {
-	            x: _start_x,
-	            y: _platform_y - 1
-	        });
-	    }
-	}
-
+            // Check if we're still on the same platform
+            if (global.collision_grid.IsValidMove(_check_x, _platform_y)) {
+                break;
+            }
+            
+            // Check vertical clearance
+            var _has_clearance = true;
+            for(var h = 1; h < _min_clearance; h++) {
+                if (!global.collision_grid.IsValidMove(_check_x, _platform_y - h)) {
+                    _has_clearance = false;
+                    break;
+                }
+            }
+            
+            if (!_has_clearance) break;
+            _platform_left = _check_x;
+        }
+        
+        // Scan right
+        _check_distance = min(_width / 2, room_width - _start_x);
+        for(var i = 0; i <= _check_distance; i += _cell_size) {
+            var _check_x = _start_x + i;
+            
+            // Check if we're still on the same platform
+            if (global.collision_grid.IsValidMove(_check_x, _platform_y)) {
+                break;
+            }
+            
+            // Check vertical clearance
+            var _has_clearance = true;
+            for(var h = 1; h < _min_clearance; h++) {
+                if (!global.collision_grid.IsValidMove(_check_x, _platform_y - h)) {
+                    _has_clearance = false;
+                    break;
+                }
+            }
+            
+            if (!_has_clearance) break;
+            _platform_right = _check_x;
+        }
+        
+        // Calculate actual usable width
+        var _actual_width = min(_width, _platform_right - _platform_left);
+        var _point_count = max(2, floor(_actual_width / (_cell_size * 2))); // Ensure at least 2 points
+        var _spacing = _actual_width / (_point_count - 1);
+        
+        // Generate evenly spaced points
+        for(var i = 0; i < _point_count; i++) {
+            var _point_x = _platform_left + (i * _spacing);
+            
+            // Verify final position
+            if (global.collision_grid.IsValidMove(_point_x, _platform_y - 1)) {
+                continue; // Skip if position is in air
+            }
+            
+            // Add valid point
+            ds_list_add(points, {
+                x: _point_x,
+                y: _platform_y - 1 // Position just above platform
+            });
+        }
+        
+        // Ensure minimum viable patrol path
+        if (ds_list_size(points) < 2) {
+            ds_list_clear(points);
+            ds_list_add(points, {
+                x: _start_x - (_cell_size * 2),
+                y: _platform_y - 1
+            });
+            ds_list_add(points, {
+                x: _start_x + (_cell_size * 2),
+                y: _platform_y - 1
+            });
+        }
+        
+        // Update return zone
+        return_zone_end = min(ds_list_size(points) - 1, floor(ds_list_size(points) * 0.3));
+    }
+	
 	/*
 		@desc GetCurrentPoint
 		@return _point {x y}
