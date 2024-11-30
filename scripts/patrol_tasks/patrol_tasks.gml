@@ -70,6 +70,7 @@ function PatrolTask(_move_speed, _patrol_width, _idle_alarm_idx, _ignore_player_
         status = BTStates.Running;
         with(_user) {
             sprite_index = sprites_map[$ CHARACTER_STATE.MOVE];
+			variable_instance_set(id, "patrol_width", other.patrol_width);
         }
     }
     

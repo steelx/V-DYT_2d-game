@@ -7,6 +7,7 @@ damage = 1;
 visible_range = 64;// how far enemy can see
 attack_range = 42;
 last_seen_player_x = noone;
+last_seen_player_y = noone;
 
 // This sets the movement speed for the enemies.
 move_speed = 1.0;

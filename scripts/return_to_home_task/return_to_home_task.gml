@@ -1,4 +1,4 @@
-function ReturnToHomeTask(_move_speed, _jump_force, _jump_height, _ignore_player_in_air = false) : BTreeLeaf() constructor {
+function ReturnToHomeTask(_move_speed, _jump_force = 7, _jump_height = 32, _ignore_player_in_air = false) : BTreeLeaf() constructor {
     name = "Return To Origin Task";
     move_speed = _move_speed;
     jump_force = _jump_force;
@@ -21,12 +21,13 @@ function ReturnToHomeTask(_move_speed, _jump_force, _jump_height, _ignore_player
             }
 
             var _dist_to_origin = abs(x - xstart);
-            
+            //var _dist_buffer = (variable_instance_exists(id, "patrol_width")) ? patrol_width/2 : global.tile_size/2;
+            var _dist_buffer = global.tile_size/2;
             // If we're close enough to origin, consider it reached
-            if (_dist_to_origin <= 16) {
+            if (_dist_to_origin <= _dist_buffer) {
                 vel_x = 0;
                 sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
-                return BTStates.Success;
+                return BTStates.Failure;// Failure as this is part of root selector, and not sequence
             }
 
             // Determine direction to origin
@@ -45,7 +46,7 @@ function ReturnToHomeTask(_move_speed, _jump_force, _jump_height, _ignore_player
             sprite_index = sprites_map[$ CHARACTER_STATE.MOVE];
 
             // Check for obstacle ahead
-            var _obstacle_ahead = other.check_obstacle_ahead(id, _move_dir, other.obstacle_ahead_threshold);
+            var _obstacle_ahead = global.collision_grid.IsObstacleAhead(id, _move_dir);
 
             if (_obstacle_ahead) {
                 // Ray casting to check for jump opportunities
@@ -121,17 +122,5 @@ function ReturnToHomeTask(_move_speed, _jump_force, _jump_height, _ignore_player
             draw_line(x, y, xstart, y);
             draw_set_color(c_white);
         }
-    }
-	
-	static check_obstacle_ahead = function(_id, _move_dir, _obstacle_ahead_threshold) {
-        with(_id) {
-            for (var i = 1; i <= _obstacle_ahead_threshold; i++) {
-                var _check_x = x + _move_dir * i;
-                if (check_collision(_check_x - x, 0)) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 }

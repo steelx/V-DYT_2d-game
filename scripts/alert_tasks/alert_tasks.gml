@@ -6,22 +6,24 @@ function CheckLastSeenTask() : BTreeLeaf() constructor {
 		if (!variable_instance_exists(_user, "last_seen_player_x")) {
 			variable_instance_set(_user, "last_seen_player_x", noone);
 		}
+		if (!variable_instance_exists(_user, "last_seen_player_y")) {
+			variable_instance_set(_user, "last_seen_player_y", noone);
+		}
 	}
     
     static Process = function() {
-		if (!instance_exists(obj_player)) return BTStates.Failure;
+        if (!instance_exists(obj_player)) return BTStates.Failure;
         var _user = black_board_ref.user;
         
         with(_user) {
-			vel_x = 0;
-			sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
-			
-            if (last_seen_player_x != noone) {
-				image_xscale = sign(x - last_seen_player_x) >= 0 ? 1 : -1;
-				return BTStates.Success;
+            vel_x = 0;
+            sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
+            
+            if (last_seen_player_x != noone) {                
+                image_xscale = sign(last_seen_player_x - x);
+                return BTStates.Success;
             }
         }
-        
         return BTStates.Failure;
     }
 }
@@ -30,29 +32,39 @@ function MoveToLastSeenTask() : BTreeLeaf() constructor {
     name = "Move To Last Seen Task";
     
     static Process = function() {
-		if (!instance_exists(obj_player)) return BTStates.Failure;
+        if (!instance_exists(obj_player)) return BTStates.Failure;
         var _user = black_board_ref.user;
-
+        
         with(_user) {
-			// Check if we can actually reach the last seen position
-            if (!can_reach_position(last_seen_player_x)) {
-                // If we can't reach it, clear the last seen position and fail the task
+            // since we cannot move ahead last seen is current position
+			var _can_move = global.collision_grid.IsPathClear(id, last_seen_player_x, last_seen_player_y);
+            if (!_can_move) {
                 last_seen_player_x = noone;
+                last_seen_player_y = noone;
                 vel_x = 0;
-                return BTStates.Failure;
+                return BTStates.Failure;// Exit Alert seqeunce
             }
-            // Check if we reached the last seen position
+            
+            // Check if we're close enough
             var _dist_to_last_seen = abs(x - last_seen_player_x);
-            if (_dist_to_last_seen <= global.tile_size) { // Within 16 pixels threshold
+            if (_dist_to_last_seen <= global.tile_size) {
                 vel_x = 0;
-                return BTStates.Success; // Move to search area task
+                return BTStates.Success;
             }
             
             // Move towards last seen position
             var _dir = sign(last_seen_player_x - x);
-            vel_x = move_speed * _dir;
-			image_xscale = _dir > 0 ? 1 : -1;
-            sprite_index = sprites_map[$ CHARACTER_STATE.MOVE];
+            
+            if (global.collision_grid.IsMovementSafe(id, _dir)) {
+                vel_x = move_speed * _dir;
+                image_xscale = _dir;
+                sprite_index = sprites_map[$ CHARACTER_STATE.MOVE];
+            } else {
+                vel_x = 0;
+                last_seen_player_x = noone;
+                last_seen_player_y = noone;
+                return BTStates.Failure;
+            }
             
             return BTStates.Running;
         }
@@ -71,10 +83,9 @@ function SearchAreaTask(_search_radius, _search_secs = 3.0) : BTreeLeaf() constr
         
         with(_user) {
 			last_seen_player_x = noone;
-			var _player_above = obj_player.y < y - sprite_height/2;
-			var _is_visible = player_within_range(visible_range);
+            last_seen_player_y = noone;
             // If we have a last seen position and player not in range
-            if (_is_visible and !_player_above) {
+            if (player_detected(false)) {
                 other.current_search_time = 0;
                 return BTStates.Failure; // Go back to combat if player spotted
             }
@@ -95,7 +106,7 @@ function SearchAreaTask(_search_radius, _search_secs = 3.0) : BTreeLeaf() constr
             // If search time is up, clear last seen position and return to patrol
             if (other.current_search_time >= other.search_time) {
                 other.current_search_time = 0;
-                return BTStates.Success;
+                return BTStates.Failure;// Exit Alert Sequence
             }
             
             return BTStates.Running;

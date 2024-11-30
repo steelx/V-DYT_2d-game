@@ -58,17 +58,17 @@ _chase_sequence.ChildAdd(new ChaseTask(move_speed));
 // Alert sequence
 _alert_sequence.ChildAdd(new CheckLastSeenTask());
 _alert_sequence.ChildAdd(new MoveToLastSeenTask());
-_alert_sequence.ChildAdd(new SearchAreaTask(120));
+_alert_sequence.ChildAdd(new SearchAreaTask(100));
 
 // Patrol sequence
-_patrol_sequence.ChildAdd(new ReturnToHomeTask(move_speed, 10, 64));
 _patrol_sequence.ChildAdd(new IdleTask(1));
-_patrol_sequence.ChildAdd(new PatrolTask(move_speed*0.8, 120, 1));
+_patrol_sequence.ChildAdd(new PatrolTask(move_speed*0.8, 100, 1));
 
 // Add main tier nodes to root selector
 _selector_root.ChildAdd(_knockback_sequence);
 _selector_root.ChildAdd(_combat_selector);
 _selector_root.ChildAdd(_alert_sequence);
+_selector_root.ChildAdd(new ReturnToHomeTask(move_speed));
 _selector_root.ChildAdd(_patrol_sequence);
 
 
