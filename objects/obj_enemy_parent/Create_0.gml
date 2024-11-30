@@ -25,10 +25,6 @@ knockback_active = false; // for BT objects
 // State history (last 3 states)
 prev_states = array_create(3, CHARACTER_STATE.IDLE);
 
-// update these in child objects
-sprites_map = {};// CHARACTER_STATE length
-sprites_map[$ CHARACTER_STATE.IDLE] = spr_player_idle;
-
 #endregion
 
 #region Search behavior

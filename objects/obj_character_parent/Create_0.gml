@@ -22,6 +22,10 @@ grav_speed = 0.8;
 vel_x = 0;
 vel_y = 0;
 
+// update these in child objects
+sprites_map = {};// CHARACTER_STATE length
+sprites_map[$ CHARACTER_STATE.IDLE] = spr_player_idle;
+
 // grounded: This stores whether the character is currently on the ground.
 // grounded_x: This stores the X position of the character when it was last on ground.
 // grounded_y: Same but on the Y axis.

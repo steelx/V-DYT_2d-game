@@ -8,6 +8,9 @@ function CheckAttackRangeTask(_attack_range = 40, _ignore_player_in_air = false)
         if (!instance_exists(obj_player)) return BTStates.Failure;
 		
 		with(_user) {
+			if (variable_instance_exists(id, "knockback_active") and knockback_active) {
+				return BTStates.Failure;
+			}
 			var _player_above = obj_player.y < y - sprite_height/2;
 			var _dist = distance_to_object(obj_player);
 			if (other.ignore_player_in_air and _dist < other.attack_range) {

@@ -5,10 +5,10 @@ function CollisionGrid() constructor {
     grid = ds_grid_create(grid_width, grid_height);
     obstacles = []; // Array to store obstacle information as structs
     
-    static Initialize = function() {
+	static Initialize = function() {
         obstacles = [];
         
-        // Collect obstacle information
+        // Collect obstacle information with exact dimensions
         with(obj_collision) {
             var _obstacle = {
                 position: { x: x, y: y },
@@ -22,9 +22,9 @@ function CollisionGrid() constructor {
                 height: bbox_bottom - bbox_top,
                 grid_bounds: {
                     left: bbox_left div other.cell_size,
-                    right: bbox_right div other.cell_size,
+                    right: (bbox_right div other.cell_size),
                     top: bbox_top div other.cell_size,
-                    bottom: bbox_bottom div other.cell_size
+                    bottom: (bbox_bottom div other.cell_size)
                 }
             };
             array_push(other.obstacles, _obstacle);
@@ -35,18 +35,21 @@ function CollisionGrid() constructor {
             for(var _y = 0; _y < grid_height; _y++) {
                 var _real_x = _x * cell_size;
                 var _real_y = _y * cell_size;
-                var _cell_bbox = {
-                    left: _real_x,
-                    right: _real_x + cell_size,
-                    top: _real_y,
-                    bottom: _real_y + cell_size
-                };
                 
                 grid[# _x, _y] = false;
                 
-                // Check for obstacle collision with this cell
+                // Check if this cell intersects with any obstacle
+                var _cell_bbox = {
+                    left: _real_x,
+                    right: _real_x + cell_size - 1,
+                    top: _real_y,
+                    bottom: _real_y + cell_size - 1
+                };
+                
+                // Check obstacles
                 for(var i = 0; i < array_length(obstacles); i++) {
-                    if (bbox_overlaps(_cell_bbox, obstacles[i].bbox)) {
+                    var _obs = obstacles[i];
+                    if (bbox_overlaps(_cell_bbox, _obs.bbox)) {
                         grid[# _x, _y] = true;
                         break;
                     }
@@ -61,6 +64,59 @@ function CollisionGrid() constructor {
         }
     }
     
+    static DrawGrid = function() {
+        // Draw base grid
+        draw_set_alpha(0.3);
+        for(var _x = 0; _x < grid_width; _x++) {
+            for(var _y = 0; _y < grid_height; _y++) {
+                var _real_x = _x * cell_size;
+                var _real_y = _y * cell_size;
+                
+                // Draw occupied cells
+                if (grid[# _x, _y]) {
+                    draw_rectangle_color(
+                        _real_x, _real_y,
+                        _real_x + cell_size - 1, _real_y + cell_size - 1,
+                        c_red, c_red, c_red, c_red,
+                        false
+                    );
+                }
+                
+                // Grid lines
+                /*
+				draw_rectangle_color(
+                    _real_x, _real_y,
+                    _real_x + cell_size - 1, _real_y + cell_size - 1,
+                    c_yellow, c_yellow, c_yellow, c_yellow,
+                    true
+                );
+				*/
+            }
+        }
+        
+        // Draw actual obstacle boundaries
+        draw_set_alpha(0.8);
+        for(var i = 0; i < array_length(obstacles); i++) {
+            var _obs = obstacles[i];
+            
+            // Draw actual obstacle bounds in white
+            draw_rectangle_color(
+                _obs.bbox.left, _obs.bbox.top,
+                _obs.bbox.right, _obs.bbox.bottom,
+                c_white, c_white, c_white, c_white,
+                true
+            );
+            
+            // Draw dimensions text
+            draw_text(
+                _obs.bbox.left, _obs.bbox.top - 10,
+                string(_obs.width) + "x" + string(_obs.height)
+            );
+        }
+        
+        draw_set_alpha(1);
+    }
+	
     static bbox_overlaps = function(_bbox1, _bbox2) {
         return !(_bbox1.right < _bbox2.left || 
                 _bbox1.left > _bbox2.right || 
@@ -133,56 +189,6 @@ function CollisionGrid() constructor {
         }
         
         return false;
-    }
-    
-    static DrawGrid = function() {
-        // Draw base grid
-        draw_set_alpha(0.3);
-        for(var _x = 0; _x < grid_width; _x++) {
-            for(var _y = 0; _y < grid_height; _y++) {
-                var _real_x = _x * cell_size;
-                var _real_y = _y * cell_size;
-                
-                if (grid[# _x, _y]) {
-                    draw_rectangle_color(
-                        _real_x, _real_y,
-                        _real_x + cell_size, _real_y + cell_size,
-                        c_red, c_red, c_red, c_red,
-                        false
-                    );
-                }
-                
-                // Grid lines
-                draw_rectangle_color(
-                    _real_x, _real_y,
-                    _real_x + cell_size, _real_y + cell_size,
-                    c_yellow, c_yellow, c_yellow, c_yellow,
-                    true
-                );
-            }
-        }
-        
-        // Draw obstacles with their dimensions
-        draw_set_color(c_white);
-        draw_set_alpha(0.8);
-        for(var i = 0; i < array_length(obstacles); i++) {
-            var _obs = obstacles[i];
-            
-            // Draw obstacle bounds
-            draw_rectangle(
-                _obs.bbox.left, _obs.bbox.top,
-                _obs.bbox.right, _obs.bbox.bottom,
-                true
-            );
-            
-            // Draw dimensions
-            draw_text(
-                _obs.bbox.left, _obs.bbox.top - 10,
-                string(_obs.width) + "x" + string(_obs.height)
-            );
-        }
-        
-        draw_set_alpha(1);
     }
     
     static Cleanup = function() {

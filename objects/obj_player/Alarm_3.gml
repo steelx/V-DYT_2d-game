@@ -1,3 +1,3 @@
-/// @description PLAYER_DISABLE_SHADER
+/// @description PLAYER_IMAGE_ALPHA
 
-red_border_active = false;
+image_alpha = 0;

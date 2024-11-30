@@ -1,20 +1,3 @@
-/**
- * Adds a red faded border shader effect to the screen.
- * @param {Real} _seconds - Duration of the effect in seconds.
- * @param {Real} _intensity - Intensity of the red border effect (0-1).
- */
-function add_player_hurt_red(_seconds, _intensity = 0.5) {
-    if !instance_exists(obj_player) return;
-	
-	with (obj_player) {
-		red_border_active = true;
-        red_border_intensity = _intensity;
-        
-        // Set timer to disable shader
-        var _duration = get_room_speed() * _seconds;
-        alarm_set(PLAYER_DISABLE_SHADER, _duration);
-    }
-}
 
 /**
  * sets screen_shake bool at obj_camera to add a screenshake effect.

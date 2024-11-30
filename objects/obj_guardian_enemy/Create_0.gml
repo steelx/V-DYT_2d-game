@@ -15,6 +15,7 @@ move_speed = 0.8;
 sprites_map[$ CHARACTER_STATE.IDLE] = spr_guardian_idle;
 sprites_map[$ CHARACTER_STATE.MOVE] = spr_guardian_walk;
 sprites_map[$ CHARACTER_STATE.CHASE] = spr_guardian_walk;
+sprites_map[$ CHARACTER_STATE.JUMP] = spr_guardian_walk;
 sprites_map[$ CHARACTER_STATE.SEARCH] = spr_guardian_walk;
 sprites_map[$ CHARACTER_STATE.ALERT] = spr_guardian_idle;
 sprites_map[$ CHARACTER_STATE.ATTACK] = spr_guardian_idle;

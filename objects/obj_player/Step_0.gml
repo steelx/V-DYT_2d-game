@@ -1,11 +1,11 @@
 /// @description obj_player step 0 event
-if should_pause_object() {
-    exit;
-}
+if (variable_instance_exists(id, "enabled") and !enabled) exit;//used for attack seq spawner
+if should_pause_object() exit;
 
 event_inherited();
 
 player_input();
+
 switch(state) {
     case CHARACTER_STATE.IDLE:
         // Idle state behavior
@@ -17,7 +17,7 @@ switch(state) {
             state = (vel_x != 0) ? CHARACTER_STATE.MOVE : CHARACTER_STATE.IDLE;
         }
         break;
-        
+
     case CHARACTER_STATE.JUMP:
         if (grounded) {
             state = (vel_x != 0) ? CHARACTER_STATE.MOVE : CHARACTER_STATE.IDLE;
@@ -27,7 +27,7 @@ switch(state) {
         
     case CHARACTER_STATE.JETPACK_JUMP:
         if (!is_jump_key_held() || jetpack_fuel <= 0) {
-            sprite_index = spr_player_fall;
+            sprite_index = sprites_map[$ CHARACTER_STATE.FALL];// fall
         } else {
             jetpack_fuel -= jetpack_fuel_consumption_rate;
     
@@ -40,7 +40,7 @@ switch(state) {
     case CHARACTER_STATE.KNOCKBACK:
         // Knockback state behavior
         // Slow down knockback
-		sprite_index = spr_player_hurt;
+		sprite_index = sprites_map[$ CHARACTER_STATE.KNOCKBACK];
 		vel_x = 0;
 		// Apply knockback movement with collision checking
 		knockback_vel_x = apply_knockback_movement(knockback_vel_x);
@@ -50,26 +50,26 @@ switch(state) {
             knockback_vel_x = 0;
 			///transition_to_idle(); TODO: setup sprites_map for player
 			state = CHARACTER_STATE.IDLE;
-			sprite_index = spr_player_idle;
+			sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
         }
         break;
         
     case CHARACTER_STATE.ATTACK:
-        vel_x = 0;
-        vel_y = 0;
-        if (image_index >= 9) {
-            state = CHARACTER_STATE.IDLE;
-            sprite_index = spr_player_idle;
-        }
+		vel_x = 0;
+	    vel_y = 0;
+	    if (sprite_index = spr_hero_attack and image_index >= 9) {
+	        state = CHARACTER_STATE.IDLE;
+	        sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
+	    }
         break;
         
     case CHARACTER_STATE.SUPER_ATTACK:
         vel_x = 0;
-        vel_y = 0;
-        if (is_animation_end()) {
-            state = CHARACTER_STATE.IDLE;
-            sprite_index = spr_player_idle;
-        }
+	    vel_y = 0;
+	    if (is_animation_end()) {
+	        state = CHARACTER_STATE.IDLE;
+	        sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
+	    }
         break;
 }
 
