@@ -101,7 +101,7 @@ function PatrolTask(_move_speed, _patrol_width, _idle_alarm_idx, _ignore_player_
             }
             
             // Then check if movement direction is safe
-            if (other.is_movement_safe(id, _move_dir)) {
+            if (global.collision_grid.IsMovementSafe(id, _move_dir)) {
                 // Update path position
                 if (_distance < 5) {
                     if (other.path.IsInReturnZone() && !other.return_triggered) {
@@ -138,63 +138,6 @@ function PatrolTask(_move_speed, _patrol_width, _idle_alarm_idx, _ignore_player_
         }
     }
     
-	static is_position_safe = function(_id, _x, _y) {
-	    with(_id) {
-	        // Find current platform
-	        var _platform_y = undefined;
-	        for(var i = -32; i < 32; i++) {
-	            if (!global.collision_grid.IsValidMove(_x, y + i)) {
-	                _platform_y = y + i;
-	                break;
-	            }
-	        }
-        
-	        return (_platform_y != undefined);
-	    }
-	}
-
-	static is_movement_safe = function(_id, _move_dir) {
-	    with(_id) {
-	        var _ground_check_x = x + (_move_dir * other.edge_check_distance);
-        
-	        // Find current platform height
-	        var _current_platform_y = undefined;
-	        for(var i = -32; i < 32; i++) {
-	            if (!global.collision_grid.IsValidMove(x, y + i)) {
-	                _current_platform_y = y + i;
-	                break;
-	            }
-	        }
-        
-	        if (_current_platform_y == undefined) return false;
-        
-	        // Check if there's platform continuation at the same height
-	        var _found_platform = false;
-	        for(var i = -4; i < 4; i++) {
-	            if (!global.collision_grid.IsValidMove(_ground_check_x, _current_platform_y + i)) {
-	                _found_platform = true;
-	                break;
-	            }
-	        }
-        
-	        if (!_found_platform) return false;
-        
-	        // Check for obstacles at character height
-	        var _cell_size = global.collision_grid.cell_size;
-	        for(var i = 1; i <= other.grid_look_ahead; i++) {
-	            var _check_x = x + (_move_dir * i * _cell_size);
-	            // Check character space
-	            for(var h = 1; h < sprite_height; h++) {
-	                if (!global.collision_grid.IsValidMove(_check_x, _current_platform_y - h)) {
-	                    return false;
-	                }
-	            }
-	        }
-        
-	        return true;
-	    }
-	}
-    
     static Draw = function(_inst_id) {
         if (!instance_exists(_inst_id)) return;
         
@@ -227,4 +170,19 @@ function PatrolTask(_move_speed, _patrol_width, _idle_alarm_idx, _ignore_player_
             draw_set_color(c_white);
         }
     }
+	
+	static is_position_safe = function(_id, _x, _y) {
+	    with(_id) {
+	        // Find current platform
+	        var _platform_y = undefined;
+	        for(var i = -32; i < 32; i++) {
+	            if (!global.collision_grid.IsValidMove(_x, y + i)) {
+	                _platform_y = y + i;
+	                break;
+	            }
+	        }
+        
+	        return (_platform_y != undefined);
+	    }
+	}
 }
