@@ -41,6 +41,7 @@ function resize_window(_width, _height) {
 	    display_set_gui_size(_new_w, _new_h);
     
 	    window_center();
+		with light_engine free_lighting_surfaces();
 	}
 }
 

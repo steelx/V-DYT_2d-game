@@ -1,0 +1,43 @@
+{
+  "$GMObject":"",
+  "%Name":"le_shadow_path_dynamic",
+  "eventList":[
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+  ],
+  "managed":true,
+  "name":"le_shadow_path_dynamic",
+  "overriddenProperties":[],
+  "parent":{
+    "name":"Shadows",
+    "path":"folders/Light Engine/Shadows.yy",
+  },
+  "parentObjectId":{
+    "name":"__shadow_dynamic",
+    "path":"objects/__shadow_dynamic/__shadow_dynamic.yy",
+  },
+  "persistent":false,
+  "physicsAngularDamping":0.1,
+  "physicsDensity":0.5,
+  "physicsFriction":0.2,
+  "physicsGroup":1,
+  "physicsKinematic":false,
+  "physicsLinearDamping":0.1,
+  "physicsObject":false,
+  "physicsRestitution":0.1,
+  "physicsSensor":false,
+  "physicsShape":1,
+  "physicsShapePoints":[],
+  "physicsStartAwake":true,
+  "properties":[
+    {"$GMObjectProperty":"v1","%Name":"shadow_path","filters":[],"listItems":[],"multiselect":false,"name":"shadow_path","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"pth_shadow","path":"paths/pth_shadow/pth_shadow.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"pth_shadow","varType":5,},
+  ],
+  "resourceType":"GMObject",
+  "resourceVersion":"2.0",
+  "solid":false,
+  "spriteId":{
+    "name":"spr_le_star2",
+    "path":"sprites/spr_le_star2/spr_le_star2.yy",
+  },
+  "spriteMaskId":null,
+  "visible":true,
+}
