@@ -39,8 +39,8 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"bloom_amount","filters":[],"listItems":[],"multiselect":false,"name":"bloom_amount","rangeEnabled":true,"rangeMax":5.0,"rangeMin":1.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"3","varType":1,},
-    {"$GMObjectProperty":"v1","%Name":"bloom_intensity","filters":[],"listItems":[],"multiselect":false,"name":"bloom_intensity","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.25","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"bloom_amount","filters":[],"listItems":[],"multiselect":false,"name":"bloom_amount","rangeEnabled":true,"rangeMax":5.0,"rangeMin":1.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1","varType":1,},
+    {"$GMObjectProperty":"v1","%Name":"bloom_intensity","filters":[],"listItems":[],"multiselect":false,"name":"bloom_intensity","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"ambient_direction","filters":[],"listItems":[],"multiselect":false,"name":"ambient_direction","rangeEnabled":true,"rangeMax":359.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"315","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"ambient_elevation","filters":[],"listItems":[],"multiselect":false,"name":"ambient_elevation","rangeEnabled":true,"rangeMax":90.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"45","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"ambient_intensity","filters":[],"listItems":[],"multiselect":false,"name":"ambient_intensity","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.05","varType":0,},

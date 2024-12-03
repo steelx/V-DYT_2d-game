@@ -1,3 +1,9 @@
+function toggle_sunrise() {
+	with le_day_night_cycle {
+		set_sunrise(6, 0.5);
+	}
+}
+
 /**
  * check whether is given coordinated are in camera view
  * @param {number} _buffer - the offset px number.
