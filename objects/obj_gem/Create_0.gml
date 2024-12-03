@@ -9,7 +9,7 @@ spark_count = 3;
 can_pickup = false;
 
 // Optional: Add debug drawing
-debug_draw = true;
+debug_draw = false;
 
 // light
 
