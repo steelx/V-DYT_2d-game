@@ -5,7 +5,7 @@ with obj_drop_manager add_drop_item(other.drop_item);
 
 // has bounce happned
 die = false;
-spark_count = 2;
+spark_count = 3;
 can_pickup = false;
 
 // Optional: Add debug drawing
