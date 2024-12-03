@@ -9,6 +9,11 @@ function DropItem(_inst_id, _x, _y, _type) constructor {
     bounce_force = 1;
     initial_height = 48;
     
+    // Falling properties
+    falling = false;
+    fall_speed = 0;
+    can_pickup = false;
+    
     // Store current position
     current_x = _x;
     current_y = _y;
@@ -30,13 +35,21 @@ function DropItem(_inst_id, _x, _y, _type) constructor {
         var _bounce_angle = random_range(45, 135);
         bounce_force *= 0.6; // Reduce force with each bounce
         
-        arc_path.GenerateBounceArc(
+        var success = arc_path.GenerateBounceArc(
             _start_x, 
             _start_y, 
             _bounce_angle, 
             bounce_force,
             initial_height
         );
+        
+        if (!success) {
+            // If bounce generation fails, start falling
+            current_point = undefined;
+            falling = true;
+            fall_speed = 0;
+            return;
+        }
         
         current_point = arc_path.GetCurrentPoint();
         
@@ -45,7 +58,9 @@ function DropItem(_inst_id, _x, _y, _type) constructor {
             current_x = current_point.x;
             current_y = current_point.y;
         } else {
-			
-		}
+            // If no current point, start falling
+            falling = true;
+            fall_speed = 0;
+        }
     }
 }
