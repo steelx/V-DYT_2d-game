@@ -5,7 +5,7 @@ function ArcPath() constructor {
     _inst = noone;
 	// is_projectile: don't need the ground validation since arrows should be able to travel through the air
 	is_projectile = false;
-	
+
 	static CheckLineOfSight = function(_start_x, _start_y, _end_x, _end_y) {
         var _dir = point_direction(_start_x, _start_y, _end_x, _end_y);
         var _dist = point_distance(_start_x, _start_y, _end_x, _end_y);

@@ -9,7 +9,10 @@
     "name":"Environment",
     "path":"folders/Objects/Environment.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"le_shadow_rect_static",
+    "path":"objects/le_shadow_rect_static/le_shadow_rect_static.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,
