@@ -13,10 +13,13 @@ debug_draw = false;
 
 // light
 
-light_id = instance_create_layer(x, y, "Lights", obj_light);
+light_id = instance_create_layer(x, y, "Lights", obj_gem_light);
+/*
 with(light_id) {
     radius = 1;
     intensity = 0.001;
     light_type = "gem";
     col_index = other.image_index;
 }
+
+*/

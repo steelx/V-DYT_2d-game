@@ -4,10 +4,7 @@
   "eventList":[],
   "managed":true,
   "name":"le_light_spot",
-  "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"__light","path":"objects/__light/__light.yy",},"propertyId":{"name":"width","path":"objects/__light/__light.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"__light","path":"objects/__light/__light.yy",},"propertyId":{"name":"falloff","path":"objects/__light/__light.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"1",},
-  ],
+  "overriddenProperties":[],
   "parent":{
     "name":"Lights",
     "path":"folders/Light Engine/Lights.yy",

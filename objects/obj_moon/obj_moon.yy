@@ -6,7 +6,9 @@
   ],
   "managed":true,
   "name":"obj_moon",
-  "overriddenProperties":[],
+  "overriddenProperties":[
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"__light","path":"objects/__light/__light.yy",},"propertyId":{"name":"intensity","path":"objects/__light/__light.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.3",},
+  ],
   "parent":{
     "name":"Environment",
     "path":"folders/Objects/Environment.yy",

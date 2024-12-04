@@ -5,8 +5,9 @@
 event_inherited();
 
 // Set the sun's properties
-set_sunrise(6, 0.5); // Sunrise at 6:00 AM with a 0.5-hour transition
-set_sunset(18, 0.5);  // Sunset at 6:00 PM with a 0.5-hour transition
+
+set_sunrise(0, 1); // Sunrise at 6:00 AM with a 0.5-hour transition
+set_sunset(23, 1);  // Sunset at 6:00 PM with a 0.5-hour transition
 set_day_speed(1);     // Default day speed
 
 

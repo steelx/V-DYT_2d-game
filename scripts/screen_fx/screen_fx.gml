@@ -20,6 +20,11 @@ function add_screenshake(_seconds, _shake_amount = -1) {
 	}
 }
 
+function fullscreen_mode() {
+	resize_window(1920, 1080);
+	window_set_fullscreen(true);
+}
+
 /// @function resize_window(width, height)
 /// @param {Real} width The desired window width
 /// @param {Real} height The desired window height
