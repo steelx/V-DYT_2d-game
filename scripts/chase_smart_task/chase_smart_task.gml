@@ -15,13 +15,7 @@ function ChaseSmartTask(_move_speed, _jump_force, _jump_height) : BTreeLeaf() co
         
         with(_user) {
             var _dist = distance_to_object(obj_player);
-            if (_dist <= attack_range) {
-                vel_x = 0;
-                sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
-                return BTStates.Success;
-            }
-            
-            if (_dist > visible_range) {
+            if (_dist <= attack_range) or (_dist > visible_range) {
                 vel_x = 0;
                 return BTStates.Failure;
             }
@@ -41,6 +35,7 @@ function ChaseSmartTask(_move_speed, _jump_force, _jump_height) : BTreeLeaf() co
             
             var _move_dir = sign(obj_player.x - x);
             var _obstacle_ahead = other.check_obstacle_ahead(id, _move_dir, other.obstacle_ahead_threshold);
+			var _player_above = obj_player.y < y - sprite_height/2;
             
             if (_obstacle_ahead) {
                 // Try to find a jump path using the grid system
@@ -58,7 +53,7 @@ function ChaseSmartTask(_move_speed, _jump_force, _jump_height) : BTreeLeaf() co
                     }
                     sprite_index = sprites_map[$ CHARACTER_STATE.CHASE];
                 }
-            } else {
+            } else if (!_player_above) {
                 vel_x = other.chase_speed * _move_dir;
                 sprite_index = sprites_map[$ CHARACTER_STATE.CHASE];
             }

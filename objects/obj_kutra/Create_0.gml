@@ -9,7 +9,7 @@ visible_range = 120;// how far enemy can see
 attack_range = 48;
 
 defeated_object = obj_kutra_defeated;
-move_speed = 1.25;
+move_speed = 1.5;
 
 // Default sprite mapping
 sprites_map[$ CHARACTER_STATE.IDLE] = spr_dog_idle;
@@ -47,14 +47,14 @@ bt_root.ChildAdd(_selector_root);
 
 _knockback_sequence.ChildAdd(new KnockbackTask());
 
-// Combat sequence
-_combat_selector.ChildAdd(_attack_sequence);
-_combat_selector.ChildAdd(_chase_sequence);
-//_combat_selector.ChildAdd(_jump_sequence);
-
+// Dodge sequence
 _dodge_sequence.ChildAdd(_detect_player_task);
 _dodge_sequence.ChildAdd(new CheckAttackRangeTask(attack_range));
 _dodge_sequence.ChildAdd(new DodgeTask(3, 4, 4.0));
+
+// Combat sequence
+_combat_selector.ChildAdd(_attack_sequence);
+_combat_selector.ChildAdd(_chase_sequence);
 
 _attack_sequence.ChildAdd(_detect_player_task);
 _attack_sequence.ChildAdd(new CheckAttackRangeTask(attack_range));

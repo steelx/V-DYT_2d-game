@@ -1,13 +1,6 @@
 /// @description obj_player Collision with obj_enemy_parent
-// This event runs when the player collides with an enemy.
-// It checks if the player has fallen on top of the enemy, in which case the enemy is defeated. Otherwise, the player
-// gets hurt.
-// This condition checks if the player's vertical velocity is greater than 0, meaning it's falling down.
-
-// _allowed_to_walkpast_enemies who are generally enemies with weapons, and player can move close to them to attack
-var _allowed_to_walkpast_enemies = [obj_guardian_enemy, obj_archer, obj_little_ninja];
-var _not_allowed_to_jump_on_head = [obj_guardian_enemy, obj_archer, obj_little_ninja];
-
+// It checks if the player has fallen on top of the enemy, in which case the enemy is hurt.
+var _allowed_to_jump_on_head = [obj_enemy1];
 
 if (state == CHARACTER_STATE.JUMP || state == CHARACTER_STATE.JETPACK_JUMP || vel_y < 0) {
     // This checks if the bottom point of the player's collision mask was above the enemy mask's top
@@ -15,8 +8,7 @@ if (state == CHARACTER_STATE.JUMP || state == CHARACTER_STATE.JETPACK_JUMP || ve
     // If this is true, it proves that the player is falling on top of the enemy from above, as it was
     // previously above it.
     // We get the bottom position for the previous frame by subtracting this frame's Y velocity from it.
-    if ((bbox_bottom - vel_y) < (other.bbox_top - other.vel_y)) {
-		if array_contains(_not_allowed_to_jump_on_head, other.object_index) exit;
+    if (array_contains(_allowed_to_jump_on_head, other.object_index) and (bbox_bottom - vel_y) < (other.bbox_top - other.vel_y)) {
         if (other.object_index == obj_slime_enemy && other.state == CHARACTER_STATE.ATTACK) {
             // Player jumped on an attacking slime, hurts itself and not the slime
             if (no_hurt_frames == 0) {
@@ -59,37 +51,3 @@ if (state == CHARACTER_STATE.JUMP || state == CHARACTER_STATE.JETPACK_JUMP || ve
         exit;
     }
 }
-if array_contains(_allowed_to_walkpast_enemies, other.object_index) exit;
-// This checks if the player is invincible, by checking if no_hurt_frames is greater than 0.
-if (no_hurt_frames > 0)
-{
-    // In that case we exit the event so the player is not hurt by the enemy.
-    exit;
-}
-
-// This section hurts the player, because it only runs if the player was not found to be jumping on the enemy's head.
-state = CHARACTER_STATE.KNOCKBACK;
-previous_hp = hp; // used at GUI
-hp -= other.damage;
-no_hurt_frames = get_room_speed() * 3;// 60 * 3
-
-// This action gets the sign (1, 0 or -1) from the enemy's position to the player's position.
-var _x_sign = sign(x - other.x);
-// That sign is multiplied by 15, and applied to vel_x as the knockback.
-vel_x = _x_sign * 15;
-
-if (hp > 0) {
-	// Add red border effect
-    create_pixelated_blood_fx();
-	add_screenshake(0.5);
-}
-
-// This changes the sprite to the hurt sprite.
-sprite_index = spr_player_hurt;
-image_index = 0;
-
-// Set Alarm 0 to run after 15 frames; that event stops the player's horizontal velocity, ending the knockback
-alarm[KNOCKED_BACK] = 15;
-
-// Play the 'life lost' sound effect
-audio_play_sound(snd_life_lost_01, 0, 0);
