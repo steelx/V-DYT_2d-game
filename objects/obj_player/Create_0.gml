@@ -103,6 +103,7 @@ spawn_super_attack = function(_sequence_file = seq_player_super_attack) {
 		spawner = other;
 		start_sequence();
 	}
+	add_screenshake(0.2, 1.5); // Slightly stronger
 	disable_self(id);
 };
 

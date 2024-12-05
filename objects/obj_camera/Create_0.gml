@@ -60,9 +60,13 @@ maintain_zoom_level = 1;
 camera_pan_speed_initial = 0.15;
 camera_pan_speed = 1.6;
 
+// Screen shake variables
 screen_shake = false;
 screen_shake_amount_initial = 2;
 screen_shake_amount = screen_shake_amount_initial;
+screen_shake_direction = 1; // Used for controlling shake direction
+screen_shake_decay = 0.2; // How quickly the shake effect decreases
+screen_shake_vertical_bias = 0.8; // Makes the shake more vertical (0-1)
 
 // reset camera to default pan speed CAMERA_RESET_PAN 0
 alarm_set(CAMERA_RESET_PAN, 3);
