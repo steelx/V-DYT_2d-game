@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"DropItem",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"DropItem",
+  "parent":{
+    "name":"drop_system",
+    "path":"folders/Objects/Items/drop_system.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

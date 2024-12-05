@@ -1,0 +1,1 @@
+//draw_text(display_get_LE_GUI_WIDTH() * 0.5, 40, get_time_string());

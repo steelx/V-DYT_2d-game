@@ -1,7 +1,7 @@
 // State machine
 // states enum come from obj_game
 state = CHARACTER_STATE.IDLE;
-
+gems = 0;
 
 // This is the horizontal movement speed of the character.
 // It's in pixels per second.

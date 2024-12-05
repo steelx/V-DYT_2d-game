@@ -1,0 +1,4 @@
+vertex_delete_buffer(vertex_buffer_albedo);
+vertex_delete_buffer(vertex_buffer_material);
+vertex_delete_buffer(vertex_buffer_normal);
+vertex_format_delete(vertex_format);

@@ -3,6 +3,7 @@ event_inherited();
 image_xscale *= 1.2;
 image_yscale *= 1.2;
 
+
 max_hp = 5;
 hp = max_hp;
 previous_hp = hp; // To track health changes
@@ -102,6 +103,7 @@ spawn_super_attack = function(_sequence_file = seq_player_super_attack) {
 		spawner = other;
 		start_sequence();
 	}
+	add_screenshake(0.2, 1.5); // Slightly stronger
 	disable_self(id);
 };
 

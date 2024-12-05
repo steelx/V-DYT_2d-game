@@ -1,0 +1,26 @@
+{
+  "$GMPath":"",
+  "%Name":"pth_shadow",
+  "closed":true,
+  "kind":0,
+  "name":"pth_shadow",
+  "parent":{
+    "name":"Shadow Paths",
+    "path":"folders/Light Engine/Shadow Paths.yy",
+  },
+  "points":[
+    {"speed":100.0,"x":32.0,"y":0.0,},
+    {"speed":100.0,"x":42.0,"y":22.0,},
+    {"speed":100.0,"x":62.0,"y":25.0,},
+    {"speed":100.0,"x":47.0,"y":39.0,},
+    {"speed":100.0,"x":51.0,"y":63.0,},
+    {"speed":100.0,"x":32.0,"y":52.0,},
+    {"speed":100.0,"x":13.0,"y":63.0,},
+    {"speed":100.0,"x":17.0,"y":39.0,},
+    {"speed":100.0,"x":2.0,"y":25.0,},
+    {"speed":100.0,"x":22.0,"y":22.0,},
+  ],
+  "precision":4,
+  "resourceType":"GMPath",
+  "resourceVersion":"2.0",
+}

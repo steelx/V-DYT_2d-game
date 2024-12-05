@@ -11,3 +11,4 @@ move_speed = 1.25;
 // as its move_speed value has changed.
 vel_x = choose(-move_speed, move_speed);
 state = CHARACTER_STATE.MOVE;
+gems = 3;

@@ -66,13 +66,26 @@ camera_set_view_size(camera, _new_w, _new_h);
 
 // Apply final camera position with screen shake if active
 if screen_shake {
-    var _shake_x = choose(-screen_shake_amount, screen_shake_amount);
-    var _shake_y = choose(-screen_shake_amount, screen_shake_amount);
+    // Calculate shake offsets with vertical bias
+    var _horizontal_shake = random_range(-screen_shake_amount, screen_shake_amount) * (1 - screen_shake_vertical_bias);
+    var _vertical_shake = random_range(0, screen_shake_amount) * screen_shake_direction;
+    
+    // Apply camera position with shake
     var _spd = 0.1;
-    camera_set_view_pos(camera, lerp(_cam_x, _xx, _spd) + _shake_x, lerp(_cam_y, _yy, _spd) + _shake_y);
+    camera_set_view_pos(camera, 
+        lerp(_cam_x, _xx, _spd) + _horizontal_shake, 
+        lerp(_cam_y, _yy, _spd) + _vertical_shake
+    );
+    
+    // Decay the shake amount
+    screen_shake_amount = max(0, screen_shake_amount - screen_shake_decay);
+    
+    // Alternate shake direction for subtle bounce effect
+    screen_shake_direction *= -0.95;
 } else {
     camera_set_view_pos(camera, _xx, _yy);
 }
+
 
 // Background parallax effect
 background_parallax_scrolling(camera);

@@ -51,6 +51,7 @@ function player_input() {
                 state = CHARACTER_STATE.ATTACK;
                 sprite_index = sprites_map[$ CHARACTER_STATE.ATTACK];
                 image_index = 0;
+				add_screenshake(0.1, 1);
             }
         }
     }

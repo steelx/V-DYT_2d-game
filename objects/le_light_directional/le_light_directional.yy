@@ -1,0 +1,46 @@
+{
+  "$GMObject":"",
+  "%Name":"le_light_directional",
+  "eventList":[
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+  ],
+  "managed":true,
+  "name":"le_light_directional",
+  "overriddenProperties":[
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"__light","path":"objects/__light/__light.yy",},"propertyId":{"name":"width","path":"objects/__light/__light.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"__light","path":"objects/__light/__light.yy",},"propertyId":{"name":"intensity","path":"objects/__light/__light.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.2",},
+  ],
+  "parent":{
+    "name":"Lights",
+    "path":"folders/Light Engine/Lights.yy",
+  },
+  "parentObjectId":{
+    "name":"__light",
+    "path":"objects/__light/__light.yy",
+  },
+  "persistent":false,
+  "physicsAngularDamping":0.1,
+  "physicsDensity":0.5,
+  "physicsFriction":0.2,
+  "physicsGroup":1,
+  "physicsKinematic":false,
+  "physicsLinearDamping":0.1,
+  "physicsObject":false,
+  "physicsRestitution":0.1,
+  "physicsSensor":false,
+  "physicsShape":1,
+  "physicsShapePoints":[],
+  "physicsStartAwake":true,
+  "properties":[
+    {"$GMObjectProperty":"v1","%Name":"shadow_length","filters":[],"listItems":[],"multiselect":false,"name":"shadow_length","rangeEnabled":true,"rangeMax":16000.0,"rangeMin":1.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"100","varType":0,},
+  ],
+  "resourceType":"GMObject",
+  "resourceVersion":"2.0",
+  "solid":false,
+  "spriteId":{
+    "name":"spr_light_directional",
+    "path":"sprites/spr_light_directional/spr_light_directional.yy",
+  },
+  "spriteMaskId":null,
+  "visible":false,
+}

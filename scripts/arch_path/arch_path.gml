@@ -5,7 +5,7 @@ function ArcPath() constructor {
     _inst = noone;
 	// is_projectile: don't need the ground validation since arrows should be able to travel through the air
 	is_projectile = false;
-	
+
 	static CheckLineOfSight = function(_start_x, _start_y, _end_x, _end_y) {
         var _dir = point_direction(_start_x, _start_y, _end_x, _end_y);
         var _dist = point_distance(_start_x, _start_y, _end_x, _end_y);
@@ -151,6 +151,80 @@ function ArcPath() constructor {
         
         return true;
     }
+	
+
+	/**
+	 * Creates a bouncing arc starting from the collision point
+	 */
+	static GenerateBounceArc = function(_start_x, _start_y, _direction, _force, _height) {
+	    ds_list_clear(points);
+    
+	    // Calculate end point based on bounce angle and force
+	    var _bounce_distance = _force * 32; // Reduce distance with each bounce
+	    var _end_x = _start_x + lengthdir_x(_bounce_distance, _direction);
+	    var _end_y = _start_y;
+    
+	    // Reduce height with each bounce
+	    var _bounce_height = _height * 0.6; // Reduce height by 40%
+    
+	    // Find valid end position for bounce
+	    var _valid_end = FindValidEndPosition(_start_x, _start_y, _end_x, _end_y);
+	    if (_valid_end == undefined) return false;
+    
+	    // Generate arc points for bounce
+	    var _distance = point_distance(_start_x, _start_y, _valid_end.x, _valid_end.y);
+	    var _control_x = _start_x + (_distance * 0.5);
+	    var _control_y = min(_start_y, _valid_end.y) - _bounce_height;
+    
+	    // Generate fewer points for bounces
+	    var _points = 10;
+	    for(var i = 0; i < _points; i++) {
+	        var _t = i / (_points - 1);
+	        var _inverse_t = 1 - _t;
+        
+	        var _px = power(_inverse_t, 2) * _start_x + 
+	                 2 * _inverse_t * _t * _control_x + 
+	                 power(_t, 2) * _valid_end.x;
+                 
+	        var _py = power(_inverse_t, 2) * _start_y + 
+	                 2 * _inverse_t * _t * _control_y + 
+	                 power(_t, 2) * _valid_end.y;
+        
+	        // Check for ground collision
+	        if (!is_projectile && i > 0) {
+	            var _prev_point = ds_list_find_value(points, ds_list_size(points) - 1);
+	            if (CheckGroundCollision(_prev_point.x, _prev_point.y, _px, _py)) {
+	                // Stop at collision point
+	                break;
+	            }
+	        }
+        
+	        ds_list_add(points, {x: _px, y: _py});
+	    }
+    
+	    return true;
+	}
+
+	/**
+	 * Checks for ground collision between two points
+	 */
+	static CheckGroundCollision = function(_x1, _y1, _x2, _y2) {
+	    with(_inst) {
+	        var _dir = point_direction(_x1, _y1, _x2, _y2);
+	        var _dist = point_distance(_x1, _y1, _x2, _y2);
+	        var _step = 4;
+        
+	        for(var i = 0; i < _dist; i += _step) {
+	            var _check_x = _x1 + lengthdir_x(i, _dir);
+	            var _check_y = _y1 + lengthdir_y(i, _dir);
+            
+	            if (check_collision(0, 1)) {
+	                return true;
+	            }
+	        }
+	    }
+	    return false;
+	}
     
     static GetCurrentPoint = function() {
         return ds_list_find_value(points, current_index);

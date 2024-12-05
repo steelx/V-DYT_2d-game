@@ -10,6 +10,18 @@ if (hp <= 0)
 	// It's created in the same layer as the character, by using its 'layer' variable.
 	instance_create_layer(x, y, layer, defeated_object);
     
+	if (gems > 0) {
+		repeat(gems) {
+            var _offset_x = random_range(-4, 6);
+            var _offset_y = random_range(-4, 4);
+            instance_create_layer(
+                x + _offset_x, 
+                bbox_top + _offset_y, 
+                "Instances", 
+                obj_gem
+            );
+        }
+	}
 
 	// This destroys the character instance itself.
 	instance_destroy();
