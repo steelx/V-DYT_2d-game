@@ -6,6 +6,13 @@ event_inherited();
 // This allows us to transition to some other sprite, depending on the currently assigned sprite, and some additional conditions.
 switch (sprite_index)
 {
+	
+	case spr_player_idle:
+		if vel_x != 0 {
+			sprite_index = spr_player_walk;
+		}
+		break;
+	
 	// Code under this case runs if the assigned sprite is 'spr_player_walk', meaning the player is walking.
 	case spr_player_walk:
 		// Set the animation speed to 1, as it may have been set to 0 during the jump animation.
