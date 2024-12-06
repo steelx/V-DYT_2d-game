@@ -76,7 +76,7 @@ switch(state) {
 // Apply vertical movement
 apply_horizontal_movement();
 apply_verticle_movement();
-
+jump_thru_platform();
     
 /// Regenerate jetpack fuel when grounded
 /// (in future add fuel collectible items and remove this code)

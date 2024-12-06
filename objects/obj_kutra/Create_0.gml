@@ -50,7 +50,7 @@ _knockback_sequence.ChildAdd(new KnockbackTask());
 // Dodge sequence
 _dodge_sequence.ChildAdd(_detect_player_task);
 _dodge_sequence.ChildAdd(new CheckAttackRangeTask(attack_range));
-_dodge_sequence.ChildAdd(new DodgeTask(3, 4, 4.0));
+_dodge_sequence.ChildAdd(new DodgeTask(3, 4, 5.0));
 
 // Combat sequence
 _combat_selector.ChildAdd(_attack_sequence);
@@ -58,7 +58,7 @@ _combat_selector.ChildAdd(_chase_sequence);
 
 _attack_sequence.ChildAdd(_detect_player_task);
 _attack_sequence.ChildAdd(new CheckAttackRangeTask(attack_range));
-_attack_sequence.ChildAdd(new AttackSeqSpawnerTask(seq_kutra_attack, 2, 4, 3.0));
+_attack_sequence.ChildAdd(new AttackSeqSpawnerTask(seq_kutra_attack, 2, 4, 4.0));
 
 _chase_sequence.ChildAdd(_detect_player_task);
 _chase_sequence.ChildAdd(new ChaseSmartTask(move_speed, 6, 64));

@@ -1,25 +1,4 @@
 
-function apply_verticle_movement() {
-    var _move_count_y = abs(vel_y);
-    var _move_dir_y = sign(vel_y);
-    var _remaining_move = vel_y;
-    
-    while (abs(_remaining_move) >= 0.1) {
-        var _step = min(abs(_remaining_move), move_speed) * _move_dir_y;
-        var _collision_found = check_collision(0, _step);
-        
-        if (!_collision_found) {
-            y += _step;
-            _remaining_move -= _step;
-        } else {
-            vel_y = 0;
-            break;
-        }
-    }
-	
-	handle_platform_transition();
-}
-
 function apply_horizontal_movement() {
     var _remaining_move = vel_x;
     var _move_dir = sign(vel_x);
@@ -38,20 +17,185 @@ function apply_horizontal_movement() {
     }
 }
 
-function handle_platform_transition() {
-    var _inst = instance_place(x, y, obj_collision);
-    if (_inst != noone) {
-        // If we're stuck in a platform
-        if (bbox_bottom > _inst.bbox_top && bbox_top < _inst.bbox_bottom) {
-            // If we're closer to the top, push up
-            if (abs(bbox_bottom - _inst.bbox_top) < abs(bbox_top - _inst.bbox_bottom)) {
-                y = _inst.bbox_top - (bbox_bottom - y) - 1;
-            } else {
-                // If we're closer to bottom, push down
-                y = _inst.bbox_bottom + 1;
+// Base vertical movement used by all characters
+function apply_verticle_movement() {
+    var _move_count_y = abs(vel_y);
+    var _move_dir_y = sign(vel_y);
+    var _remaining_move = vel_y;
+    var _buffer_distance = 4; // Small buffer to prevent getting too close to ceiling
+    
+    while (abs(_remaining_move) >= 0.1) {
+        var _step = min(abs(_remaining_move), move_speed) * _move_dir_y;
+        
+        // Special handling for jetpack state
+        if (state == CHARACTER_STATE.JETPACK_JUMP) {
+            // Check for ceiling ahead with buffer
+            var _ceiling_ahead = check_tilemap_collision(0, _step - _buffer_distance);
+            
+            if (_ceiling_ahead && _move_dir_y < 0) {
+                // If moving up and about to hit ceiling, stop just before it
+                var _dist_to_ceiling = 0;
+                
+                // Find exact distance to ceiling
+                for (var i = 1; i <= abs(_step); i++) {
+                    if (check_tilemap_collision(0, -i)) {
+                        _dist_to_ceiling = i;
+                        break;
+                    }
+                }
+                
+                if (_dist_to_ceiling > 0) {
+                    // Move to just before the ceiling
+                    y -= (_dist_to_ceiling - _buffer_distance);
+                }
+                
+                vel_y = 0;
+                break;
+            }
+        } else {
+            // Normal collision check for non-jetpack states
+            if (check_tilemap_collision(0, _step)) {
+                vel_y = 0;
+                break;
+            }
+        }
+        
+        // Platform collision check
+        var _platform = instance_place(x, y + _step, obj_collision);
+        if (_platform != noone) {
+            if (_move_dir_y > 0 && bbox_bottom <= _platform.bbox_top) {
+                y = _platform.bbox_top - (bbox_bottom - y);
+                vel_y = 0;
+                grounded = true;
+                break;
+            } else if (object_index != obj_player) {
+                vel_y = 0;
+                break;
+            }
+        }
+        
+        y += _step;
+        _remaining_move -= _step;
+    }
+    
+    // Additional safety check for ceiling
+    if (state == CHARACTER_STATE.JETPACK_JUMP) {
+        // Check if we're inside a tile
+        if (check_tilemap_collision(0, 0)) {
+            // Find safe position below
+            var _safe_distance = 1;
+            while (check_tilemap_collision(0, _safe_distance) && _safe_distance < 32) {
+                _safe_distance++;
+            }
+            
+            if (_safe_distance < 32) {
+                y += _safe_distance;
+                vel_y = 0;
             }
         }
     }
+}
+
+function check_collision(_move_x, _move_y) {
+    // Always check tilemap collision first and NEVER allow passing through
+    if (check_tilemap_collision(_move_x, _move_y)) {
+        // Special case: when moving upward into a tilemap, always block
+        if (_move_y < 0) {
+            return true;
+        }
+        // When moving downward, allow landing on the tile
+        if (_move_y > 0) {
+            return true;
+        }
+        return true;
+    }
+    
+    // For non-player objects, treat obj_collision as solid
+    if (object_index != obj_player) {
+        return place_meeting(x + _move_x, y + _move_y, obj_collision);
+    }
+    
+    // Player-specific platform collision
+    var _platform = instance_place(x + _move_x, y + _move_y, obj_collision);
+    if (_platform != noone) {
+        // Allow upward movement through platforms only
+        if (vel_y < 0) return false;
+        
+        // Allow falling through when pressing down
+        if (keyboard_check(vk_down) && vel_y >= 0) return false;
+        
+        // Stop on platform when falling from above
+        if (vel_y > 0 && bbox_bottom <= _platform.bbox_top) return true;
+    }
+    
+    return false;
+}
+
+// Additional platform-specific movement for player (add after verticle movement check)
+function jump_thru_platform() {
+    if (object_index != obj_player) return;
+    
+    var _platform = instance_place(x, y, obj_collision);
+    if (_platform != noone) {
+        var _dist_to_platform_top = bbox_bottom - _platform.bbox_top;
+        var _dist_to_platform_bottom = _platform.bbox_bottom - bbox_top;
+        var _coyote_threshold = 8;
+        
+        // Moving upward through platform
+        if (vel_y < 0) {
+            // Allow passing through
+            return;
+        }
+        
+        // Pressing down to fall through platform
+        if (keyboard_check(vk_down) && vel_y >= 0 && grounded) {
+            y += 1; // Small push to initiate fall
+            grounded = false;
+            return;
+        }
+        
+        // Handle landing on platform
+        if (_dist_to_platform_top <= _coyote_threshold && vel_y >= 0) {
+            y = _platform.bbox_top - (bbox_bottom - y);
+            vel_y = 0;
+            grounded = true;
+        }
+    }
+}
+
+
+function check_tilemap_collision(_move_x, _move_y) {
+    var _collision_points = 4; // Number of points to check along each edge
+    
+    for (var i = 0; i <= _collision_points; i++) {
+        // Check top edge
+        var _check_x = lerp(bbox_left, bbox_right, i/_collision_points);
+        if (tilemap_get_at_pixel(global.collision_tilemap, _check_x + _move_x, bbox_top + _move_y)) {
+            return true;
+        }
+        
+        // Check bottom edge
+        if (tilemap_get_at_pixel(global.collision_tilemap, _check_x + _move_x, bbox_bottom + _move_y)) {
+            return true;
+        }
+    }
+    
+    // Check left and right edges
+    for (var i = 0; i <= _collision_points; i++) {
+        var _check_y = lerp(bbox_top, bbox_bottom, i/_collision_points);
+        
+        // Check left edge
+        if (tilemap_get_at_pixel(global.collision_tilemap, bbox_left + _move_x, _check_y + _move_y)) {
+            return true;
+        }
+        
+        // Check right edge
+        if (tilemap_get_at_pixel(global.collision_tilemap, bbox_right + _move_x, _check_y + _move_y)) {
+            return true;
+        }
+    }
+    
+    return false;
 }
 
 // Utility function to smoothly approach a value
@@ -63,50 +207,6 @@ function approach(_current, _target, _amount) {
     }
 }
 
-// This function checks if the instance is colliding with an object, or a tile, at the current
-// position + the given movement values (_move_x and _move_y).
-// The function returns true if a collision was found, or false if a collision was not found.
-function check_collision(_move_x, _move_y) {
-    // Check for collision with obj_collision
-    if (place_meeting(x + _move_x, y + _move_y, obj_collision)) {
-        // If moving upwards, allow passing through
-        if (object_index == obj_player && is_moving_upwards() && _move_y < 0)
-        {
-            // Check if the player's feet are above the platform
-            var _inst = instance_place(x + _move_x, y + _move_y, obj_collision);
-            if (_inst != noone && bbox_bottom <= _inst.bbox_top)
-            {
-                return false; // Allow passing through
-            }
-        }
-        return true; // Collision found
-    }
-
-    // The function continues if there were no object collisions. In this case we check for tile
-    // collisions, at each corner of the instance's bounding box.
-    // This checks for tile collision at the top-left corner of the instance's mask
-    var _left_top = tilemap_get_at_pixel(global.collision_tilemap, bbox_left + _move_x, bbox_top + _move_y);
-
-    // This checks for tile collision at the top-right corner of the instance's mask
-    var _right_top = tilemap_get_at_pixel(global.collision_tilemap, bbox_right + _move_x, bbox_top + _move_y);
-
-    // This checks for tile collision at the bottom-right corner of the instance's mask
-    var _right_bottom = tilemap_get_at_pixel(global.collision_tilemap, bbox_right + _move_x, bbox_bottom + _move_y);
-
-    // This checks for tile collision at the bottom-left corner of the instance's mask
-    var _left_bottom = tilemap_get_at_pixel(global.collision_tilemap, bbox_left + _move_x, bbox_bottom + _move_y);
-
-    // The results of the above four actions were stored in temporary variables. If any of those variables were true, meaning a tile
-    // collision was found at any given corner, we return true and end the function.
-    if (_left_top or _right_top or _right_bottom or _left_bottom)
-    {
-        return true;
-    }
-
-    // If no tile collisions were found, the function continues.
-    // In that case we return false, to indicate that no collisions were found, and the instance is free to move to the new position.
-    return false;
-}
 
 /**
  * Checks for ground within a specified distance below the instance

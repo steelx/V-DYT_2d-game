@@ -31,7 +31,7 @@ function player_input() {
     }
     
     // Jump
-    if (keyboard_check_pressed(vk_up) || keyboard_check(ord("W")) || keyboard_check_pressed(vk_space)) {
+    if (keyboard_check_pressed(vk_up) || keyboard_check_pressed(ord("W"))) {
         if (state != CHARACTER_STATE.KNOCKBACK or state != CHARACTER_STATE.ATTACK or state != CHARACTER_STATE.SUPER_ATTACK) {
             jump_key_held_timer = 0;
             alarm_set(JET_PACK_JUMP, 1);
