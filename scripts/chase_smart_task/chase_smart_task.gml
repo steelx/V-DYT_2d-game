@@ -28,6 +28,7 @@ function ChaseSmartTask(_visible_range, _move_speed, _jump_force, _jump_height) 
             var _move_dir = sign(obj_player.x - x);
             var _obstacle_ahead = other.check_obstacle_ahead(id, _move_dir, other.obstacle_ahead_threshold);
 			var _player_above = obj_player.y < y - sprite_height/2;
+			var _horizontal_dist = abs(obj_player.x - x);
             
             if (_obstacle_ahead) {
                 // Try to find a jump path using the grid system

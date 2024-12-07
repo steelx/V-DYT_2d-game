@@ -4,4 +4,4 @@ if (bt_root != undefined) {
     bt_root.Draw(id);
 }
 
-//draw_visibility_ray(visible_range, attack_range);
+//player_detected_debug(visible_range, true);

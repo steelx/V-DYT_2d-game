@@ -64,7 +64,7 @@ function ArcherAttackTask(_attack_anim_frame, _attack_alarm_idx, _attack_delay_s
         
         with(_user) {
             // Check attack cooldown
-            if (alarm[other.attack_delay_alarm_idx] > 0 or !is_on_ground()) {
+            if (alarm[other.attack_delay_alarm_idx] > 0) {
                 return BTStates.Failure;
             }
             

@@ -44,46 +44,6 @@ function draw_visibility_ray(_visible_range, _attack_range) {
     );
     draw_set_alpha(1);
 }
-function player_detected_debug(_can_see_player_in_air = false) {
-    if (!instance_exists(obj_player)) return;
-    
-    var _collision_array = [obj_collision, global.collision_tilemap];
-    
-    if (_can_see_player_in_air) {
-        // Draw only the 45-degree ray
-        var _diagonal_length = 200;
-        var _ray_end_x = x + lengthdir_x(_diagonal_length, -45);
-        var _ray_end_y = y + lengthdir_y(_diagonal_length, -45);
-        
-        var _hit_diagonal = collision_line(x, y, _ray_end_x, _ray_end_y,
-                                         _collision_array, false, true);
-        
-        draw_set_color(_hit_diagonal ? c_red : c_lime);
-        draw_line(x, y, _ray_end_x, _ray_end_y);
-    } else {
-        // Draw head and torso rays
-        var _ray_start_head_y = y - sprite_height * 0.8;
-        var _ray_start_torso_y = y - sprite_height * 0.5;
-        
-        var _hit_head = collision_line(x, _ray_start_head_y, 
-                                     obj_player.x, obj_player.y,
-                                     _collision_array, false, true);
-                                     
-        var _hit_torso = collision_line(x, _ray_start_torso_y,
-                                      obj_player.x, obj_player.y,
-                                      _collision_array, false, true);
-        
-        // Draw head ray
-        draw_set_color(_hit_head ? c_red : c_lime);
-        draw_line(x, _ray_start_head_y, obj_player.x, obj_player.y);
-        
-        // Draw torso ray
-        draw_set_color(_hit_torso ? c_red : c_lime);
-        draw_line(x, _ray_start_torso_y, obj_player.x, obj_player.y);
-    }
-    
-    draw_set_color(c_white);
-}
 
 /// @desc: make sure obj_enemy_parent has `search_path_points` variable!
 function generate_search_path(_patrol_width, _search_point_spacing) {
@@ -106,6 +66,7 @@ function move_to_point(_target_x, _speed) {
     sprite_index = sprites_map[$ CHARACTER_STATE.MOVE];
 }
 
+
 /*
 * player_detected Adds 3 ray casts:
 * One from the enemy's head (80% of sprite height)
@@ -122,30 +83,78 @@ function player_detected(_visible_range, _can_see_player_in_air = false) {
     
     var _collision_array = [obj_collision, global.collision_tilemap];
     
-    if (_can_see_player_in_air) {
-        // Cast only the 45-degree upward ray
-        var _diagonal_length = _visible_range;
-        var _ray_end_x = x + lengthdir_x(_diagonal_length, -45);
-        var _ray_end_y = y + lengthdir_y(_diagonal_length, -45);
-        
-        var _hit_diagonal = collision_line(x, y, _ray_end_x, _ray_end_y,
-                                         _collision_array, false, true);
-        return !_hit_diagonal;
-    }
+    // Always check head and torso rays
+    var _rays_hit = perform_ray_checks(_collision_array, _visible_range, _can_see_player_in_air);
     
-    // If not found in air, use head and torso rays
+    // Check if at least one ray did not hit an obstacle
+    return !_rays_hit.head && !_rays_hit.torso && (!_can_see_player_in_air || !_rays_hit.diagonal);
+}
+
+/*
+* player_detected_debug
+* Debug version of player_detected that draws the rays
+*/
+function player_detected_debug(_visible_range, _can_see_player_in_air = false) {
+    if (!instance_exists(obj_player)) return;
+    
+    var _collision_array = [obj_collision, global.collision_tilemap];
+    
+    // Perform ray checks
+    var _rays_hit = perform_ray_checks(_collision_array, _visible_range, _can_see_player_in_air, true);
+}
+
+// Helper function to perform ray checks
+function perform_ray_checks(_collision_array, _visible_range, _can_see_player_in_air, _is_debug = false) {
+    // Ray start positions
     var _ray_start_head_x = x;
     var _ray_start_head_y = y - sprite_height * 0.8;
     var _ray_start_torso_x = x;
     var _ray_start_torso_y = y - sprite_height * 0.5;
     
+    // Perform collision checks
     var _hit_head = collision_line(_ray_start_head_x, _ray_start_head_y, 
-                                 obj_player.x, obj_player.y,
-                                 _collision_array, false, true);
-                                 
+                                  obj_player.x, obj_player.y,
+                                  _collision_array, false, true);
+                                  
     var _hit_torso = collision_line(_ray_start_torso_x, _ray_start_torso_y,
                                    obj_player.x, obj_player.y,
                                    _collision_array, false, true);
     
-    return (!_hit_head || !_hit_torso);
+    var _hit_diagonal = false;
+    
+    if (_can_see_player_in_air) {
+        var _diagonal_length = _visible_range;
+        var _diagonal_angle = (image_xscale > 0) ? 45 : 135; // Adjusted angle for correct direction
+        var _ray_end_x = x + lengthdir_x(_diagonal_length, _diagonal_angle);
+        var _ray_end_y = y + lengthdir_y(_diagonal_length, _diagonal_angle);
+        
+        _hit_diagonal = collision_line(x, y, _ray_end_x, _ray_end_y,
+                                       _collision_array, false, true);
+    }
+    
+    // If this is a debug call, draw the rays
+    if (_is_debug) {
+        // Draw head ray
+        draw_set_color(_hit_head ? c_red : c_lime);
+        draw_line(x, _ray_start_head_y, obj_player.x, obj_player.y);
+        
+        // Draw torso ray
+        draw_set_color(_hit_torso ? c_red : c_lime);
+        draw_line(x, _ray_start_torso_y, obj_player.x, obj_player.y);
+        
+        // Draw diagonal ray if can see in air
+        if (_can_see_player_in_air) {
+            draw_set_color(_hit_diagonal ? c_red : c_lime);
+            draw_line(x, y, _ray_end_x, _ray_end_y);
+        }
+        
+        draw_set_color(c_white);
+    }
+    
+    // Return an object with the hit status of each ray
+    return {
+        "head": _hit_head,
+        "torso": _hit_torso,
+        "diagonal": _hit_diagonal
+    };
 }

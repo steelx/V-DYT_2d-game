@@ -35,7 +35,7 @@ var _patrol_sequence = new BTreeSequence("patrol_sequence");
 var _attack_sequence = new BTreeSequence("attack_sequence");
 var _dodge_sequence = new BTreeSequence("dodge_sequence");
 
-var _can_see_player_in_air = true;
+var _can_see_player_in_air = false;
 var _detect_player_task = new DetectPlayerTask(visible_range, sprites_map[$ CHARACTER_STATE.ALERT], _can_see_player_in_air);
 
 // Build the tree:
@@ -44,7 +44,7 @@ bt_root.ChildAdd(_selector_root);
 _knockback_sequence.ChildAdd(new KnockbackTask());
 
 _dodge_sequence.ChildAdd(_detect_player_task);
-_dodge_sequence.ChildAdd(new CheckAttackRangeTask(64, _can_see_player_in_air));
+_dodge_sequence.ChildAdd(new CheckAttackRangeTask(attack_range, _can_see_player_in_air));
 _dodge_sequence.ChildAdd(new DodgeTask(3, 4, 3.0, sprites_map[$ CHARACTER_STATE.JUMP]));
 
 _patrol_sequence.ChildAdd(new IdleTask(1, _can_see_player_in_air));
