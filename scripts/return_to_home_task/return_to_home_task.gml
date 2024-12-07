@@ -14,7 +14,7 @@ function ReturnToHomeTask(_move_speed, _jump_force = 7, _jump_height = 32, _igno
         
         with(_user) {
             // First check for player detection to allow combat interruption
-            if (player_detected(other.ignore_player_in_air)) {
+            if (player_detected(visible_range, other.ignore_player_in_air)) {
                 vel_x = 0;
                 image_xscale = sign(obj_player.x - x);
                 return BTStates.Failure; // This will allow combat sequence to take over

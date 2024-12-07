@@ -283,7 +283,6 @@
     {"id":{"name":"behaviour_tree","path":"scripts/behaviour_tree/behaviour_tree.yy",},},
     {"id":{"name":"bt_archer","path":"scripts/bt_archer/bt_archer.yy",},},
     {"id":{"name":"bt_guardian_enemy","path":"scripts/bt_guardian_enemy/bt_guardian_enemy.yy",},},
-    {"id":{"name":"bt_kutra","path":"scripts/bt_kutra/bt_kutra.yy",},},
     {"id":{"name":"bt_little_ninja","path":"scripts/bt_little_ninja/bt_little_ninja.yy",},},
     {"id":{"name":"chase_smart_task","path":"scripts/chase_smart_task/chase_smart_task.yy",},},
     {"id":{"name":"chase_task","path":"scripts/chase_task/chase_task.yy",},},

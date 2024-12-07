@@ -1,6 +1,8 @@
 /**
  * Creates a grid-based collision detection system for managing obstacles and movement in a room.
- * 
+ * Is initialized at obj_game room_start as :
+ global.collision_grid = new CollisionGrid();
+ global.collision_grid.Initialize();
  * @constructor
  * @property {number} cell_size - Size of each grid cell, typically matching tile size.
  * @property {number} grid_width - Number of grid cells horizontally.
@@ -421,5 +423,52 @@ function CollisionGrid() constructor {
             
             return false;
         }
+    }
+	
+	/**
+    * Checks collision for a rectangle area
+    * @param {Real} _bbox_left - Left boundary
+    * @param {Real} _bbox_right - Right boundary
+    * @param {Real} _bbox_top - Top boundary
+    * @param {Real} _bbox_bottom - Bottom boundary
+    * @returns {Boolean} True if collision found
+    */
+    static CheckCollisionRect = function(_bbox_left, _bbox_right, _bbox_top, _bbox_bottom) {
+        var _left_cell = max(0, floor(_bbox_left / cell_size));
+        var _right_cell = min(grid_width - 1, floor(_bbox_right / cell_size));
+        var _top_cell = max(0, floor(_bbox_top / cell_size));
+        var _bottom_cell = min(grid_height - 1, floor(_bbox_bottom / cell_size));
+        
+        for(var _x = _left_cell; _x <= _right_cell; _x++) {
+            for(var _y = _top_cell; _y <= _bottom_cell; _y++) {
+                if (grid[# _x, _y]) return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+    * Checks collision for multiple points along a rectangle's edges
+    * @param {Real} _bbox_left - Left boundary
+    * @param {Real} _bbox_right - Right boundary
+    * @param {Real} _bbox_top - Top boundary
+    * @param {Real} _bbox_bottom - Bottom boundary
+    * @param {Real} _points - Number of points to check per edge
+    * @returns {Boolean} True if collision found
+    */
+    static CheckCollisionPrecise = function(_bbox_left, _bbox_right, _bbox_top, _bbox_bottom, _points = 4) {
+        for(var i = 0; i <= _points; i++) {
+            var _check_x = lerp(_bbox_left, _bbox_right, i/_points);
+            var _check_y = lerp(_bbox_top, _bbox_bottom, i/_points);
+            
+            var _grid_x = floor(_check_x / cell_size);
+            var _grid_y = floor(_check_y / cell_size);
+            
+            if (_grid_x >= 0 && _grid_x < grid_width && 
+                _grid_y >= 0 && _grid_y < grid_height) {
+                if (grid[# _grid_x, _grid_y]) return true;
+            }
+        }
+        return false;
     }
 }

@@ -7,8 +7,8 @@ max_hp = 3;
 hp = max_hp;
 
 damage = 1;
-visible_range = 64;// how far enemy can see
-attack_range = 48;
+visible_range = 72;// how far enemy can see
+attack_range = 42;
 move_speed = 1;
 
 // Default sprite mapping
@@ -32,7 +32,7 @@ var _patrol_sequence = new BTreeSequence("patrol_sequence");
 var _attack_sequence = new BTreeSequence("attack_sequence");
 var _dodge_sequence = new BTreeSequence("dodge_sequence");
 
-var _detect_player_task = new DetectPlayerTask(sprites_map[$ CHARACTER_STATE.ALERT]);
+var _detect_player_task = new DetectPlayerTask(visible_range, sprites_map[$ CHARACTER_STATE.ALERT]);
 
 // Build the tree:
 bt_root.ChildAdd(_selector_root);

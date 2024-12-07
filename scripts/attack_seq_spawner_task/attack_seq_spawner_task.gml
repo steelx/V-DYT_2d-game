@@ -69,8 +69,6 @@ function AttackSeqSpawnerTask(_seqeunce_file, _image_alpha_alarm_idx, _attack_al
                 return BTStates.Failure;
             }
 			
-			
-			
 			// Start Attack animation
 			var _dir = sign(obj_player.x - x);
             image_xscale = _dir >= 0 ? 1 : -1;

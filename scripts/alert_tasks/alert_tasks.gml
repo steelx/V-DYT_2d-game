@@ -85,7 +85,7 @@ function SearchAreaTask(_search_radius, _search_secs = 3.0) : BTreeLeaf() constr
 			last_seen_player_x = noone;
             last_seen_player_y = noone;
             // If we have a last seen position and player not in range
-            if (player_detected(false)) {
+            if (player_detected(visible_range)) {
                 other.current_search_time = 0;
                 return BTStates.Failure; // Go back to combat if player spotted
             }

@@ -39,7 +39,7 @@ var _alert_sequence = new BTreeSequence("_alert_sequence");
 var _patrol_sequence = new BTreeSequence("patrol_sequence");
 
 // Resued tasks
-var _detect_player_task = new DetectPlayerTask(sprites_map[$ CHARACTER_STATE.ALERT]);
+var _detect_player_task = new DetectPlayerTask(visible_range, sprites_map[$ CHARACTER_STATE.ALERT]);
 
 
 // Build the tree:
@@ -61,7 +61,7 @@ _attack_sequence.ChildAdd(new CheckAttackRangeTask(attack_range));
 _attack_sequence.ChildAdd(new AttackSeqSpawnerTask(seq_kutra_attack, 2, 4, 4.0));
 
 _chase_sequence.ChildAdd(_detect_player_task);
-_chase_sequence.ChildAdd(new ChaseSmartTask(move_speed, 6, 64));
+_chase_sequence.ChildAdd(new ChaseSmartTask(visible_range, move_speed, 6, 64));
 
 // Alert Seqeunce
 _alert_sequence.ChildAdd(new CheckLastSeenTask());

@@ -37,7 +37,7 @@ var _alert_sequence = new BTreeSequence("_alert_sequence");
 var _patrol_sequence = new BTreeSequence("patrol_sequence");
 
 // Resued tasks
-var _detect_player = new DetectPlayerTask(spr_guardian_idle);
+var _detect_player = new DetectPlayerTask(visible_range, spr_guardian_idle);
 
 // Build the tree:
 bt_root.ChildAdd(_selector_root);

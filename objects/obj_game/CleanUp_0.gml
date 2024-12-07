@@ -4,6 +4,6 @@ if (surface_exists(menu_surface)) {
     surface_free(menu_surface);
 }
 
-if (global.collision_grid != undefined) {
+if (variable_global_exists("collision_grid")) {
     global.collision_grid.Cleanup();
 }

@@ -14,7 +14,7 @@ function CheckAttackRangeTask(_attack_range = 40, _ignore_player_in_air = false)
 
 			var _player_above = obj_player.y < y - sprite_height/2;
 			var _dist = distance_to_object(obj_player);
-			var _buffer_range = other.attack_range+global.tile_size;
+			var _buffer_range = vel_x == 0 ? other.attack_range : other.attack_range+global.tile_size;
 			if (other.ignore_player_in_air and _dist <= _buffer_range) {
 				// can see player in air too
 				return BTStates.Success;

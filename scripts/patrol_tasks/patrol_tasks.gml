@@ -32,7 +32,7 @@ function IdleTask(_alarm_idx, _ignore_player_in_air = false) : BTreeLeaf() const
         with(_user) {
 			vel_x = 0;
 			sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
-			if (player_detected(other.ignore_player_in_air)) {
+			if (player_detected(visible_range, other.ignore_player_in_air)) {
 				image_xscale = sign(obj_player.x - x);
                 // Failure; if player is detected to continue Combat sequence
                 return BTStates.Failure;
@@ -79,7 +79,7 @@ function PatrolTask(_move_speed, _patrol_width, _idle_alarm_idx, _ignore_player_
         
         var _user = black_board_ref.user;
         with(_user) {
-            if (player_detected(other.ignore_player_in_air)) return BTStates.Failure;
+            if (player_detected(visible_range, other.ignore_player_in_air)) return BTStates.Failure;
             
             var _target = other.path.GetCurrentPoint();
             if (_target == undefined) return BTStates.Success;

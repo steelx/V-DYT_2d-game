@@ -8,4 +8,3 @@ if (bt_root != undefined) {
 }
 
 
-draw_visibility_ray(visible_range, attack_range);
