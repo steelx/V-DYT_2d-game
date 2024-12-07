@@ -29,28 +29,36 @@ function apply_verticle_movement() {
         
         // Special handling for jetpack state
         if (state == CHARACTER_STATE.JETPACK_JUMP) {
-            // Check for ceiling ahead with buffer
-            var _ceiling_ahead = check_tilemap_collision(0, _step - _buffer_distance);
-            
-            if (_ceiling_ahead && _move_dir_y < 0) {
-                // If moving up and about to hit ceiling, stop just before it
-                var _dist_to_ceiling = 0;
+            if (_move_dir_y < 0) { // Moving upward
+                // Check for ceiling ahead with buffer
+                var _ceiling_ahead = check_tilemap_collision(0, _step - _buffer_distance);
                 
-                // Find exact distance to ceiling
-                for (var i = 1; i <= abs(_step); i++) {
-                    if (check_tilemap_collision(0, -i)) {
-                        _dist_to_ceiling = i;
-                        break;
+                if (_ceiling_ahead) {
+                    // If moving up and about to hit ceiling, stop just before it
+                    var _dist_to_ceiling = 0;
+                    // Find exact distance to ceiling
+                    for (var i = 1; i <= abs(_step); i++) {
+                        if (check_tilemap_collision(0, -i)) {
+                            _dist_to_ceiling = i - 1; // Subtract 1 to stay one pixel away
+                            break;
+                        }
                     }
+                    if (_dist_to_ceiling > 0) {
+                        y -= _dist_to_ceiling;
+                    }
+                    vel_y = 0;
+                    break;
                 }
-                
-                if (_dist_to_ceiling > 0) {
-                    // Move to just before the ceiling
-                    y -= (_dist_to_ceiling - _buffer_distance);
+            } else if (_move_dir_y > 0) { // Moving downward
+                // Check for ground collision
+                if (check_tilemap_collision(0, _step)) {
+                    y = floor(y);
+                    vel_y = 0;
+                    grounded = true;
+                    state = CHARACTER_STATE.IDLE;
+                    sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
+                    break;
                 }
-                
-                vel_y = 0;
-                break;
             }
         } else {
             // Normal collision check for non-jetpack states
@@ -67,6 +75,10 @@ function apply_verticle_movement() {
                 y = _platform.bbox_top - (bbox_bottom - y);
                 vel_y = 0;
                 grounded = true;
+                if (state == CHARACTER_STATE.JETPACK_JUMP) {
+                    state = CHARACTER_STATE.IDLE;
+                    sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
+                }
                 break;
             } else if (object_index != obj_player) {
                 vel_y = 0;
@@ -77,17 +89,15 @@ function apply_verticle_movement() {
         y += _step;
         _remaining_move -= _step;
     }
-    
+
     // Additional safety check for ceiling
     if (state == CHARACTER_STATE.JETPACK_JUMP) {
-        // Check if we're inside a tile
         if (check_tilemap_collision(0, 0)) {
             // Find safe position below
             var _safe_distance = 1;
             while (check_tilemap_collision(0, _safe_distance) && _safe_distance < 32) {
                 _safe_distance++;
             }
-            
             if (_safe_distance < 32) {
                 y += _safe_distance;
                 vel_y = 0;
@@ -95,6 +105,7 @@ function apply_verticle_movement() {
         }
     }
 }
+
 
 function check_collision(_move_x, _move_y) {
     // Always check tilemap collision first and NEVER allow passing through
