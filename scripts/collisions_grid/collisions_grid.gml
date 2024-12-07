@@ -15,23 +15,19 @@ function CollisionGrid() constructor {
     grid_width = room_width div cell_size;
     grid_height = room_height div cell_size;
     grid = ds_grid_create(grid_width, grid_height);
-    obstacles = []; // Array to store obstacle information as structs
-    
+    obstacles = []; // Array for tilemap collisions
+    platforms = []; // Array for platform objects (obj_collision instances)
+
     /**
-     * Initializes the collision grid by collecting obstacle information 
-     * and marking blocked cells in the grid.
-     * 
-     * This method:
-     * - Collects all obstacle objects in the room
-     * - Stores detailed information about each obstacle
-     * - Marks grid cells as blocked if they intersect with obstacles or tiles
-     */
+    * Initializes the collision grid by collecting obstacle and platform information 
+    */
     static Initialize = function() {
         obstacles = [];
-        
-        // Collect obstacle information with exact dimensions
+        platforms = [];
+
+        // First, collect platform information
         with(obj_collision) {
-            var _obstacle = {
+            var _platform = {
                 position: { x: x, y: y },
                 bbox: {
                     left: bbox_left,
@@ -41,109 +37,143 @@ function CollisionGrid() constructor {
                 },
                 width: bbox_right - bbox_left,
                 height: bbox_bottom - bbox_top,
-                grid_bounds: {
-                    left: bbox_left div other.cell_size,
-                    right: (bbox_right div other.cell_size),
-                    top: bbox_top div other.cell_size,
-                    bottom: (bbox_bottom div other.cell_size)
-                }
+                instance: id
             };
-            array_push(other.obstacles, _obstacle);
+            array_push(other.platforms, _platform);
         }
-        
-        // Initialize collision grid
+
+        // Then process tilemap collisions
         for(var _x = 0; _x < grid_width; _x++) {
             for(var _y = 0; _y < grid_height; _y++) {
                 var _real_x = _x * cell_size;
                 var _real_y = _y * cell_size;
                 
-                grid[# _x, _y] = false;
-                
-                // Check if this cell intersects with any obstacle
-                var _cell_bbox = {
-                    left: _real_x,
-                    right: _real_x + cell_size - 1,
-                    top: _real_y,
-                    bottom: _real_y + cell_size - 1
-                };
-                
-                // Check obstacles
-                for(var i = 0; i < array_length(obstacles); i++) {
-                    var _obs = obstacles[i];
-                    if (bbox_overlaps(_cell_bbox, _obs.bbox)) {
-                        grid[# _x, _y] = true;
-                        break;
-                    }
-                }
-                
-                // Check tilemap if no obstacle was found
-                if (!grid[# _x, _y]) {
-                    var _tile = tilemap_get_at_pixel(global.collision_tilemap, _real_x, _real_y);
-                    grid[# _x, _y] = (_tile != 0);
+                // Check tilemap
+                var _tile = tilemap_get_at_pixel(global.collision_tilemap, _real_x, _real_y);
+                if (_tile != 0) {
+                    var _obstacle = {
+                        position: { x: _real_x, y: _real_y },
+                        bbox: {
+                            left: _real_x,
+                            right: _real_x + cell_size,
+                            top: _real_y,
+                            bottom: _real_y + cell_size
+                        },
+                        grid_pos: { x: _x, y: _y }
+                    };
+                    array_push(obstacles, _obstacle);
+                    grid[# _x, _y] = true;
+                } else {
+                    grid[# _x, _y] = false;
                 }
             }
         }
     }
-    
+
     /**
-     * Draws the collision grid for debugging purposes.
-     * 
-     * Visualizes:
-     * - Blocked grid cells in semi-transparent red
-     * - Obstacle boundaries in white
-     * - Obstacle dimensions as text
-     */
-    static DrawGrid = function() {
-        // Draw base grid
-        // Draw base grid
-        draw_set_alpha(0.3);
-        for(var _x = 0; _x < grid_width; _x++) {
-            for(var _y = 0; _y < grid_height; _y++) {
-                var _real_x = _x * cell_size;
-                var _real_y = _y * cell_size;
-                
-                // Draw occupied cells
-                if (grid[# _x, _y]) {
-                    draw_rectangle_color(
-                        _real_x, _real_y,
-                        _real_x + cell_size - 1, _real_y + cell_size - 1,
-                        c_red, c_red, c_red, c_red,
-                        false
-                    );
-                }
-                
-                // Grid lines
-                /*
-				draw_rectangle_color(
-                    _real_x, _real_y,
-                    _real_x + cell_size - 1, _real_y + cell_size - 1,
-                    c_yellow, c_yellow, c_yellow, c_yellow,
-                    true
-                );
-				*/
+    * Checks collision with platforms
+    */
+    static CheckPlatformCollision = function(_bbox_left, _bbox_right, _bbox_top, _bbox_bottom) {
+        for(var i = 0; i < array_length(platforms); i++) {
+            var _platform = platforms[i];
+            if (bbox_overlaps({
+                left: _bbox_left,
+                right: _bbox_right,
+                top: _bbox_top,
+                bottom: _bbox_bottom
+            }, _platform.bbox)) {
+                return _platform;
             }
         }
-        
-        // Draw actual obstacle boundaries
-        draw_set_alpha(0.8);
+        return noone;
+    }
+
+    /**
+    * Checks collision with tilemap obstacles
+    */
+    static CheckObstacleCollision = function(_bbox_left, _bbox_right, _bbox_top, _bbox_bottom) {
+        var _left_cell = max(0, floor(_bbox_left / cell_size));
+        var _right_cell = min(grid_width - 1, floor(_bbox_right / cell_size));
+        var _top_cell = max(0, floor(_bbox_top / cell_size));
+        var _bottom_cell = min(grid_height - 1, floor(_bbox_bottom / cell_size));
+
+        for(var _x = _left_cell; _x <= _right_cell; _x++) {
+            for(var _y = _top_cell; _y <= _bottom_cell; _y++) {
+                if (grid[# _x, _y]) return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+    * Gets nearest platform below a point
+    */
+    static GetNearestPlatformBelow = function(_x, _y, _max_dist = 64) {
+        var _nearest = noone;
+        var _nearest_dist = _max_dist;
+
+        for(var i = 0; i < array_length(platforms); i++) {
+            var _platform = platforms[i];
+            if (_x >= _platform.bbox.left && _x <= _platform.bbox.right) {
+                var _dist = _platform.bbox.top - _y;
+                if (_dist > 0 && _dist < _nearest_dist) {
+                    _nearest = _platform;
+                    _nearest_dist = _dist;
+                }
+            }
+        }
+        return _nearest;
+    }
+
+    /**
+    * Gets nearest obstacle below a point
+    */
+    static GetNearestObstacleBelow = function(_x, _y, _max_dist = 64) {
+        var _cell_x = floor(_x / cell_size);
+        var _cell_y = floor(_y / cell_size);
+        var _max_cells = ceil(_max_dist / cell_size);
+
+        for(var i = 0; i < _max_cells; i++) {
+            var _check_y = _cell_y + i;
+            if (_check_y >= grid_height) break;
+            
+            if (grid[# _cell_x, _check_y]) {
+                return {
+                    distance: i * cell_size,
+                    position: {
+                        x: _cell_x * cell_size,
+                        y: _check_y * cell_size
+                    }
+                };
+            }
+        }
+        return noone;
+    }
+	
+	static DrawDebug = function() {
+        // Draw tilemap obstacles
+        draw_set_alpha(0.3);
         for(var i = 0; i < array_length(obstacles); i++) {
             var _obs = obstacles[i];
-            
-            // Draw actual obstacle bounds in white
             draw_rectangle_color(
                 _obs.bbox.left, _obs.bbox.top,
                 _obs.bbox.right, _obs.bbox.bottom,
-                c_white, c_white, c_white, c_white,
-                true
-            );
-            
-            // Draw dimensions text
-            draw_text(
-                _obs.bbox.left, _obs.bbox.top - 10,
-                string(_obs.width) + "x" + string(_obs.height)
+                c_red, c_red, c_red, c_red,
+                false
             );
         }
-        
+
+        // Draw platforms
+        draw_set_alpha(0.3);
+        for(var i = 0; i < array_length(platforms); i++) {
+            var _platform = platforms[i];
+            draw_rectangle_color(
+                _platform.bbox.left, _platform.bbox.top,
+                _platform.bbox.right, _platform.bbox.bottom,
+                c_blue, c_blue, c_blue, c_blue,
+                false
+            );
+        }
         draw_set_alpha(1);
     }
     
@@ -423,52 +453,5 @@ function CollisionGrid() constructor {
             
             return false;
         }
-    }
-	
-	/**
-    * Checks collision for a rectangle area
-    * @param {Real} _bbox_left - Left boundary
-    * @param {Real} _bbox_right - Right boundary
-    * @param {Real} _bbox_top - Top boundary
-    * @param {Real} _bbox_bottom - Bottom boundary
-    * @returns {Boolean} True if collision found
-    */
-    static CheckCollisionRect = function(_bbox_left, _bbox_right, _bbox_top, _bbox_bottom) {
-        var _left_cell = max(0, floor(_bbox_left / cell_size));
-        var _right_cell = min(grid_width - 1, floor(_bbox_right / cell_size));
-        var _top_cell = max(0, floor(_bbox_top / cell_size));
-        var _bottom_cell = min(grid_height - 1, floor(_bbox_bottom / cell_size));
-        
-        for(var _x = _left_cell; _x <= _right_cell; _x++) {
-            for(var _y = _top_cell; _y <= _bottom_cell; _y++) {
-                if (grid[# _x, _y]) return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-    * Checks collision for multiple points along a rectangle's edges
-    * @param {Real} _bbox_left - Left boundary
-    * @param {Real} _bbox_right - Right boundary
-    * @param {Real} _bbox_top - Top boundary
-    * @param {Real} _bbox_bottom - Bottom boundary
-    * @param {Real} _points - Number of points to check per edge
-    * @returns {Boolean} True if collision found
-    */
-    static CheckCollisionPrecise = function(_bbox_left, _bbox_right, _bbox_top, _bbox_bottom, _points = 4) {
-        for(var i = 0; i <= _points; i++) {
-            var _check_x = lerp(_bbox_left, _bbox_right, i/_points);
-            var _check_y = lerp(_bbox_top, _bbox_bottom, i/_points);
-            
-            var _grid_x = floor(_check_x / cell_size);
-            var _grid_y = floor(_check_y / cell_size);
-            
-            if (_grid_x >= 0 && _grid_x < grid_width && 
-                _grid_y >= 0 && _grid_y < grid_height) {
-                if (grid[# _grid_x, _grid_y]) return true;
-            }
-        }
-        return false;
     }
 }

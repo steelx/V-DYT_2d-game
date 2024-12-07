@@ -106,39 +106,30 @@ function apply_verticle_movement() {
     }
 }
 
-
 function check_collision(_move_x, _move_y) {
-    // Always check tilemap collision first and NEVER allow passing through
-    if (check_tilemap_collision(_move_x, _move_y)) {
-        // Special case: when moving upward into a tilemap, always block
-        if (_move_y < 0) {
-            return true;
-        }
-        // When moving downward, allow landing on the tile
-        if (_move_y > 0) {
-            return true;
-        }
+    // Check tilemap obstacles first
+    if (global.collision_grid.CheckObstacleCollision(
+        bbox_left + _move_x, bbox_right + _move_x,
+        bbox_top + _move_y, bbox_bottom + _move_y
+    )) {
         return true;
     }
-    
-    // For non-player objects, treat obj_collision as solid
-    if (object_index != obj_player) {
-        return place_meeting(x + _move_x, y + _move_y, obj_collision);
-    }
-    
-    // Player-specific platform collision
-    var _platform = instance_place(x + _move_x, y + _move_y, obj_collision);
+
+    // Then check platforms
+    var _platform = global.collision_grid.CheckPlatformCollision(
+        bbox_left + _move_x, bbox_right + _move_x,
+        bbox_top + _move_y, bbox_bottom + _move_y
+    );
+
     if (_platform != noone) {
-        // Allow upward movement through platforms only
-        if (vel_y < 0) return false;
+        if (object_index != obj_player) return true;
         
-        // Allow falling through when pressing down
-        if (keyboard_check(vk_down) && vel_y >= 0) return false;
-        
-        // Stop on platform when falling from above
-        if (vel_y > 0 && bbox_bottom <= _platform.bbox_top) return true;
+        // Player-specific platform handling
+        if (vel_y < 0) return false; // Allow jumping through
+        if (keyboard_check(vk_down) && vel_y >= 0) return false; // Allow dropping through
+        if (vel_y > 0 && bbox_bottom <= _platform.bbox.top) return true; // Land on top
     }
-    
+
     return false;
 }
 
@@ -174,39 +165,14 @@ function jump_thru_platform() {
     }
 }
 
-
 function check_tilemap_collision(_move_x, _move_y) {
-    var _collision_points = 4; // Number of points to check along each edge
-    
-    for (var i = 0; i <= _collision_points; i++) {
-        // Check top edge
-        var _check_x = lerp(bbox_left, bbox_right, i/_collision_points);
-        if (tilemap_get_at_pixel(global.collision_tilemap, _check_x + _move_x, bbox_top + _move_y)) {
-            return true;
-        }
-        
-        // Check bottom edge
-        if (tilemap_get_at_pixel(global.collision_tilemap, _check_x + _move_x, bbox_bottom + _move_y)) {
-            return true;
-        }
-    }
-    
-    // Check left and right edges
-    for (var i = 0; i <= _collision_points; i++) {
-        var _check_y = lerp(bbox_top, bbox_bottom, i/_collision_points);
-        
-        // Check left edge
-        if (tilemap_get_at_pixel(global.collision_tilemap, bbox_left + _move_x, _check_y + _move_y)) {
-            return true;
-        }
-        
-        // Check right edge
-        if (tilemap_get_at_pixel(global.collision_tilemap, bbox_right + _move_x, _check_y + _move_y)) {
-            return true;
-        }
-    }
-    
-    return false;
+    // Check tilemap obstacles only (not platforms)
+    return global.collision_grid.CheckObstacleCollision(
+        bbox_left + _move_x, 
+        bbox_right + _move_x,
+        bbox_top + _move_y, 
+        bbox_bottom + _move_y
+    );
 }
 
 // Utility function to smoothly approach a value
