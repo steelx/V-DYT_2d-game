@@ -1,13 +1,44 @@
-
 function apply_horizontal_movement() {
     var _remaining_move = vel_x;
     var _move_dir = sign(vel_x);
     
     while (abs(_remaining_move) >= 0.1) {
         var _step = min(abs(_remaining_move), move_speed) * _move_dir;
-        var _collision_found = check_collision(_step, 0);
         
-        if (!_collision_found) {
+        // Check for obstacles first
+        var _obstacle_collision = global.collision_grid.CheckObstacleCollision(
+            bbox_left + _step, 
+            bbox_right + _step,
+            bbox_top, 
+            bbox_bottom
+        );
+        
+        // Check for platforms
+        var _platform = global.collision_grid.CheckPlatformCollision(
+            bbox_left + _step, 
+            bbox_right + _step,
+            bbox_top, 
+            bbox_bottom
+        );
+        
+        var _collision_found = false;
+        
+        // Handle platform collision for both players and enemies
+        if (_platform != noone) {
+            if (is_on_ground() && bbox_bottom <= _platform.bbox.top + 1) {
+                // Allow movement on top of platforms when grounded
+                _collision_found = false;
+            } else if (object_index == obj_player) {
+                // For player, allow movement through platforms when not grounded on them
+                _collision_found = false;
+            } else {
+                // For enemies, treat platforms as solid when not grounded on them
+                _collision_found = true;
+            }
+        }
+        
+        // Check final collision result
+        if (!_obstacle_collision && !_collision_found) {
             x += _step;
             _remaining_move -= _step;
         } else {
@@ -22,7 +53,7 @@ function apply_verticle_movement() {
     var _move_count_y = abs(vel_y);
     var _move_dir_y = sign(vel_y);
     var _remaining_move = vel_y;
-    var _buffer_distance = 4; // Small buffer to prevent getting too close to ceiling
+    var _buffer_distance = 8; // Small buffer to prevent getting too close to ceiling
     
     while (abs(_remaining_move) >= 0.1) {
         var _step = min(abs(_remaining_move), move_speed) * _move_dir_y;
