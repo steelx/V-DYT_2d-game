@@ -30,7 +30,7 @@
   ],
   "name":"spr_electric_hit_2",
   "nineSlice":null,
-  "origin":7,
+  "origin":4,
   "parent":{
     "name":"VFX",
     "path":"folders/Sprites/VFX.yy",
@@ -104,7 +104,7 @@
     "visibleRange":null,
     "volume":1.0,
     "xorigin":41,
-    "yorigin":65,
+    "yorigin":32,
   },
   "swatchColours":null,
   "swfPrecision":0.5,

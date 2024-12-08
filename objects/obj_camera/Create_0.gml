@@ -11,12 +11,12 @@ move_to_y = y;
 zoom_level = 1;
 
 // asymmetric following
-vertical_offset_ratio = 0.7; // 70% above, 30% below
+vertical_offset_ratio = 0.8; // 70% above, 30% below
 vertical_border_top = _base_h * vertical_offset_ratio;    // More space above
 vertical_border_bottom = _base_h * (1 - vertical_offset_ratio); // Less space below
 
 // Camera Ratio feel
-vertical_offset_normal = _base_h * 0.2;     // Default 70:30 (more space above) Higher = more extreme top view
+vertical_offset_normal = _base_h * 0.3;     // Default 70:30 (more space above) Higher = more extreme top view
 vertical_offset_reverse = _base_h * -0.2;    // Reverse 30:70 (more space below) Higher = more extreme bottom view
 vertical_offset_transition_speed = 0.1;      // Higher = faster transition
 

@@ -4,16 +4,16 @@ function apply_horizontal_movement() {
     
     while (abs(_remaining_move) >= 0.1) {
         var _step = min(abs(_remaining_move), move_speed) * _move_dir;
+		
+		var _left = bbox_left + _step;
+		var _right = bbox_right + _step;
+		var _top = bbox_top;
+		var _bottom = bbox_bottom;
         
         // Check for obstacles first
-        var _obstacle_collision = global.collision_grid.CheckObstacleCollision(
-            bbox_left + _step, 
-            bbox_right + _step,
-            bbox_top, 
-            bbox_bottom
-        );
-        
-        // Check for platforms
+        var _found_tilemap = global.collision_grid.CheckObstacleCollision(_left, _right, _top, _bottom);
+		
+		// Check for platforms
         var _platform = global.collision_grid.CheckPlatformCollision(
             bbox_left + _step, 
             bbox_right + _step,
@@ -21,24 +21,24 @@ function apply_horizontal_movement() {
             bbox_bottom
         );
         
-        var _collision_found = false;
+        var _platform_found = false;
         
         // Handle platform collision for both players and enemies
         if (_platform != noone) {
             if (is_on_ground() && bbox_bottom <= _platform.bbox.top + 1) {
                 // Allow movement on top of platforms when grounded
-                _collision_found = false;
+                _platform_found = false;
             } else if (object_index == obj_player) {
                 // For player, allow movement through platforms when not grounded on them
-                _collision_found = false;
+                _platform_found = false;
             } else {
                 // For enemies, treat platforms as solid when not grounded on them
-                _collision_found = true;
+                _platform_found = true;
             }
         }
         
         // Check final collision result
-        if (!_obstacle_collision && !_collision_found) {
+        if (!_found_tilemap and !_platform_found) {
             x += _step;
             _remaining_move -= _step;
         } else {

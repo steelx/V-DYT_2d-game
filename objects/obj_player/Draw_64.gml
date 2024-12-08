@@ -1,3 +1,4 @@
+/*
 /// @description obj_player DRAW GUI
 // GUI items for player stats
 var _gui_w = display_get_gui_width();
@@ -65,3 +66,4 @@ if _attack_ratio == 1 {
 #endregion
 
 clear_text_color();
+*/

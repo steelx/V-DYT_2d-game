@@ -9,7 +9,7 @@
   "bitRate":128,
   "compression":0,
   "conversionMode":0,
-  "duration":1.632,
+  "duration":1.584,
   "name":"snd_super_attack",
   "parent":{
     "name":"Player",

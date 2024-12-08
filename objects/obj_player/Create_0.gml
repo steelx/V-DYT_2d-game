@@ -58,10 +58,14 @@ apply_knockback = function(_hit_direction, _knockback_speed = 2) {
 #region Attack & Seqeunce spawner
 // Attack / Super Attack
 attack_key_held_timer = 0;
-attack_fuel_max = 100;
+attack_fuel_max = 10;
 attack_fuel = attack_fuel_max;
 attack_fuel_consumption_rate = 10; // Consume points per super attack
-attack_fuel_regeneration_rate = 0.5; // Regenerate 1 point per frame when not attacking
+attack_fuel_regeneration_rate = 1/60; // Regenerate 1 point per frame when not attacking
+
+if (!instance_exists(obj_inventory)) {
+    instance_create_layer(0, 0, "Player", obj_inventory);
+}
 
 function is_attack_key_held() {
     return keyboard_check(vk_space);
@@ -81,7 +85,7 @@ enable_self = function (_user) {
 	    sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
 	}
 };
-	
+
 // Disabled the Step event due to if (variable_instance_exists(id, "enabled") and !enabled) exit;
 disable_self = function (_user) {
 	with(_user) {
@@ -92,18 +96,63 @@ disable_self = function (_user) {
 	}
 };
 
-spawn_super_attack = function(_sequence_file = seq_player_super_attack) {
-	if (alarm[PLAYER_ATTACK_DELAY] > 0) {
+spawn_super_attack = function() {
+	if (alarm[PLAYER_ATTACK_DELAY] > 0 or no_hurt_frames > 0) {
+		// draw denied feedback
+		var _wait_for_sec = no_hurt_frames / get_room_speed();//since we need to set as seconds
+		show_popup_notifications([
+			["[c_red]Supper Attack Not Ready[]", _wait_for_sec],
+			["[wave]Supper Attack [c_green]Ready![]", 1],
+		]);
+		return;
+	}
+	if (attack_fuel < attack_fuel_consumption_rate) {
+		// denied feedback
+		show_popup_notifications([
+			["[c_red]Super Attack is re-generating![]", 2]
+		]);
 		return;
 	}
 	
+	state = CHARACTER_STATE.SUPER_ATTACK;
+	attack_fuel -= attack_fuel_consumption_rate;
+	add_screenshake(0.2, 1.5);
 	alarm[PLAYER_ATTACK_DELAY] = get_room_speed() * 1;// start attack delay timer
+	sequence_spawner(seq_player_super_attack);
+};
+
+spawn_blitz_attack = function() {
+	var _fuel = obj_inventory.blitz_points;
+	if (_fuel <= 0) {
+		// denied feedback
+		show_popup_notifications([
+			["[c_red]Needs Blitz Attack Fuel[]", 2],
+			["[wave]Enemies drop [c_green]fuel[] randomly when they die!", 1],
+		]);
+		return;
+	}
+	if (no_hurt_frames > 0) {
+		// denied feedback
+		var _wait_for_sec = no_hurt_frames / get_room_speed();//since we need to set as seconds
+		show_popup_notifications([
+			["[c_red]Cant attack during Hurt state[]", _wait_for_sec],
+			["[wave]Attack [c_green]Ready[]", 1],
+		]);
+		return;
+	}
+	
+	state = CHARACTER_STATE.ATTACK;
+	obj_inventory.blitz_points -= 1;
+	add_screenshake(0.2, 1.5);
+	sequence_spawner(seq_player_blitz_attack);
+};
+
+sequence_spawner = function(_seq_file) {
 	with (instance_create_layer(x, y, "Instances", obj_sequence_spawner)) {
-		sequence = _sequence_file;
+		sequence = _seq_file;
 		spawner = other;
 		start_sequence();
 	}
-	add_screenshake(0.2, 1.5); // Slightly stronger
 	disable_self(id);
 };
 
