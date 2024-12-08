@@ -9,8 +9,6 @@ hp = max_hp;
 previous_hp = hp; // To track health changes
 hp_gain_animation_active = false;// to run HP gain animation
 
-obj_camera.follow = obj_player;
-
 sprites_map[$ CHARACTER_STATE.IDLE] = spr_player_idle;
 sprites_map[$ CHARACTER_STATE.MOVE] = spr_player_walk;
 sprites_map[$ CHARACTER_STATE.JUMP] = spr_player_fall;

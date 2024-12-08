@@ -8,7 +8,7 @@ global.collision_grid.Initialize();
 
 // ensure obj_drop_manager gets created in each room start after grid
 if (!instance_exists(obj_drop_manager)) {
-    instance_create_layer(0, 0, "Instances", obj_drop_manager);
+    instance_create_depth(0, 0, depth, obj_drop_manager);
 }
 
 

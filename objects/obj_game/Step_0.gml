@@ -67,3 +67,58 @@ if (slow_mo_active) {
         // Optional: Add visual effects when slow-mo ends
     }
 }
+
+
+/// Room Transition
+if (transition_active) {
+    transition_progress += transition_speed;
+    
+    if (transition_progress >= 1) {
+        transition_progress = 0;
+        
+        switch(transition_phase) {
+            case 0: // Fade out complete
+                transition_phase = 1;
+                // Store player position and state before room change
+                with(obj_player) {
+                    global.player_x = x;
+                    global.player_y = y;
+                    global.player_state = state;
+                }
+                room_goto(target_room_index);
+                break;
+                
+            case 1: // Room change complete
+			    transition_phase = 2;
+			    // Restore player position and state
+			    with(obj_player) {
+			        x = clamp(global.player_x, 0, room_width);
+			        y = clamp(global.player_y, 0, room_height);
+			        state = global.player_state;
+			    }
+    
+			    // Force camera update
+			    with(obj_camera) {
+			        // Reset follow target and position
+			        follow = obj_player;
+			        x = clamp(obj_player.x, _base_w/2, room_width - _base_w/2);
+			        y = clamp(obj_player.y - current_vertical_offset, _base_h/2, room_height - _base_h/2);
+			        move_to_x = x;
+			        move_to_y = y;
+        
+			        // Ensure camera view is properly set
+			        view_camera[0] = camera;
+			        camera_set_view_pos(camera, 
+			            clamp(x - _base_w/2, 0, room_width - _base_w),
+			            clamp(y - _base_h/2, 0, room_height - _base_h)
+			        );
+			    }
+			    break;
+                
+            case 2: // Fade in complete
+                transition_active = false;
+                break;
+        }
+    }
+}
+
