@@ -4,10 +4,7 @@ view_camera[0] = camera;
 view_enabled = true;
 view_visible[0] = true;
 
-show_debug_message($"room started from cam {room}");
-
 // Ensure camera follows player if it exists
-// Initialize position if player exists
 if (instance_exists(obj_player)) {
     follow = obj_player;
     // Initialize position with room bounds checking

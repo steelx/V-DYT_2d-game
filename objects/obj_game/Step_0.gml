@@ -96,23 +96,6 @@ if (transition_active) {
 			        y = clamp(global.player_y, 0, room_height);
 			        state = global.player_state;
 			    }
-    
-			    // Force camera update
-			    with(obj_camera) {
-			        // Reset follow target and position
-			        follow = obj_player;
-			        x = clamp(obj_player.x, _base_w/2, room_width - _base_w/2);
-			        y = clamp(obj_player.y - current_vertical_offset, _base_h/2, room_height - _base_h/2);
-			        move_to_x = x;
-			        move_to_y = y;
-        
-			        // Ensure camera view is properly set
-			        view_camera[0] = camera;
-			        camera_set_view_pos(camera, 
-			            clamp(x - _base_w/2, 0, room_width - _base_w),
-			            clamp(y - _base_h/2, 0, room_height - _base_h)
-			        );
-			    }
 			    break;
                 
             case 2: // Fade in complete

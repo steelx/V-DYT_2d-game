@@ -1,5 +1,6 @@
 /// @description JET_PACK_JUMP
 // Check for held JUMP key
+var _room_speed = get_room_speed();
 if (is_jump_key_held()) {
     // Jump key is being held
     jump_key_held_timer++;
@@ -23,7 +24,7 @@ if (is_jump_key_held()) {
             image_index = 0;
             image_speed = 1;
 			move_speed = air_move_speed;// increase speed during jetpack move
-			apply_zoom_motion_fx(60, 0.8, true); // Added true to maintain zoom
+			apply_zoom_motion_fx(_room_speed, 0.8, true); // Added true to maintain zoom
 			set_camera_vertical_ratio(true); // Switch to reverse ratio (30:70)
         }
     }
@@ -31,7 +32,7 @@ if (is_jump_key_held()) {
     if (jump_key_held_timer > 1 && state == CHARACTER_STATE.JETPACK_JUMP && !grounded && jetpack_fuel > 0) {
         // Continue jet pack hover
         vel_y = -jump_speed * 0.5; // Adjust this value for desired hover strength
-        jetpack_fuel -= 1/60; // Consume 1 point per second (assuming 60 FPS)
+        jetpack_fuel -= 1/_room_speed; // Consume 1 point per second (assuming 60 FPS)
         
         if (sprite_index != spr_player_jet_jump) {
             sprite_index = spr_player_jet_jump;
