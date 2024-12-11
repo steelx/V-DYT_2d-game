@@ -24,16 +24,56 @@ switch(state) {
         }
             
         break;
-        
-    case CHARACTER_STATE.JETPACK_JUMP:
-        if (!is_jump_key_held() || jetpack_fuel <= 0) {
-            sprite_index = sprites_map[$ CHARACTER_STATE.FALL];// fall
+
+	case CHARACTER_STATE.JETPACK_JUMP:
+        if (!is_jump_key_held() || jetpack.fuel <= 0) {
+            // Begin decelerating vertically and horizontally
+            jetpack_vertical_movement(false);
+            jetpack_horizontal_movement(false);
+            sprite_index = sprites_map[$ CHARACTER_STATE.FALL];
         } else {
-            jetpack_fuel -= jetpack_fuel_consumption_rate;
-    
-            // Hover behavior
-            var _target_y = jetpack_max_height + (sin(current_time * jetpack_hover_speed) * jetpack_hover_amplitude);
-            y = lerp(y, _target_y, 0.1); // Smoothly interpolate towards the target height
+            jetpack.fuel -= jetpack.fuel_consumption_rate;
+
+            // Update ground reference point
+            jetpack_update_ground_reference();
+
+            // Calculate target hover height relative to ground
+            var _target_height = jetpack.ground_reference_y - jetpack.hover_height;
+
+            // Add hovering motion
+            jetpack.hover_y_offset += jetpack.hover_direction * jetpack.hover_speed * delta_time;
+            if (abs(jetpack.hover_y_offset) >= jetpack.bob_range) {
+                jetpack.hover_direction *= -1;
+            }
+
+            // Apply hover offset to target height
+            _target_height += jetpack.hover_y_offset;
+
+            // Limit max height from last ground position
+            _target_height = min(_target_height, jetpack.last_ground_y - jetpack.max_height);
+
+            // Smooth vertical movement with acceleration
+            jetpack_vertical_movement(true, _target_height);
+
+            // Horizontal movement with momentum and acceleration
+            jetpack_horizontal_movement(true);
+
+            // Create jetpack particles
+            if (irandom(2) == 0) {
+                var _particle = instance_create_layer(
+                    x, bbox_bottom,
+                    "Instances",
+                    obj_jetpack_particle
+                );
+                _particle.direction = 270 + random_range(-15, 15);
+                _particle.speed = random_range(2, 4);
+            }
+        }
+
+        // Check for ground collision
+        if (grounded) {
+            sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
+            state = CHARACTER_STATE.IDLE;
         }
         break;
         
@@ -80,9 +120,9 @@ jump_thru_platform();
     
 /// Regenerate jetpack fuel when grounded
 /// (in future add fuel collectible items and remove this code)
-if (grounded && jetpack_fuel < jetpack_max_fuel) {
-    jetpack_fuel += jetpack_fuel_regeneration_rate;
-    jetpack_fuel = min(jetpack_fuel, jetpack_max_fuel);
+if (grounded && jetpack.fuel < jetpack.max_fuel) {
+    jetpack.fuel += jetpack.fuel_regeneration_rate;
+    jetpack.fuel = min(jetpack.fuel, jetpack.max_fuel);
 }
     
 // Regenerate attack fuel when not attacking

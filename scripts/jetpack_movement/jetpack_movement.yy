@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"jetpack_movement",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"jetpack_movement",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

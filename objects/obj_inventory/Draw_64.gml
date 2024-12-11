@@ -73,7 +73,7 @@ draw_ui_bar(
 
 // Jetpack Bar
 _stats_y += _stat_spacing;
-var _jetpack_ratio = clamp(obj_player.jetpack_fuel / obj_player.jetpack_max_fuel, 0, 1);
+var _jetpack_ratio = clamp(obj_player.jetpack.fuel / obj_player.jetpack.max_fuel, 0, 1);
 draw_ui_bar(
     "Jetpack", _stats_x, _stats_y,
     _bar_width, 12,

@@ -29,14 +29,29 @@ move_speed = move_speed_init;
 air_move_speed = 1.8;
 
 // Jet pack variables
-jetpack_max_fuel = 10;
-jetpack_fuel = jetpack_max_fuel;
-jetpack_fuel_consumption_rate = 1/60; // Consume 1 point per second
-jetpack_fuel_regeneration_rate = 0.5/60; // regeneration 0.5 point per frame
-jetpack_max_height = 250;//height from top px
-jetpack_hover_amplitude = 2;
-jetpack_hover_speed = 0.1;
-jump_key_held_timer = 0;
+jetpack = {
+    max_fuel: 1000,
+    fuel: 1000,
+    fuel_consumption_rate: 1/60, // Consume 1 point per second
+    fuel_regeneration_rate: 0.5/60, // Regeneration 0.5 point per second
+    max_height: 96, // Maximum height from ground
+    hover_amplitude: 2,
+    hover_speed: 4, // Speed of bobbing
+    bob_range: 3, // Maximum pixels to bob up and down
+    horizontal_momentum: 0,
+    max_horizontal_speed: 3,
+    acceleration: 0.2,
+    deceleration: 0.1,
+    ground_reference_y: y,
+    hover_height: 96, // Desired height above ground
+    ground_check_distance: 100, // How far down to check for ground
+    min_height: 48, // Minimum hover height when no ground is found
+    max_vertical_speed: 1.5,
+    hover_strength: .9, // Strength of the jetpack thrust
+    last_ground_y: y,
+	hover_direction: 1,
+	hover_y_offset: 0
+};
 
 function is_jump_key_held() {
     return keyboard_check(vk_up);
