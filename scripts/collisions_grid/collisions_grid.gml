@@ -52,6 +52,7 @@ function CollisionGrid() constructor {
                 var _tile = tilemap_get_at_pixel(global.collision_tilemap, _real_x, _real_y);
                 if (_tile != 0) {
                     var _obstacle = {
+						height: (_real_y + cell_size) - _real_y,
                         position: { x: _real_x, y: _real_y },
                         bbox: {
                             left: _real_x,

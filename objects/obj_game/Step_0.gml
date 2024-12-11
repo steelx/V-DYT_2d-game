@@ -77,28 +77,31 @@ if (transition_active) {
         transition_progress = 0;
         
         switch(transition_phase) {
-            case 0: // Fade out complete
-                transition_phase = 1;
+            case TRANSITION_PHASE.BEGIN: // Fade out complete
+                transition_phase = TRANSITION_PHASE.COMPLETE;
                 // Store player position and state before room change
                 with(obj_player) {
-                    global.player_x = x;
-                    global.player_y = y;
-                    global.player_state = state;
+                    global.player_save = {
+						x, y, hp, state
+					}
                 }
                 room_goto(target_room_index);
                 break;
                 
-            case 1: // Room change complete
-			    transition_phase = 2;
+            case TRANSITION_PHASE.COMPLETE: // Room change complete
+			    transition_phase = TRANSITION_PHASE.FINISHED;
 			    // Restore player position and state
 			    with(obj_player) {
-			        x = clamp(global.player_x, 0, room_width);
-			        y = clamp(global.player_y, 0, room_height);
-			        state = global.player_state;
+					hp = global.player_save.hp;
+			        x = clamp(global.player_save.x, 0, room_width);
+			        y = clamp(global.player_save.y, 0, room_height);
+			        state = global.player_save.state;
+					no_hurt_frames = get_room_speed() * 1;
 			    }
 			    break;
-                
-            case 2: // Fade in complete
+
+            case TRANSITION_PHASE.FINISHED: // Fade in complete
+				transition_phase = TRANSITION_PHASE.BEGIN;
                 transition_active = false;
                 break;
         }

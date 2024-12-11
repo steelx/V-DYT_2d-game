@@ -96,9 +96,14 @@ trigger_slowmotion_fx = function() {
 #endregion
 
 /// Room transition
+enum TRANSITION_PHASE {
+	BEGIN,
+	COMPLETE,
+	FINISHED
+}
+transition_phase = TRANSITION_PHASE.BEGIN;
 transition_active = false;
 transition_surface = -1;
 transition_progress = 0;
-transition_phase = 0;
 transition_speed = 0.02;
 target_room_index = -1;
