@@ -11,7 +11,7 @@ move_to_y = y;
 zoom_level = 1;
 
 // asymmetric following
-vertical_offset_ratio = 0.8; // 70% above, 30% below
+vertical_offset_ratio = 0.8; // 80% above, 20% below
 vertical_border_top = _base_h * vertical_offset_ratio;    // More space above
 vertical_border_bottom = _base_h * (1 - vertical_offset_ratio); // Less space below
 
@@ -70,11 +70,6 @@ screen_shake_vertical_bias = 0.8; // Makes the shake more vertical (0-1)
 
 // reset camera to default pan speed CAMERA_RESET_PAN 0
 alarm_set(CAMERA_RESET_PAN, 3);
-
-// Player jetpack
-jetpack_zoom_out = 1.2; // How much to zoom out during jetpack
-jetpack_zoom_speed = 0.05; // How fast to transition zoom
-
 
 function background_parallax_scrolling(_camera) {
     var _layer_id = layer_get_id("Background");

@@ -3,7 +3,6 @@ event_inherited();
 image_xscale *= 1.2;
 image_yscale *= 1.2;
 
-
 max_hp = 5;
 hp = max_hp;
 previous_hp = hp; // To track health changes

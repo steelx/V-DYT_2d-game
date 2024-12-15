@@ -216,7 +216,6 @@
     {"id":{"name":"obj_light","path":"objects/obj_light/obj_light.yy",},},
     {"id":{"name":"obj_little_ninja","path":"objects/obj_little_ninja/obj_little_ninja.yy",},},
     {"id":{"name":"obj_load_room_1","path":"objects/obj_load_room_1/obj_load_room_1.yy",},},
-    {"id":{"name":"obj_moon","path":"objects/obj_moon/obj_moon.yy",},},
     {"id":{"name":"obj_ninja_hitbox","path":"objects/obj_ninja_hitbox/obj_ninja_hitbox.yy",},},
     {"id":{"name":"obj_notifications_parent","path":"objects/obj_notifications_parent/obj_notifications_parent.yy",},},
     {"id":{"name":"obj_parallax","path":"objects/obj_parallax/obj_parallax.yy",},},

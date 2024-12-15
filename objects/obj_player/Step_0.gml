@@ -117,7 +117,8 @@ switch(state) {
 apply_horizontal_movement();
 apply_verticle_movement();
 jump_thru_platform();
-    
+
+
 /// Regenerate jetpack fuel when grounded
 /// (in future add fuel collectible items and remove this code)
 if (grounded && jetpack.fuel < jetpack.max_fuel) {

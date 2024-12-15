@@ -5,10 +5,12 @@
 event_inherited();
 
 // Set the sun's properties
-
+set_time(1, 0);    // Start at 6:00 PM
 set_sunrise(0, 1); // Sunrise at 6:00 AM with a 0.5-hour transition
 set_sunset(23, 1);  // Sunset at 6:00 PM with a 0.5-hour transition
 set_day_speed(1);     // Default day speed
+
+max_sunlight = 0.5;
 
 
 // Set the sun's position and orbit direction

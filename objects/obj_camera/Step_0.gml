@@ -19,13 +19,6 @@ if (follow != noone && instance_exists(follow)) {
     // Ensure target positions are within room bounds
     move_to_x = clamp(move_to_x, _base_w/2, room_width - _base_w/2);
     move_to_y = clamp(move_to_y, _base_h/2, room_height - _base_h/2);
-	
-	// Adjust zoom based on jetpack state
-    if (variable_instance_exists(follow, "state") and follow.state == CHARACTER_STATE.JETPACK_JUMP) {
-        zoom_level = lerp(zoom_level, jetpack_zoom_out, jetpack_zoom_speed);
-    } else if (zoom_level > 1) {
-        zoom_level = lerp(zoom_level, 1, jetpack_zoom_speed);
-    }
 }
 
 // Apply smooth movement with bounds checking

@@ -1,6 +1,6 @@
 /// @description obj_player Collision with obj_enemy_parent
 // It checks if the player has fallen on top of the enemy, in which case the enemy is hurt.
-var _allowed_to_jump_on_head = [obj_enemy1];
+var _allowed_to_jump_on_head = [obj_enemy1, obj_frog_enemy];
 
 if (state == CHARACTER_STATE.JUMP || state == CHARACTER_STATE.JETPACK_JUMP || vel_y < 0) {
     // This checks if the bottom point of the player's collision mask was above the enemy mask's top
