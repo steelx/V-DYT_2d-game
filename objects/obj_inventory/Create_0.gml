@@ -2,9 +2,11 @@
 enum INVENTORY_SLOTS {
     SWORD,
     BLITZ,
-    EMPTY,
+    THROW,
     HEAL
 }
+
+has_sword = true;
 
 selected_slot = INVENTORY_SLOTS.SWORD;
 heal_potions_max = 5;

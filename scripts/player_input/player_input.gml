@@ -2,13 +2,25 @@
 function player_input() {
 	// Slot selection
     if (keyboard_check_pressed(ord("1"))) {
+		if (obj_inventory.has_sword == false) {
+			show_popup_notifications([
+                ["[c_red]Ah oh![] Please pickup your sword first", 1]
+            ]);
+			return;
+		}
         obj_inventory.selected_slot = INVENTORY_SLOTS.SWORD;
     }
     if (keyboard_check_pressed(ord("2"))) {
+		if (obj_inventory.has_sword == false) {
+			show_popup_notifications([
+                ["[c_red]Ah oh![] Please pickup your sword first", 1]
+            ]);
+			return;
+		}
         obj_inventory.selected_slot = INVENTORY_SLOTS.BLITZ;
     }
     if (keyboard_check_pressed(ord("3"))) {
-        obj_inventory.selected_slot = INVENTORY_SLOTS.EMPTY;
+        obj_inventory.selected_slot = INVENTORY_SLOTS.THROW;
     }
     if (keyboard_check_pressed(ord("4")) && obj_inventory.heal_potions > 0) {
         // Instant heal
@@ -31,6 +43,12 @@ function player_input() {
 
     // Attack handling based on selected slot
     if (keyboard_check_pressed(vk_space)) {
+		if (obj_inventory.has_sword == false) {
+			show_popup_notifications([
+                ["[c_red]Ah oh![] Please pickup your sword first", 1]
+            ]);
+			return;
+		}
         if (state != CHARACTER_STATE.ATTACK && state != CHARACTER_STATE.SUPER_ATTACK) {
 			if (keyboard_check(vk_shift)) {
                 if (grounded) {
@@ -41,7 +59,6 @@ function player_input() {
 				
 				switch(obj_inventory.selected_slot) {
 	                case INVENTORY_SLOTS.SWORD:
-	                    sprite_index = sprites_map[$ CHARACTER_STATE.ATTACK];
 	                    image_index = 0;
 	                    add_screenshake(0.1, 1);
 	                    break;
@@ -50,10 +67,9 @@ function player_input() {
 	                    spawn_blitz_attack();
 	                    break;
                     
-	                case INVENTORY_SLOTS.EMPTY:
-	                    show_popup_notifications([
-	                        ["[c_red]Empty Slot Selected[]", 1]
-	                    ]);
+	                case INVENTORY_SLOTS.THROW:
+						obj_inventory.has_sword = false;
+	                    spawn_throw_sword_attack();
 	                    break;
 	            }
 			}
@@ -70,7 +86,7 @@ function player_input() {
             image_xscale = -1;
             
             if (grounded && sprite_index != sprites_map[$ CHARACTER_STATE.FALL]) {
-                sprite_index = sprites_map[$ CHARACTER_STATE.MOVE];
+                sprite_index = obj_inventory.has_sword ? sprites_map[$ CHARACTER_STATE.MOVE] : spr_hero_run_without_sword;
             }
         }
     }
@@ -83,10 +99,6 @@ function player_input() {
             }
             vel_x = move_speed;
             image_xscale = 1;
-            
-            if (grounded && sprite_index != sprites_map[$ CHARACTER_STATE.FALL]) {
-                sprite_index = sprites_map[$ CHARACTER_STATE.MOVE];
-            }
         }
     }
     
@@ -103,9 +115,6 @@ function player_input() {
         if (state == CHARACTER_STATE.MOVE) {
             state = CHARACTER_STATE.IDLE;
             vel_x = 0;
-            if (grounded) {
-                sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
-            }
         }
     }
 }

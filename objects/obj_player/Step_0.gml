@@ -30,7 +30,7 @@ switch(state) {
             // Begin decelerating vertically and horizontally
             jetpack_vertical_movement(false);
             jetpack_horizontal_movement(false);
-            sprite_index = sprites_map[$ CHARACTER_STATE.FALL];
+            //sprite_index = sprites_map[$ CHARACTER_STATE.FALL];
         } else {
             jetpack.fuel -= jetpack.fuel_consumption_rate;
 
@@ -72,7 +72,6 @@ switch(state) {
 
         // Check for ground collision
         if (grounded) {
-            sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
             state = CHARACTER_STATE.IDLE;
         }
         break;
@@ -90,7 +89,6 @@ switch(state) {
             knockback_vel_x = 0;
 			///transition_to_idle(); TODO: setup sprites_map for player
 			state = CHARACTER_STATE.IDLE;
-			sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
         }
         break;
         
@@ -99,17 +97,12 @@ switch(state) {
 	    vel_y = 0;
 	    if (sprite_index = spr_hero_attack and image_index >= 9) {
 	        state = CHARACTER_STATE.IDLE;
-	        sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
 	    }
         break;
         
     case CHARACTER_STATE.SUPER_ATTACK:
         vel_x = 0;
 	    vel_y = 0;
-	    if (is_animation_end()) {
-	        state = CHARACTER_STATE.IDLE;
-	        sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
-	    }
         break;
 }
 
@@ -117,7 +110,7 @@ switch(state) {
 apply_horizontal_movement();
 apply_verticle_movement();
 jump_thru_platform();
-
+update_player_sprites(state);
 
 /// Regenerate jetpack fuel when grounded
 /// (in future add fuel collectible items and remove this code)

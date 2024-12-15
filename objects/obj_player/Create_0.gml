@@ -17,6 +17,20 @@ sprites_map[$ CHARACTER_STATE.ATTACK] = spr_hero_attack;
 sprites_map[$ CHARACTER_STATE.SUPER_ATTACK] = spr_hero_super_attack;
 sprites_map[$ CHARACTER_STATE.KNOCKBACK] = spr_player_hurt;
 
+sprite_without_sword = {};
+sprite_without_sword[$ CHARACTER_STATE.IDLE] = spr_hero_idle_without_sword;
+sprite_without_sword[$ CHARACTER_STATE.MOVE] = spr_hero_run_without_sword;
+sprite_without_sword[$ CHARACTER_STATE.JUMP] = spr_player_fall;
+sprite_without_sword[$ CHARACTER_STATE.FALL] = spr_player_fall;
+sprite_without_sword[$ CHARACTER_STATE.JETPACK_JUMP] = spr_player_jet_jump;
+sprite_without_sword[$ CHARACTER_STATE.ATTACK] = spr_hero_idle_without_sword;
+sprite_without_sword[$ CHARACTER_STATE.SUPER_ATTACK] = spr_hero_idle_without_sword;
+sprite_without_sword[$ CHARACTER_STATE.KNOCKBACK] = spr_player_hurt;
+
+update_player_sprites = function(_state = CHARACTER_STATE.IDLE) {
+	sprite_index = obj_inventory.has_sword ? sprites_map[$ _state] : sprite_without_sword[$ _state];
+}
+
 
 // This variable stores the number of coins the player has collected.
 coins = 0;
@@ -94,7 +108,7 @@ enable_self = function (_user) {
 		image_alpha = 1;
 		no_hurt_frames = 0;
 		state = CHARACTER_STATE.IDLE;
-	    sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
+	    sprite_index = obj_inventory.has_sword ? sprites_map[$ CHARACTER_STATE.IDLE] : spr_hero_idle_without_sword;
 	}
 };
 
@@ -106,6 +120,16 @@ disable_self = function (_user) {
 		vel_x = 0;
 		vel_y = 0;
 	}
+};
+
+
+sequence_spawner = function(_seq_file) {
+	with (instance_create_layer(x, y, "Instances", obj_sequence_spawner)) {
+		sequence = _seq_file;
+		spawner = other;
+		start_sequence();
+	}
+	disable_self(id);
 };
 
 spawn_super_attack = function() {
@@ -159,13 +183,10 @@ spawn_blitz_attack = function() {
 	sequence_spawner(seq_player_blitz_attack);
 };
 
-sequence_spawner = function(_seq_file) {
-	with (instance_create_layer(x, y, "Instances", obj_sequence_spawner)) {
-		sequence = _seq_file;
-		spawner = other;
-		start_sequence();
-	}
-	disable_self(id);
+spawn_throw_sword_attack = function() {
+	state = CHARACTER_STATE.ATTACK;
+	add_screenshake(0.2, 1.5);
+	sequence_spawner(seq_player_throw_sword);
 };
 
 #endregion

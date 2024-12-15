@@ -10,7 +10,6 @@ if (is_jump_key_held()) {
             // Perform normal jump
             state = CHARACTER_STATE.JUMP;
             vel_y = -jump_speed;
-            sprite_index = spr_player_fall;
             image_index = 0;
             grounded = false;
             instance_create_layer(x, bbox_bottom, "Instances", obj_effect_jump);
@@ -20,7 +19,6 @@ if (is_jump_key_held()) {
         } else if (jetpack.fuel > 0) {
             // Start jet pack hover immediately
             state = CHARACTER_STATE.JETPACK_JUMP;
-            sprite_index = spr_player_jet_jump;
             image_index = 0;
             image_speed = 1;
 			move_speed = air_move_speed;// increase speed during jetpack move
@@ -35,7 +33,6 @@ if (is_jump_key_held()) {
         jetpack.fuel -= 1/_room_speed; // Consume 1 point per second (assuming 60 FPS)
         
         if (sprite_index != spr_player_jet_jump) {
-            sprite_index = spr_player_jet_jump;
             image_index = 0;
             image_speed = 1;
         }
@@ -48,7 +45,7 @@ if (is_jump_key_held()) {
     if (state == CHARACTER_STATE.JETPACK_JUMP && !grounded) {
         state = CHARACTER_STATE.JUMP;
 		move_speed = move_speed_init;
-        sprite_index = spr_player_fall;
+
         image_index = 0;
         image_speed = 1;
 		reset_camera_zoom(); // Reset zoom when jetpack mode ends

@@ -6,58 +6,12 @@ event_inherited();
 // This allows us to transition to some other sprite, depending on the currently assigned sprite, and some additional conditions.
 switch (sprite_index)
 {
-	
-	case spr_player_idle:
-		if vel_x != 0 {
-			sprite_index = spr_player_walk;
-		}
-		break;
-	
-	// Code under this case runs if the assigned sprite is 'spr_player_walk', meaning the player is walking.
-	case spr_player_walk:
-		// Set the animation speed to 1, as it may have been set to 0 during the jump animation.
-		image_speed = 1;
-	
-		// This checks if the X velocity is 0, meaning the player is not moving horizontally.
-		if (vel_x == 0)
-		{
-			// In that case we change its sprite to the idle one.
-			sprite_index = spr_player_idle;
-		}
-	
-		// This checks if the Y velocity of the player is greater than 1, meaning it is falling down.
-		// This would happen when the player walks off a ledge.
-		if (vel_y > 1)
-		{
-			// In that case we change its sprite to the fall one, and reset the frame to 0.
-			sprite_index = spr_player_fall;
-			image_index = 0;
-		}
-		break;
-
-	// meaning the player was in the middle of a jump.
-	case spr_player_jet_jump:
-		// This checks if the Y velocity is equal to, or greater than 0, meaning the player has now started falling downward.
-		if (is_on_ground()) {
-			// In that case we change its sprite to the fall sprite, and reset the frame to 0.
-			sprite_index = spr_player_jet_landing;
-			image_index = 0;
-		
-			// We also reset the animation speed to 1, as it was set to 0 at the end of the jump animation.
-			image_speed = 1;
-		}
-		break;
-
 	// Code under this case runs if the assigned sprite is 'spr_player_fall', meaning the player was falling downward.
 	case spr_player_fall:
         image_speed = (vel_y >= 0) ? 1 : 0;
 		// This checks if the player is now on the ground
-		if (grounded)
-		{
-			// In that case we change its sprite to the idle sprite.
+		if (grounded) {
 			sprite_index = spr_player_jet_landing;
-		
-			// We also reset the animation speed to 1, as it was set to 0 at the end of the fall animation.
 			image_speed = 1;
 		
 			// Play the landing sound effect
