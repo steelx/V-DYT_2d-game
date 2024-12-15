@@ -3,7 +3,7 @@
 if (player_within_range(interaction_area)) {
 
 	if tooltip_instance == noone {
-        tooltip_instance = draw_tooltip(tooltip_text, x+16, y-16, function() {
+        tooltip_instance = draw_tooltip(tooltip_text, x, y-16, function() {
             if (interaction_function != undefined) {
 				play_priority_sound(snd_button_press_01, SoundPriority.AMBIENT);
                 interaction_function();

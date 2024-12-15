@@ -39,6 +39,7 @@ function highlight_sprite(_sprite, _x, _y, _subimg, _color, _thickness = 0.5) {
     static u_highlight_color = shader_get_uniform(shader, "u_highlight_color");
     static u_thickness = shader_get_uniform(shader, "u_thickness");
     static u_texel_size = shader_get_uniform(shader, "u_texel_size");
+    static u_time = shader_get_uniform(shader, "u_time");
     
     shader_set(shader);
     
@@ -49,8 +50,8 @@ function highlight_sprite(_sprite, _x, _y, _subimg, _color, _thickness = 0.5) {
         texture_get_texel_width(sprite_get_texture(_sprite, _subimg)),
         texture_get_texel_height(sprite_get_texture(_sprite, _subimg))
     );
+    shader_set_uniform_f(u_time, current_time / 1000.0); // blink
     
     draw_sprite(_sprite, _subimg, _x, _y);
-    
     shader_reset();
 }

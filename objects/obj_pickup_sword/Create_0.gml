@@ -6,6 +6,8 @@ interaction_function = function() {
 	if instance_exists(obj_player) {
 		with(obj_inventory) has_sword = true;
 	}
+	instance_destroy(tooltip_instance);
+	instance_destroy(id);
 };
 
 can_pickup = false;

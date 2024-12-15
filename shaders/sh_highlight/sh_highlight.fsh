@@ -1,10 +1,10 @@
 ///// sh_highlight.fsh (Fragment Shader)
 varying vec2 v_texcoord;
 varying vec4 v_color;
-
 uniform vec3 u_highlight_color;
 uniform float u_thickness;
 uniform vec2 u_texel_size;
+uniform float u_time;
 
 void main()
 {
@@ -20,8 +20,11 @@ void main()
         }
     }
     
-    // If we're on the border of the sprite (either inside or outside)
-    if(alpha > 0.0 && alpha < 8.0 * u_thickness * u_thickness) {
+    // Calculate blink state (0 or 1) using step function for sharp on/off
+    float blink = step(0.0, sin(u_time * 10.0));// u_time * speed
+    
+    // If we're on the border of the sprite AND the highlight is in its "on" state
+    if(alpha > 0.0 && alpha < 8.0 * u_thickness * u_thickness && blink > 0.5) {
         gl_FragColor = vec4(u_highlight_color, 1.0);
     } else {
         gl_FragColor = texture_color * v_color;
