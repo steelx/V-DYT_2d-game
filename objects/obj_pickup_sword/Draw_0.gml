@@ -7,7 +7,7 @@ if (can_pickup) {
         y,
         image_index,
         [0.0, 1.0, 0.5],
-		0.55
+		0.525
     );
 } else {
     draw_self();

@@ -455,4 +455,27 @@ function CollisionGrid() constructor {
             return false;
         }
     }
+    
+    /**
+     * Retrieves the obstacle at a specific grid position.
+     * 
+     * @param {number} _grid_x - X-coordinate of the grid cell to check
+     * @param {number} _grid_y - Y-coordinate of the grid cell to check
+     * @returns {Object} The collision info at the given grid position
+     */
+    static GetObstacleAtGridPos = function(_grid_x, _grid_y) {		
+        if (_grid_x < 0 || _grid_x >= grid_width || _grid_y < 0 || _grid_y >= grid_height) {
+            return noone; // Return empty collision info if out of bounds
+        }
+		
+        // Check obstacles array
+        for(var i = 0; i < array_length(obstacles); i++) {
+            var _obs = obstacles[i];
+            if (_obs.grid_pos.x == _grid_x && _obs.grid_pos.y == _grid_y) {
+                return _obs;
+            }
+        }
+        
+        return noone; // Return empty collision info if no obstacle
+	}
 }

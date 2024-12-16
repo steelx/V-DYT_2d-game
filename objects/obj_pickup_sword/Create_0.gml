@@ -1,4 +1,6 @@
 /// @description obj_pickup_sword
+event_inherited();
+
 tooltip_text = "[spr_key_e] Pick up sword";
 interaction_area = 32;
 tooltip_instance = noone;

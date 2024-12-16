@@ -1,4 +1,5 @@
 /// @description obj_pickup_sword step
+event_inherited();
 
 if (player_within_range(interaction_area)) {
 
@@ -18,3 +19,4 @@ if (player_within_range(interaction_area)) {
 }
 
 apply_verticle_movement();
+apply_horizontal_movement();

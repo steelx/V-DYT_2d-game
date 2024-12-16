@@ -14,7 +14,7 @@ function ChaseSmartTask(_visible_range, _move_speed, _jump_force, _jump_height) 
         
         with(_user) {
             var _dist = distance_to_object(obj_player);
-            if (_dist <= attack_range) or (_dist > other.visible_range) {
+            if (_dist <= attack_range) or (_dist > other.visible_range) or !is_on_ground() {
                 vel_x = 0;
                 return BTStates.Failure;
             }
