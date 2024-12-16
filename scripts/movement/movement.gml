@@ -138,27 +138,23 @@ function apply_verticle_movement() {
 }
 
 function check_collision(_move_x, _move_y) {
+	var _left = bbox_left + _move_x, _right = bbox_right + _move_x,
+        _top = bbox_top + _move_y, _bottom = bbox_bottom + _move_y;
+	
     // Check tilemap obstacles first
     if (global.collision_grid.CheckObstacleCollision(
-        bbox_left + _move_x, bbox_right + _move_x,
-        bbox_top + _move_y, bbox_bottom + _move_y
+        _left, _right, _top, _bottom
     )) {
         return true;
     }
 
     // Then check platforms
     var _platform = global.collision_grid.CheckPlatformCollision(
-        bbox_left + _move_x, bbox_right + _move_x,
-        bbox_top + _move_y, bbox_bottom + _move_y
+        _left, _right, _top, _bottom
     );
 
-    if (_platform != noone) {
-        if (object_index != obj_player) return true;
-        
-        // Player-specific platform handling
-        if (vel_y < 0) return false; // Allow jumping through
-        if (keyboard_check(vk_down) && vel_y >= 0) return false; // Allow dropping through
-        if (vel_y > 0 && bbox_bottom <= _platform.bbox.top) return true; // Land on top
+    if (_platform != noone) and (object_index != obj_player) {
+        return true;
     }
 
     return false;
@@ -168,10 +164,15 @@ function check_collision(_move_x, _move_y) {
 function jump_thru_platform() {
     if (object_index != obj_player) return;
     
-    var _platform = instance_place(x, y, obj_collision);
+	var _move_x = vel_x, _move_y = vel_y;
+	var _left = bbox_left + _move_x, _right = bbox_right + _move_x,
+        _top = bbox_top + _move_y, _bottom = bbox_bottom + _move_y;
+    var _platform = global.collision_grid.CheckPlatformCollision(
+        _left, _right, _top, _bottom
+    );
     if (_platform != noone) {
-        var _dist_to_platform_top = bbox_bottom - _platform.bbox_top;
-        var _dist_to_platform_bottom = _platform.bbox_bottom - bbox_top;
+        var _dist_to_platform_top = bbox_bottom - _platform.bbox.top;
+        var _dist_to_platform_bottom = _platform.bbox.bottom - bbox_top;
         var _coyote_threshold = 8;
         
         // Moving upward through platform
@@ -188,8 +189,8 @@ function jump_thru_platform() {
         }
         
         // Handle landing on platform
-        if (_dist_to_platform_top <= _coyote_threshold && vel_y >= 0) {
-            y = _platform.bbox_top - (bbox_bottom - y);
+		if (_dist_to_platform_top <= _coyote_threshold && vel_y >= 0) {
+            y = _platform.bbox.top - (bbox_bottom - y);
             vel_y = 0;
             grounded = true;
         }
