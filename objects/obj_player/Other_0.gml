@@ -1,7 +1,7 @@
 // @description runs when the instance goes outside the room.
 // This condition checks if the top edge of the player's mask is below the room,
 // meaning it's completely outside the room now.
-if (bbox_top > room_height)
+if (bbox_top > room_height and !obj_game.transition_active)
 {
 	// This reduces the health by 1.
 	hp -= 1;

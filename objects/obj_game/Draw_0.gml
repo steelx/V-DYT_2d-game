@@ -1,9 +1,7 @@
 /// @description Draw Event: grid
-/*
 if (global.collision_grid != undefined) {
     global.collision_grid.DrawDebug();
 }
-*/
 
 /// Room Transition
 if (transition_active) {

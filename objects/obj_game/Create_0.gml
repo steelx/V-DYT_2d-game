@@ -77,24 +77,6 @@ menu_y = (surface_height - (menu_item_height * array_length(menu_options))) / 2;
 _gui_needs_redraw = true;
 gui_surface = -1;
 
-#region slowmotion
-normal_game_speed = get_room_speed();
-current_fps = get_room_speed();
-slow_mo_speed = 16; // Slow motion speed (half speed)
-slow_mo_active = false;
-slow_mo_duration = slow_mo_speed * 1.5;// 1.5secs
-slow_mo_timer = 0;
-
-// Initialize game speed
-game_set_speed(normal_game_speed, gamespeed_fps);
-
-trigger_slowmotion_fx = function() {
-	slow_mo_active = true;
-    slow_mo_timer = slow_mo_duration;
-};
-
-#endregion
-
 /// Room transition
 enum TRANSITION_PHASE {
 	BEGIN,

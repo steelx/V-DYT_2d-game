@@ -175,7 +175,7 @@ function PatrolTask(_move_speed, _patrol_width, _idle_alarm_idx, _ignore_player_
 	    with(_id) {
 	        // Find current platform
 	        var _platform_y = undefined;
-	        for(var i = -32; i < 32; i++) {
+	        for(var i = -16; i < 16; i++) {
 	            if (!global.collision_grid.IsValidMove(_x, y + i)) {
 	                _platform_y = y + i;
 	                break;
