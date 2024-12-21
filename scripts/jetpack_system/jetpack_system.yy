@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"jetpack_movement",
+  "%Name":"jetpack_system",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"jetpack_movement",
+  "name":"jetpack_system",
   "parent":{
     "name":"Scripts",
     "path":"folders/Scripts.yy",

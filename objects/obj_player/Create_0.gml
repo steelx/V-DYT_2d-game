@@ -41,30 +41,7 @@ move_speed_init = 1.2;
 move_speed = move_speed_init;
 air_move_speed = 1.8;
 
-// Jet pack variables
-jetpack = {
-    max_fuel: 10,
-    fuel: 10,
-    fuel_consumption_rate: 2/60, // Consume 1 point per second
-    fuel_regeneration_rate: 0.5/60, // Regeneration 0.5 point per second
-    max_height: 96, // Maximum height from ground
-    hover_amplitude: 2,
-    hover_speed: 4, // Speed of bobbing
-    bob_range: 3, // Maximum pixels to bob up and down
-    horizontal_momentum: 0,
-    max_horizontal_speed: 3,
-    acceleration: 0.2,
-    deceleration: 0.1,
-    ground_reference_y: y,
-    hover_height: 96, // Desired height above ground
-    ground_check_distance: 100, // How far down to check for ground
-    min_height: 48, // Minimum hover height when no ground is found
-    max_vertical_speed: 1.5,
-    hover_strength: .9, // Strength of the jetpack thrust
-    last_ground_y: y,
-	hover_direction: 1,
-	hover_y_offset: 0
-};
+jetpack = new JetpackSystem(id);
 
 function is_jump_key_held() {
     return keyboard_check(vk_up) or keyboard_check_pressed(ord("W"));

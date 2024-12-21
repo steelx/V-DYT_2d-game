@@ -322,7 +322,7 @@
     {"id":{"name":"game_start","path":"scripts/game_start/game_start.yy",},},
     {"id":{"name":"guardian_moment","path":"scripts/guardian_moment/guardian_moment.yy",},},
     {"id":{"name":"highlight_sprite","path":"scripts/highlight_sprite/highlight_sprite.yy",},},
-    {"id":{"name":"jetpack_movement","path":"scripts/jetpack_movement/jetpack_movement.yy",},},
+    {"id":{"name":"jetpack_system","path":"scripts/jetpack_system/jetpack_system.yy",},},
     {"id":{"name":"knockback_task","path":"scripts/knockback_task/knockback_task.yy",},},
     {"id":{"name":"light_engine_core","path":"scripts/light_engine_core/light_engine_core.yy",},},
     {"id":{"name":"light_engine_layer_scripts","path":"scripts/light_engine_layer_scripts/light_engine_layer_scripts.yy",},},

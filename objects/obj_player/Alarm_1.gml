@@ -16,7 +16,7 @@ if (is_jump_key_held()) {
     
             var _sound = audio_play_sound(snd_hero_jump, 0, 0);
             audio_sound_pitch(_sound, random_range(0.8, 1));
-        } else if (jetpack.fuel > 0) {
+        } else if (jetpack.fuel > jetpack.fuel_consumption_rate) {
             // Start jet pack hover immediately
             state = CHARACTER_STATE.JETPACK_JUMP;
             image_index = 0;
