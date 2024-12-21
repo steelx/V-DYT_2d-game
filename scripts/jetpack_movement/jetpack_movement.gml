@@ -74,3 +74,16 @@ function jetpack_update_ground_reference() {
         jetpack.ground_reference_y = min(jetpack.ground_reference_y + 2, y + jetpack.min_height);
     }
 }
+
+function create_jetpack_particles() {
+    if (irandom(2) == 0) {
+        var _particle = instance_create_layer(
+            x, bbox_bottom,
+            "Instances",
+            obj_jetpack_particle
+        );
+        _particle.direction = 270 + random_range(-15, 15);
+        _particle.speed = random_range(2, 4);
+    }
+}
+

@@ -11,8 +11,8 @@ if (is_jump_key_held()) {
             state = CHARACTER_STATE.JUMP;
             vel_y = -jump_speed;
             image_index = 0;
-            grounded = false;
-            instance_create_layer(x, bbox_bottom, "Instances", obj_effect_jump);
+
+            add_screenshake(0.2, 1.0);
     
             var _sound = audio_play_sound(snd_hero_jump, 0, 0);
             audio_sound_pitch(_sound, random_range(0.8, 1));
@@ -27,10 +27,10 @@ if (is_jump_key_held()) {
         }
     }
     
-    if (jump_key_held_timer > 1 && state == CHARACTER_STATE.JETPACK_JUMP && !grounded && jetpack.fuel > 0) {
+    if (jump_key_held_timer > 1 && state == CHARACTER_STATE.JETPACK_JUMP && !grounded && jetpack.fuel > jetpack.fuel_consumption_rate) {
         // Continue jet pack hover
         vel_y = -jump_speed * 0.5; // Adjust this value for desired hover strength
-        jetpack.fuel -= 1/_room_speed; // Consume 1 point per second (assuming 60 FPS)
+        jetpack.fuel -= jetpack.fuel_consumption_rate; // Consume 1 point per second (assuming 60 FPS)
         
         if (sprite_index != spr_player_jet_jump) {
             image_index = 0;

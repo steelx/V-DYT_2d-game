@@ -137,6 +137,17 @@ function apply_verticle_movement() {
     }
 }
 
+function is_platform_below() {
+    var _left = bbox_left, _right = bbox_right,
+            _top = bbox_top + 1, _bottom = bbox_bottom + 1;
+    
+    var _platform = global.collision_grid.CheckPlatformCollision(
+        _left, _right, _top, _bottom
+    );
+    
+    return _platform != noone;
+}
+
 function check_collision(_move_x, _move_y) {
 	var _left = bbox_left + _move_x, _right = bbox_right + _move_x,
         _top = bbox_top + _move_y, _bottom = bbox_bottom + _move_y;
@@ -153,7 +164,7 @@ function check_collision(_move_x, _move_y) {
         _left, _right, _top, _bottom
     );
 
-    if (_platform != noone) and (object_index != obj_player) {
+    if (_platform != noone) {
         return true;
     }
 
@@ -182,7 +193,7 @@ function jump_thru_platform() {
         }
         
         // Pressing down to fall through platform
-        if (keyboard_check(vk_down) && vel_y >= 0 && grounded) {
+        if (keyboard_check(vk_down) and vel_y >= 0 and is_platform_below()) {
             y += 1; // Small push to initiate fall
             grounded = false;
             return;
@@ -219,7 +230,7 @@ function approach(_current, _target, _amount) {
 
 /**
  * Checks for ground within a specified distance below the instance
- * @param {real} max_distance Maximum distance to check downward
+ * @param {real} _max_distance Maximum distance to check downward
  * @returns {boolean} True if ground was found
  */
 function find_ground_below(_max_distance) {
@@ -233,7 +244,7 @@ function find_ground_below(_max_distance) {
 
 /**
  * Checks if there's enough horizontal clearance at current position
- * @param {real} clearance Amount of horizontal space needed
+ * @param {real} _clearance Amount of horizontal space needed
  * @returns {boolean} True if there's enough clearance
  */
 function has_horizontal_clearance(_clearance) {

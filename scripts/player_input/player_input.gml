@@ -49,13 +49,16 @@ function player_input() {
             ]);
 			return;
 		}
-        if (state != CHARACTER_STATE.ATTACK && state != CHARACTER_STATE.SUPER_ATTACK) {
+        if (state != CHARACTER_STATE.ATTACK and state != CHARACTER_STATE.SUPER_ATTACK) {
 			if (keyboard_check(vk_shift)) {
-                if (grounded) {
+                if (is_on_ground()) {
+                    state = CHARACTER_STATE.SUPER_ATTACK;
+                    add_screenshake(0.3, 1.5);
 					spawn_super_attack();
 				}
             } else {
 				state = CHARACTER_STATE.ATTACK;
+                add_screenshake(0.2, 1.0);
 				
 				switch(obj_inventory.selected_slot) {
 	                case INVENTORY_SLOTS.SWORD:
@@ -107,6 +110,14 @@ function player_input() {
         if (state != CHARACTER_STATE.KNOCKBACK or state != CHARACTER_STATE.ATTACK or state != CHARACTER_STATE.SUPER_ATTACK) {
             jump_key_held_timer = 0;
             alarm_set(JET_PACK_JUMP, 1);
+        }
+    }
+    
+    // Jump down
+    if (keyboard_check(vk_down) || keyboard_check(ord("S"))) and is_platform_below() {
+        if (state != CHARACTER_STATE.KNOCKBACK or state != CHARACTER_STATE.ATTACK or state != CHARACTER_STATE.SUPER_ATTACK) {
+            add_screenshake(0.2, 1.0);
+            state = CHARACTER_STATE.FALL;
         }
     }
     

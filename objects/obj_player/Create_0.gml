@@ -43,9 +43,9 @@ air_move_speed = 1.8;
 
 // Jet pack variables
 jetpack = {
-    max_fuel: 1000,
-    fuel: 1000,
-    fuel_consumption_rate: 1/60, // Consume 1 point per second
+    max_fuel: 10,
+    fuel: 10,
+    fuel_consumption_rate: 2/60, // Consume 1 point per second
     fuel_regeneration_rate: 0.5/60, // Regeneration 0.5 point per second
     max_height: 96, // Maximum height from ground
     hover_amplitude: 2,
@@ -67,7 +67,7 @@ jetpack = {
 };
 
 function is_jump_key_held() {
-    return keyboard_check(vk_up);
+    return keyboard_check(vk_up) or keyboard_check_pressed(ord("W"));
 }
 
 knockback_vel_x = 0;
@@ -152,7 +152,6 @@ spawn_super_attack = function() {
 	
 	state = CHARACTER_STATE.SUPER_ATTACK;
 	attack_fuel -= attack_fuel_consumption_rate;
-	add_screenshake(0.2, 1.5);
 	alarm[PLAYER_ATTACK_DELAY] = get_room_speed() * 1;// start attack delay timer
 	sequence_spawner(seq_player_super_attack);
 };
@@ -179,13 +178,11 @@ spawn_blitz_attack = function() {
 	
 	state = CHARACTER_STATE.ATTACK;
 	obj_inventory.blitz_points -= 1;
-	add_screenshake(0.2, 1.5);
 	sequence_spawner(seq_player_blitz_attack);
 };
 
 spawn_throw_sword_attack = function() {
 	state = CHARACTER_STATE.ATTACK;
-	add_screenshake(0.2, 1.5);
 	sequence_spawner(seq_player_throw_sword);
 };
 

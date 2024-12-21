@@ -25,54 +25,44 @@ switch(state) {
             
         break;
 
-	case CHARACTER_STATE.JETPACK_JUMP:
-        if (!is_jump_key_held() || jetpack.fuel <= 0) {
-            // Begin decelerating vertically and horizontally
-            jetpack_vertical_movement(false);
-            jetpack_horizontal_movement(false);
-            //sprite_index = sprites_map[$ CHARACTER_STATE.FALL];
+    case CHARACTER_STATE.JETPACK_JUMP:
+        if (!is_jump_key_held() || jetpack.fuel <= jetpack.fuel_consumption_rate) {
+            // Change state to falling when out of fuel or key released
+            state = CHARACTER_STATE.JUMP;
+            sprite_index = sprites_map[$ CHARACTER_STATE.FALL];
+            // Apply some downward velocity for smoother transition
+            vel_y = min(vel_y, 2);
         } else {
             jetpack.fuel -= jetpack.fuel_consumption_rate;
-
+            
             // Update ground reference point
             jetpack_update_ground_reference();
-
-            // Calculate target hover height relative to ground
+            
+            // Calculate target height relative to ground
             var _target_height = jetpack.ground_reference_y - jetpack.hover_height;
-
+            
             // Add hovering motion
             jetpack.hover_y_offset += jetpack.hover_direction * jetpack.hover_speed * delta_time;
             if (abs(jetpack.hover_y_offset) >= jetpack.bob_range) {
                 jetpack.hover_direction *= -1;
             }
-
+            
             // Apply hover offset to target height
             _target_height += jetpack.hover_y_offset;
-
             // Limit max height from last ground position
             _target_height = min(_target_height, jetpack.last_ground_y - jetpack.max_height);
-
             // Smooth vertical movement with acceleration
             jetpack_vertical_movement(true, _target_height);
-
             // Horizontal movement with momentum and acceleration
             jetpack_horizontal_movement(true);
-
             // Create jetpack particles
-            if (irandom(2) == 0) {
-                var _particle = instance_create_layer(
-                    x, bbox_bottom,
-                    "Instances",
-                    obj_jetpack_particle
-                );
-                _particle.direction = 270 + random_range(-15, 15);
-                _particle.speed = random_range(2, 4);
-            }
+            create_jetpack_particles();
         }
-
+        
         // Check for ground collision
         if (grounded) {
             state = CHARACTER_STATE.IDLE;
+            sprite_index = sprites_map[$ CHARACTER_STATE.IDLE];
         }
         break;
         
